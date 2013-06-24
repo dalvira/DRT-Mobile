@@ -81,6 +81,7 @@ public class SectionListFragment extends ListFragment {
 		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
 		}
+		
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package com.teamuniverse.drtmobile.sectionsetup;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -36,6 +37,7 @@ public class SectionListActivity extends FragmentActivity implements
 	 */
 	public boolean						mTwoPane;
 	public static SectionListActivity	main;
+	public static Activity				me;
 	
 	// The detail container view will be present only in the
 	// large-screen layouts (res/values-large and
@@ -46,6 +48,7 @@ public class SectionListActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_section_list);
+		me = this;
 		
 		mTwoPane = findViewById(R.id.section_detail_container) != null;
 		if (mTwoPane) {

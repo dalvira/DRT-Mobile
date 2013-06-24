@@ -34,7 +34,7 @@ public class SectionAdder {
 	public static final int			GLC_SEARCH			= 1;
 	public static final int			DAMAGE_ASSESSMENT	= 2;
 	public static final int			REPORT_SELECTION	= 3;
-	public static final String[][]	SECTIONS_IN_LIST	= { { "ZIP Search", ZIP_SEARCH + "" }, { "GLC Search", GLC_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
+	public static final String[][]	SECTIONS_IN_LIST	= { { "ZIP Search", ZIP_SEARCH + "", "ADM" }, { "GLC Search", GLC_SEARCH + "", "ADM" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "", "ADM" }, { "Report Selection", REPORT_SELECTION + "", "ADM" } };
 	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 3 };
 	
 	public static Fragment getSection(int id) {

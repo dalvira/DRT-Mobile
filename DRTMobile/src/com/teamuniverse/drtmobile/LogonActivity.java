@@ -53,6 +53,7 @@ public class LogonActivity extends Activity {
 		me = this;
 		
 		DatabaseManager db = new DatabaseManager(this);
+		db.unsetSession();
 		if (db.checkSetting("remember_attuid")) {
 			rememberATTUID.setChecked(true);
 			attuidEditText.setText(db.getATTUID());
