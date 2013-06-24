@@ -44,4 +44,11 @@
 		android:layout_below="@+id/logon_remember_me"
 		android:layout_centerHorizontal="true"
 		android:text="@string/go" />
+	<ProgressBar
+		android:id="@+id/logon_progress"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@+id/logon_go"
+		android:layout_toLeftOf="@+id/logon_go"
+		android:visibility="invisible" />
 </RelativeLayout>

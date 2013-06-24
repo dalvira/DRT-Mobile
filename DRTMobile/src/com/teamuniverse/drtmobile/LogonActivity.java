@@ -1,11 +1,14 @@
 package com.teamuniverse.drtmobile;
 
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -14,9 +17,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.att.intern.webservice.Webservice;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 
@@ -26,8 +31,14 @@ public class LogonActivity extends Activity {
 	private static EditText		passEditText;
 	private static Button		goButton;
 	private static CheckBox		rememberATTUID;
+	private static ProgressBar	progress;
+	private static String[]		loginResults;
+	private static boolean		querying;
 	
-	public final static String	LAUNCH_TO	= "com.teamuniverse.drtmobile.LAUNCH_TO";
+	private Handler				handler;
+	private Activity			me;
+	
+	public final static String	AUTHORIZATION_LEVEL	= "com.teamuniverse.drtmobile.LAUNCH_TO";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +49,10 @@ public class LogonActivity extends Activity {
 		passEditText = (EditText) findViewById(R.id.logon_password);
 		goButton = (Button) findViewById(R.id.logon_go);
 		rememberATTUID = (CheckBox) findViewById(R.id.logon_remember_me);
+		progress = (ProgressBar) findViewById(R.id.logon_progress);
+		querying = false;
+		handler = new Handler();
+		me = this;
 		
 		DatabaseManager db = new DatabaseManager(this);
 		if (db.checkSetting("remember_attuid")) {
@@ -66,56 +81,86 @@ public class LogonActivity extends Activity {
 		
 	}
 	
+	/**
+	 * This method accesses the web services to login with the passed username
+	 * and password. It does the query in a separate thread, so that the main
+	 * thread is not bogged down.
+	 */
 	private void logon() {
-		
 		// Get contents of the EditTexts
-		String name = attuidEditText.getText().toString();
-		String pass = passEditText.getText().toString();
-		String[] loginResults = login(name, pass);
-		
-		if (loginResults[0] == null) {
-			if (loginResults[2].equals("not_found")) {
-				// 1. Instantiate an AlertDialog.Builder with its constructor
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				// 2. Chain together various setter methods to set the dialog
-				// characteristics
-				builder.setMessage(R.string.logon_does_not_exist).setTitle(R.string.logon_does_not_exist_title);
-				// 3. Add a yes button and a no button
-				builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-				// 4. Get the AlertDialog from create()
-				AlertDialog dialog = builder.create();
-				// 5. Show the dialog
-				dialog.show();
-			} else Toast.makeText(getApplicationContext(), loginResults[2], Toast.LENGTH_SHORT).show();
-		} else {
-			// Hide virtual keyboard
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(passEditText.getWindowToken(), 0);
-			imm.hideSoftInputFromWindow(attuidEditText.getWindowToken(), 0);
-			if (loginResults[0] != null) {
-				// Start next activity
-				Intent detailIntent = new Intent(this, SectionListActivity.class);
-				
-				if (loginResults[1].equals("adm")) {
-					detailIntent.putExtra(LAUNCH_TO, "1");
-				} else if (loginResults[1].equals("rpt")) {
-					detailIntent.putExtra(LAUNCH_TO, "");
+		if (!querying) {
+			querying = true;
+			progress.setVisibility(View.VISIBLE);
+			new Thread(new Runnable() {
+				public void run() {
+					String name = attuidEditText.getText().toString();
+					String pass = passEditText.getText().toString();
+					Webservice ws = new Webservice(getApplicationContext());
+					loginResults = ws.login(name, pass);
+					// Use the handler to execute a Runnable on the
+					// main thread in order to have access to the
+					// UI elements.
+					handler.postDelayed(new Runnable() {
+						public void run() {
+							// Hide the progress bar
+							try {
+								progress.setVisibility(View.INVISIBLE);
+								querying = false;
+								
+								if (loginResults[0] == null) {
+									
+									if (loginResults[2].equals("rcFailure")) {
+										// 1. Instantiate an AlertDialog.Builder
+										// with its constructor
+										AlertDialog.Builder builder = new AlertDialog.Builder(me);
+										// 2. Chain together various setter
+										// methods
+										// to set the dialog
+										// characteristics
+										builder.setMessage(R.string.logon_does_not_exist).setTitle(R.string.logon_does_not_exist_title);
+										// 3. Add a yes button and a no button
+										builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int id) {
+												dialog.cancel();
+											}
+										});
+										// 4. Get the AlertDialog from create()
+										AlertDialog dialog = builder.create();
+										// 5. Show the dialog
+										dialog.show();
+									} else Toast.makeText(getApplicationContext(), loginResults[2], Toast.LENGTH_SHORT).show();
+								} else {
+									// Hide virtual keyboard
+									InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+									imm.hideSoftInputFromWindow(passEditText.getWindowToken(), 0);
+									imm.hideSoftInputFromWindow(attuidEditText.getWindowToken(), 0);
+									
+									if (loginResults[0] != null) {
+										
+										// Store session variables
+										DatabaseManager db = new DatabaseManager(me);
+										
+										db.sessionSet("token", loginResults[0]);
+										db.sessionSet("authorization", loginResults[1]);
+										Calendar cal = Calendar.getInstance();
+										db.sessionSet("timestamp", cal.getTimeInMillis() + "");
+										
+										db.close();
+										
+										// Start next activity
+										Intent detailIntent = new Intent(me, SectionListActivity.class);
+										startActivity(detailIntent);
+									}
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}, 0);
 				}
-				
-				startActivity(detailIntent);
-			}
+			}).start();
 		}
-	}
-	
-	private String[] login(String name, String pass) {
-		if (!name.equals("ef183v")) return new String[] { null, null, "not_found" };
-		if (pass.equals("123")) return new String[] { "token12", "adm", "Login was successful!" };
-		else return new String[] { null, null, "Incorrect password!" };
 	}
 	
 	@Override

@@ -14,6 +14,6 @@
 	<string name="att_bubbles">AT&amp;T Bubbles</string>
 	<string name="remember">Remember My ATTUID</string>
 	<string name="ok">OK</string>
-	<string name="logon_does_not_exist">That ATTUID was not found or does not correspond to an existing ATTUID.</string>
+	<string name="logon_does_not_exist">That ATTUID was not found or does not correspond to an existing ATTUID. Your choices for testing are admin/password, report1/2pass, or report2/p@ss</string>
 	<string name="logon_does_not_exist_title">ATTUID Not Found!</string>
 </resources>

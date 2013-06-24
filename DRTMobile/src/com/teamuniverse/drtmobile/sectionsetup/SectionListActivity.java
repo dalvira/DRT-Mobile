@@ -54,9 +54,7 @@ public class SectionListActivity extends FragmentActivity implements
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
 			((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivateOnItemClick(true);
-			int which;
-			if (getIntent().getStringExtra(LogonActivity.LAUNCH_TO).equals("")) which = 0;
-			else which = Integer.parseInt(getIntent().getStringExtra(LogonActivity.LAUNCH_TO));
+			int which = 0;
 			try {
 				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(SectionAdder.SECTION_PARENTS[which]);
 				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(which)).commit();
@@ -85,8 +83,8 @@ public class SectionListActivity extends FragmentActivity implements
 		if (mTwoPane) {
 			
 			int which;
-			if (getIntent().getStringExtra(LogonActivity.LAUNCH_TO).equals("")) which = 0;
-			else which = Integer.parseInt(getIntent().getStringExtra(LogonActivity.LAUNCH_TO));
+			if (getIntent().getStringExtra(LogonActivity.AUTHORIZATION_LEVEL).equals("")) which = 0;
+			else which = Integer.parseInt(getIntent().getStringExtra(LogonActivity.AUTHORIZATION_LEVEL));
 			try {
 				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(SectionAdder.SECTION_PARENTS[which]);
 				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(which)).commit();
