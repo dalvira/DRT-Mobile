@@ -114,7 +114,7 @@ public class LogonActivity extends Activity {
 	
 	private String[] login(String name, String pass) {
 		if (!name.equals("ef183v")) return new String[] { null, null, "not_found" };
-		if (pass.equals("123")) return new String[] { "token123", "adm", "Login was successful!" };
+		if (pass.equals("123")) return new String[] { "token12", "adm", "Login was successful!" };
 		else return new String[] { null, null, "Incorrect password!" };
 	}
 	
