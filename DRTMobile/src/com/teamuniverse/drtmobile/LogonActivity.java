@@ -38,8 +38,6 @@ public class LogonActivity extends Activity {
 	private Handler				handler;
 	private Activity			me;
 	
-	public final static String	AUTHORIZATION_LEVEL	= "com.teamuniverse.drtmobile.LAUNCH_TO";
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

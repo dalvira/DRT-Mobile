@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.teamuniverse.drtmobile.LogonActivity;
 import com.teamuniverse.drtmobile.R;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.ErrorReporter;
@@ -82,9 +81,7 @@ public class SectionListActivity extends FragmentActivity implements
 		super.onResume();
 		if (mTwoPane) {
 			
-			int which;
-			if (getIntent().getStringExtra(LogonActivity.AUTHORIZATION_LEVEL).equals("")) which = 0;
-			else which = Integer.parseInt(getIntent().getStringExtra(LogonActivity.AUTHORIZATION_LEVEL));
+			int which = 0;
 			try {
 				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(SectionAdder.SECTION_PARENTS[which]);
 				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(which)).commit();
