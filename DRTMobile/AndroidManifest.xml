@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.teamuniverse.drtmobile"
+	android:versionCode="1"
+	android:versionName="1.0" >
+	<uses-sdk
+		android:minSdkVersion="14"
+		android:targetSdkVersion="17" />
+	<application
+		android:allowBackup="true"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@style/AppTheme" >
+		<activity
+			android:name="com.teamuniverse.drtmobile.LogonActivity"
+			android:label="@string/app_name" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity"
+			android:label="@string/title_section_list"
+			android:parentActivityName="com.teamuniverse.drtmobile.LogonActivity" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.teamuniverse.drtmobile.LogonActivity" />
+		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity"
+			android:label="@string/title_section_detail"
+			android:parentActivityName="com.teamuniverse.drtmobile.SectionListActivity" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.teamuniverse.drtmobile.SectionListActivity" />
+		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.ZIPSearchFragment"
+			android:label="@string/title_fragment_zip_search"
+			android:parentActivityName="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
+		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.GLCSearchFragment"
+			android:label="@string/title_fragment_glc_search"
+			android:parentActivityName="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
+		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.ReportSelectionFragment"
+			android:label="@string/title_fragment_reports_selection"
+			android:parentActivityName="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
+		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.DamageAssessmentFragment"
+			android:label="@string/title_fragment_damage_assessment"
+			android:parentActivityName="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
+		</activity>
+	</application>
+</manifest>

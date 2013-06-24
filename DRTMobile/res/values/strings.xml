@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">DRT Mobile</string>
+	<string name="action_settings">Settings</string>
+	<string name="title_section_list">Sections</string>
+	<string name="title_section_detail">Section Detail</string>
+	<string name="title_fragment_glc_search">GLC Search</string>
+	<string name="title_fragment_reports_selection">Reports Selection</string>
+	<string name="title_fragment_damage_assessment">Damage Assessment</string>
+	<string name="title_fragment_zip_search">ZIP Search</string>
+	<string name="go">Go</string>
+	<string name="attuid">ATTUID</string>
+	<string name="global_password">Global Password</string>
+	<string name="att_bubbles">AT&amp;T Bubbles</string>
+	<string name="remember">Remember My ATTUID</string>
+	<string name="ok">OK</string>
+	<string name="logon_does_not_exist">That ATTUID was not found or does not correspond to an existing ATTUID.</string>
+	<string name="logon_does_not_exist_title">ATTUID Not Found!</string>
+</resources>
