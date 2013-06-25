@@ -175,7 +175,6 @@ public class LogonActivity extends Activity {
 		super.onResume();
 		
 		DatabaseManager db = new DatabaseManager(this);
-		if (db.checkSetting("erase_form_data")) db.clearTable(DatabaseManager.SAVED_STATES_TABLE);
 		db.sessionUnset();
 		db.close();
 	}

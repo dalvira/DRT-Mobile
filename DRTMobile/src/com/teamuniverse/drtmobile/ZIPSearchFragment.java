@@ -1,5 +1,8 @@
 package com.teamuniverse.drtmobile;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -25,6 +28,7 @@ public class ZIPSearchFragment extends Fragment {
 	private static Button	search;
 	private static EditText	zipBox;
 	private static String	zip;
+	private static Activity	me;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -36,6 +40,7 @@ public class ZIPSearchFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		me = getActivity();
 	}
 	
 	@Override
@@ -44,8 +49,6 @@ public class ZIPSearchFragment extends Fragment {
 		
 		zipBox = (EditText) view.findViewById(R.id.zip_code);
 		search = (Button) view.findViewById(R.id.zip_button);
-		
-		zip = zipBox.getText().toString();
 		
 		zipBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -69,11 +72,32 @@ public class ZIPSearchFragment extends Fragment {
 	}
 	
 	protected void search() {
-		DatabaseManager db = new DatabaseManager(getActivity());
-		db.sessionSet("zip", zip);
-		db.close();
+		zip = zipBox.getText().toString();
 		
-		SectionListActivity.main.putSection(SectionAdder.ZIP_SEARCH_RESULTS);
+		if (!zip.equals("") && zip.length() == 5 && zip.matches("[0-9]{5}")) {
+			DatabaseManager db = new DatabaseManager(me);
+			db.sessionSet("zip", zip);
+			db.close();
+			
+			SectionListActivity.main.putSection(SectionAdder.ZIP_SEARCH_RESULTS);
+		} else {
+			// 1. Instantiate an AlertDialog.Builder with its
+			// constructor
+			AlertDialog.Builder builder = new AlertDialog.Builder(me);
+			// 2. Chain together various setter methods to set the
+			// dialog
+			// characteristics
+			builder.setMessage(R.string.zip_invalid).setTitle(R.string.zip_invalid_title);
+			// 3. Add an okay
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+			// 4. Get the AlertDialog from create() and show it
+			builder.create().show();
+		}
 	}
 	
 	@Override

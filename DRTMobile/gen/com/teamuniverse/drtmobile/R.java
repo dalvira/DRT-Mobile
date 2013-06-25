@@ -96,6 +96,8 @@ public final class R {
         public static final int token_invalid=0x7f05000f;
         public static final int token_invalid_title=0x7f050010;
         public static final int zip=0x7f050013;
+        public static final int zip_invalid=0x7f050014;
+        public static final int zip_invalid_title=0x7f050015;
     }
     public static final class style {
         /** 

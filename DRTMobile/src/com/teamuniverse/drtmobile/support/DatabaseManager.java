@@ -12,14 +12,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseManager extends SQLiteOpenHelper {
 	/* Our database variables */
 	private static final String	DATABASE_NAME			= "DisasterReporter";
-	private static final int	DATABASE_VERSION		= 18;
+	private static final int	DATABASE_VERSION		= 19;
 	/* Our tables and fields */
 	public static final String	INFO_TABLE				= "saved_info";
 	public static final String	SETTINGS_TABLE			= "saved_settings";
-	public static final String	SAVED_STATES_TABLE		= "saved_states";
+	// public static final String SAVED_STATES_TABLE = "saved_states";
 	public static final String	SESSION_VARIABLES_TABLE	= "session_variables";
 	
-	private static final String	PAGE					= "relevant_page";
+	// private static final String PAGE = "relevant_page";
 	private static final String	TYPE					= "record_type";
 	private static final String	CONTENTS				= "record_content";
 	private static final String	ID						= "id";
@@ -40,10 +40,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		// Execute the query
 		db.execSQL(create_saved_info);
 		
-		// Build the query
-		String create_saved_states = "CREATE TABLE " + SAVED_STATES_TABLE + "(" + PAGE + " TEXT," + TYPE + " TEXT," + CONTENTS + " TEXT" + ", " + ID + " INTEGER NOT NULL PRIMARY KEY autoincrement)";
-		// Execute the query
-		db.execSQL(create_saved_states);
+		// // Build the query
+		// String create_saved_states = "CREATE TABLE " + SAVED_STATES_TABLE +
+		// "(" + PAGE + " TEXT," + TYPE + " TEXT," + CONTENTS + " TEXT" + ", " +
+		// ID + " INTEGER NOT NULL PRIMARY KEY autoincrement)";
+		// // Execute the query
+		// db.execSQL(create_saved_states);
 		
 		// Build the query
 		String create_saved_settings = "CREATE TABLE " + SETTINGS_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
@@ -64,7 +66,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + INFO_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + SETTINGS_TABLE);
-		db.execSQL("DROP TABLE IF EXISTS " + SAVED_STATES_TABLE);
+		// db.execSQL("DROP TABLE IF EXISTS " + SAVED_STATES_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + SESSION_VARIABLES_TABLE);
 		
 		// Then we run the onCreate() method again //
@@ -306,52 +308,55 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		return match.equals("true");
 	}
 	
-	/**
-	 * This method returns the string that would have been saved the previous
-	 * call of addSavedState(page, type, content). If there is nothing saved,
-	 * this method returns "", that is, an empty string.
-	 * 
-	 * @param page
-	 *            The page of which the view whose state is desired is part
-	 * @param tag
-	 *            The unique tag used to save the specific view whose state is
-	 *            desired
-	 * @return The state previously saved as a string, or an empty string ("")
-	 *         if nothing is saved
-	 */
-	public String getSavedStateByPageAndType(String page, String tag) {
-		String match = "";
-		// The SQL Query
-		String sqlQuery = "SELECT * FROM " + SAVED_STATES_TABLE + " WHERE " + PAGE + "=\"" + page + "\" AND " + TYPE + "=\"" + tag + "\"";
-		// Define database and cursor
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor c = db.rawQuery(sqlQuery, null);
-		// Loop through the results and add it to the temp_array
-		if (c.moveToFirst()) {
-			do {
-				match = c.getString(c.getColumnIndexOrThrow(CONTENTS));
-				// match = "true";
-			} while (c.moveToNext());
-		}
-		// Close the cursor
-		if (c != null && !c.isClosed()) c.close();
-		// Close the database connection
-		db.close();
-		// Return the string array
-		return match;
-	}
-	
-	public void addSavedState(String page, String type, String contents) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(PAGE, page);
-		values.put(TYPE, type);
-		values.put(CONTENTS, contents.equals("") ? "null" : contents);
-		db.delete(SAVED_STATES_TABLE, PAGE + "=\"" + page + "\" AND " + TYPE + "=\"" + type + "\"", null);
-		db.insertWithOnConflict(SAVED_STATES_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-		// close the database connection
-		db.close();
-	}
+	// /**
+	// * This method returns the string that would have been saved the previous
+	// * call of addSavedState(page, type, content). If there is nothing saved,
+	// * this method returns "", that is, an empty string.
+	// *
+	// * @param page
+	// * The page of which the view whose state is desired is part
+	// * @param tag
+	// * The unique tag used to save the specific view whose state is
+	// * desired
+	// * @return The state previously saved as a string, or an empty string ("")
+	// * if nothing is saved
+	// */
+	// public String getSavedStateByPageAndType(String page, String tag) {
+	// String match = "";
+	// // The SQL Query
+	// String sqlQuery = "SELECT * FROM " + SAVED_STATES_TABLE + " WHERE " +
+	// PAGE + "=\"" + page + "\" AND " + TYPE + "=\"" + tag + "\"";
+	// // Define database and cursor
+	// SQLiteDatabase db = this.getWritableDatabase();
+	// Cursor c = db.rawQuery(sqlQuery, null);
+	// // Loop through the results and add it to the temp_array
+	// if (c.moveToFirst()) {
+	// do {
+	// match = c.getString(c.getColumnIndexOrThrow(CONTENTS));
+	// // match = "true";
+	// } while (c.moveToNext());
+	// }
+	// // Close the cursor
+	// if (c != null && !c.isClosed()) c.close();
+	// // Close the database connection
+	// db.close();
+	// // Return the string array
+	// return match;
+	// }
+	//
+	// public void addSavedState(String page, String type, String contents) {
+	// SQLiteDatabase db = this.getWritableDatabase();
+	// ContentValues values = new ContentValues();
+	// values.put(PAGE, page);
+	// values.put(TYPE, type);
+	// values.put(CONTENTS, contents.equals("") ? "null" : contents);
+	// db.delete(SAVED_STATES_TABLE, PAGE + "=\"" + page + "\" AND " + TYPE +
+	// "=\"" + type + "\"", null);
+	// db.insertWithOnConflict(SAVED_STATES_TABLE, null, values,
+	// SQLiteDatabase.CONFLICT_REPLACE);
+	// // close the database connection
+	// db.close();
+	// }
 	
 	/**
 	 * This method deletes all of the records in the table whose name is
@@ -376,7 +381,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		
 		db.execSQL("DROP TABLE IF EXISTS " + INFO_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + SETTINGS_TABLE);
-		db.execSQL("DROP TABLE IF EXISTS " + SAVED_STATES_TABLE);
+		// db.execSQL("DROP TABLE IF EXISTS " + SAVED_STATES_TABLE);
 		
 		// Then we run the onCreate() method again //
 		onCreate(db);

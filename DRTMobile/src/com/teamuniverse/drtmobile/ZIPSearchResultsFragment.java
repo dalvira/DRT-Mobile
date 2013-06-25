@@ -48,15 +48,15 @@ public class ZIPSearchResultsFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_report_selection, container, false);
+		View view = inflater.inflate(R.layout.fragment_zip_search_results, container, false);
 		
-		LinearLayout list = (LinearLayout) view.findViewById(R.id.zip_results_list);
-		search(list);
-		
-		progress = (ProgressBar) view.findViewById(R.id.logon_progress);
+		progress = (ProgressBar) view.findViewById(R.id.zip_progress);
 		querying = false;
 		handler = new Handler();
 		me = getActivity();
+		
+		LinearLayout list = (LinearLayout) view.findViewById(R.id.zip_results_list);
+		search(list);
 		
 		return view;
 	}
@@ -68,7 +68,6 @@ public class ZIPSearchResultsFragment extends Fragment {
 		// Get contents of the EditTexts
 		if (!querying) {
 			querying = true;
-			progress.setVisibility(View.VISIBLE);
 			new Thread(new Runnable() {
 				public void run() {
 					Webservice ws = new Webservice(me);

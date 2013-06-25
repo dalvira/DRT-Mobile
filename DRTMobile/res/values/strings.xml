@@ -20,4 +20,6 @@
 	<string name="title_activity_zipsearch_results_fragment">ZIP Search Results</string>
 	<string name="hello_world">Hello world!</string>
 	<string name="zip">ZIP Code</string>
+	<string name="zip_invalid">The provided ZIP code is not valid! The ZIP must be five digits.</string>
+	<string name="zip_invalid_title">Invalid ZIP!</string>
 </resources>
