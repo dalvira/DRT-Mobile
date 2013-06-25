@@ -14,6 +14,7 @@ import com.teamuniverse.drtmobile.ZIPSearchFragment;
 
 /**
  * Helper class for adding sections and linking to their fragments.
+ * 
  * To add a new section:
  * 
  * 1. Add its ID as a 'public static final int'
@@ -34,7 +35,7 @@ public class SectionAdder {
 	public static final int			GLC_SEARCH			= 1;
 	public static final int			DAMAGE_ASSESSMENT	= 2;
 	public static final int			REPORT_SELECTION	= 3;
-	public static final String[][]	SECTIONS_IN_LIST	= { { "ZIP Search", ZIP_SEARCH + "", "ADM" }, { "GLC Search", GLC_SEARCH + "", "ADM" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "", "ADM" }, { "Report Selection", REPORT_SELECTION + "", "ADM" } };
+	public static final String[][]	SECTIONS_IN_LIST	= { { "ZIP Search", ZIP_SEARCH + "" }, { "GLC Search", GLC_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
 	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 3 };
 	
 	public static Fragment getSection(int id) {
@@ -55,16 +56,21 @@ public class SectionAdder {
 	/**
 	 * An array of sections, each of which corresponds to a fragment.
 	 */
-	public static List<Section>			ITEMS		= new ArrayList<Section>();
+	public static List<Section>			ITEMS;
 	
 	/**
 	 * A map of the sections, by ID.
 	 */
-	public static Map<String, Section>	ITEM_MAP	= new HashMap<String, Section>();
+	public static Map<String, Section>	ITEM_MAP;
 	
-	static {
-		for (int i = 0; i < SECTIONS_IN_LIST.length; i++)
-			addSection(new Section(SECTIONS_IN_LIST[i][0], SECTIONS_IN_LIST[i][1]));
+	public static void start(String authorization) {
+		ITEMS = new ArrayList<Section>();
+		ITEM_MAP = new HashMap<String, Section>();
+		
+		if (authorization.equals("ADM")) {
+			for (int i = 0; i < SECTIONS_IN_LIST.length; i++)
+				addSection(new Section(SECTIONS_IN_LIST[i][0], SECTIONS_IN_LIST[i][1]));
+		} else addSection(new Section(SECTIONS_IN_LIST[3][0], SECTIONS_IN_LIST[3][1]));
 	}
 	
 	private static void addSection(Section section) {

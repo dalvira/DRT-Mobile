@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseManager extends SQLiteOpenHelper {
 	/* Our database variables */
 	private static final String	DATABASE_NAME			= "DisasterReporter";
-	private static final int	DATABASE_VERSION		= 17;
+	private static final int	DATABASE_VERSION		= 18;
 	/* Our tables and fields */
 	public static final String	INFO_TABLE				= "saved_info";
 	public static final String	SETTINGS_TABLE			= "saved_settings";
@@ -41,14 +41,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		db.execSQL(create_saved_info);
 		
 		// Build the query
-		String create_saved_settings = "CREATE TABLE " + SETTINGS_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
-		// Execute the query
-		db.execSQL(create_saved_settings);
-		
-		// Build the query
 		String create_saved_states = "CREATE TABLE " + SAVED_STATES_TABLE + "(" + PAGE + " TEXT," + TYPE + " TEXT," + CONTENTS + " TEXT" + ", " + ID + " INTEGER NOT NULL PRIMARY KEY autoincrement)";
 		// Execute the query
 		db.execSQL(create_saved_states);
+		
+		// Build the query
+		String create_saved_settings = "CREATE TABLE " + SETTINGS_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
+		// Execute the query
+		db.execSQL(create_saved_settings);
 		
 		// Build the query
 		String create_session_variables = "CREATE TABLE " + SESSION_VARIABLES_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
@@ -65,6 +65,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + INFO_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + SETTINGS_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + SAVED_STATES_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + SESSION_VARIABLES_TABLE);
 		
 		// Then we run the onCreate() method again //
 		onCreate(db);
@@ -191,17 +192,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	 * 
 	 * @param session_variable_name
 	 *            The name of the variable that is being stored.
-	 * @param new_value
+	 * @param value
 	 *            The info that is being updated or stared into the supplied
 	 *            variable. Whatever the value is, it should be wrapped in a
 	 *            String.
 	 */
-	public void sessionSet(String session_variable_name, String new_value) {
+	public void sessionSet(String session_variable_name, String value) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
 		values.put(TYPE, session_variable_name);
-		values.put(CONTENTS, new_value);
+		values.put(CONTENTS, value);
 		/* Inserting the entry */
 		db.insertWithOnConflict(SESSION_VARIABLES_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 		// close the database connection
@@ -244,7 +245,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	 * Clear all session variables from the database. This approximates session
 	 * variables that are erased after the end of each session.
 	 */
-	public void unsetSession() {
+	public void sessionUnset() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		/* clearing the table */

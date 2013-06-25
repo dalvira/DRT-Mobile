@@ -29,8 +29,8 @@ public final class R {
         public static final int logon_container=0x7f080000;
         public static final int logon_go=0x7f080004;
         public static final int logon_password=0x7f080002;
-        public static final int logon_progress=0x7f080005;
-        public static final int logon_remember_me=0x7f080003;
+        public static final int logon_progress=0x7f080003;
+        public static final int logon_remember_me=0x7f080005;
         public static final int section_detail=0x7f080008;
         public static final int section_detail_container=0x7f080006;
         public static final int section_list=0x7f080007;

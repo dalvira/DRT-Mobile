@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.att.intern.webservice.Webservice;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
+import com.teamuniverse.drtmobile.support.SectionAdder;
 
 public class LogonActivity extends Activity {
 	// create the reference variables for the Layout views
@@ -37,6 +38,8 @@ public class LogonActivity extends Activity {
 	
 	private Handler				handler;
 	private Activity			me;
+	
+	public static String		authorization;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class LogonActivity extends Activity {
 		me = this;
 		
 		DatabaseManager db = new DatabaseManager(this);
-		db.unsetSession();
+		db.sessionUnset();
 		if (db.checkSetting("remember_attuid")) {
 			rememberATTUID.setChecked(true);
 			attuidEditText.setText(db.getATTUID());
@@ -88,6 +91,10 @@ public class LogonActivity extends Activity {
 	private void logon() {
 		// Get contents of the EditTexts
 		if (!querying) {
+			// Hide virtual keyboard
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(passEditText.getWindowToken(), 0);
+			imm.hideSoftInputFromWindow(attuidEditText.getWindowToken(), 0);
 			querying = true;
 			progress.setVisibility(View.VISIBLE);
 			new Thread(new Runnable() {
@@ -130,10 +137,6 @@ public class LogonActivity extends Activity {
 										dialog.show();
 									} else Toast.makeText(getApplicationContext(), loginResults[2], Toast.LENGTH_SHORT).show();
 								} else {
-									// Hide virtual keyboard
-									InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-									imm.hideSoftInputFromWindow(passEditText.getWindowToken(), 0);
-									imm.hideSoftInputFromWindow(attuidEditText.getWindowToken(), 0);
 									
 									if (loginResults[0] != null) {
 										
@@ -142,13 +145,17 @@ public class LogonActivity extends Activity {
 										
 										db.sessionSet("token", loginResults[0]);
 										db.sessionSet("authorization", loginResults[1]);
+										
+										authorization = loginResults[1];
+										SectionAdder.start(authorization);
+										
 										Calendar cal = Calendar.getInstance();
 										db.sessionSet("timestamp", cal.getTimeInMillis() + "");
 										
 										db.close();
 										
-										// Start next activity
-										Intent detailIntent = new Intent(me, SectionListActivity.class);
+										Intent detailIntent;
+										detailIntent = new Intent(me, SectionListActivity.class);
 										startActivity(detailIntent);
 									}
 								}
@@ -165,6 +172,11 @@ public class LogonActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		DatabaseManager db = new DatabaseManager(this);
+		if (db.checkSetting("erase_form_data")) db.clearTable(DatabaseManager.SAVED_STATES_TABLE);
+		db.sessionUnset();
+		db.close();
 	}
 	
 	@Override
@@ -181,16 +193,6 @@ public class LogonActivity extends Activity {
 			db.removeInfo("attuid", null);
 		}
 		// Close the database
-		db.close();
-	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		
-		DatabaseManager db = new DatabaseManager(this);
-		if (db.checkSetting("erase_form_data")) db.clearTable(DatabaseManager.SAVED_STATES_TABLE);
-		db.unsetSession();
 		db.close();
 	}
 	

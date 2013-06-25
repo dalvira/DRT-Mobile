@@ -1,6 +1,5 @@
 package com.teamuniverse.drtmobile.sectionsetup;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -29,15 +28,15 @@ import com.teamuniverse.drtmobile.support.SectionAdder;
 public class SectionListActivity extends FragmentActivity implements
 		SectionListFragment.Callbacks {
 	
-	public final static String			FRAG_ID	= "com.teamuniverse.drtmobile.FRAG_ID";
+	public final static String	FRAG_ID	= "com.teamuniverse.drtmobile.FRAG_ID";
 	
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
-	public boolean						mTwoPane;
-	public static SectionListActivity	main;
-	public static Activity				me;
+	public boolean				mTwoPane;
+	
+	private DatabaseManager		db;
 	
 	// The detail container view will be present only in the
 	// large-screen layouts (res/values-large and
@@ -48,7 +47,6 @@ public class SectionListActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_section_list);
-		me = this;
 		
 		mTwoPane = findViewById(R.id.section_detail_container) != null;
 		if (mTwoPane) {
@@ -56,13 +54,6 @@ public class SectionListActivity extends FragmentActivity implements
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
 			((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivateOnItemClick(true);
-			int which = 0;
-			try {
-				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(SectionAdder.SECTION_PARENTS[which]);
-				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(which)).commit();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 	}
 	
@@ -73,10 +64,9 @@ public class SectionListActivity extends FragmentActivity implements
 		ErrorReporter errReporter = new ErrorReporter();
 		errReporter.Init(this);
 		
-		DatabaseManager db = new DatabaseManager(this);
+		db = new DatabaseManager(this);
 		if (db.checkSetting("send_diagnostics")) errReporter.CheckErrorAndSendMail(this);
 		db.close();
-		main = this;
 	}
 	
 	@Override
@@ -84,9 +74,20 @@ public class SectionListActivity extends FragmentActivity implements
 		super.onResume();
 		if (mTwoPane) {
 			
-			int which = 0;
+			db = new DatabaseManager(this);
+			String selected = db.sessionGet("selected_section");
+			String authorization = db.sessionGet("authorization");
+			int which;
+			if (selected.equals("")) {
+				if (authorization.equals("ADM")) which = 1;
+				else which = 3;
+				db.sessionSet("selected_section", which + "");
+			} else which = Integer.parseInt(selected);
+			db.close();
+			
 			try {
-				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(SectionAdder.SECTION_PARENTS[which]);
+				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? 0
+																																						: SectionAdder.SECTION_PARENTS[which]);
 				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(which)).commit();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -101,6 +102,9 @@ public class SectionListActivity extends FragmentActivity implements
 	@Override
 	public void onItemSelected(String id) {
 		if (mTwoPane) {
+			db = new DatabaseManager(this);
+			db.sessionSet("selected_section", id);
+			db.close();
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
@@ -120,8 +124,8 @@ public class SectionListActivity extends FragmentActivity implements
 	
 	public void putFragment(int id) {
 		if (mTwoPane) {
-			DatabaseManager db = new DatabaseManager(this);
-			db.addSavedState("section_list", "selected_section", id + "");
+			db = new DatabaseManager(this);
+			db.sessionSet("selected_section", id + "");
 			db.close();
 			try {
 				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(id)).commit();

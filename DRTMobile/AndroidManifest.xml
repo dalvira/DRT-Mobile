@@ -52,16 +52,16 @@
 				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
 		</activity>
 		<activity
-			android:name="com.teamuniverse.drtmobile.ReportSelectionFragment"
-			android:label="@string/title_fragment_reports_selection"
+			android:name="com.teamuniverse.drtmobile.DamageAssessmentFragment"
+			android:label="@string/title_fragment_damage_assessment"
 			android:parentActivityName="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
 		</activity>
 		<activity
-			android:name="com.teamuniverse.drtmobile.DamageAssessmentFragment"
-			android:label="@string/title_fragment_damage_assessment"
+			android:name="com.teamuniverse.drtmobile.ReportSelectionFragment"
+			android:label="@string/title_fragment_reports_selection"
 			android:parentActivityName="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
