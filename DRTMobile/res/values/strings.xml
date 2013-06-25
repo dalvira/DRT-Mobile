@@ -11,9 +11,13 @@
 	<string name="go">Go</string>
 	<string name="attuid">ATTUID</string>
 	<string name="global_password">Global Password</string>
-	<string name="att_bubbles">AT&amp;T Bubbles</string>
 	<string name="remember">Remember My ATTUID</string>
 	<string name="ok">OK</string>
 	<string name="logon_does_not_exist">That ATTUID was not found or does not correspond to an existing ATTUID. Your choices for testing are admin/password, report1/2pass, or report2/p@ss</string>
 	<string name="logon_does_not_exist_title">ATTUID Not Found!</string>
+	<string name="token_invalid">Your session token is no longer valid. Perhaps your session timed out!</string>
+	<string name="token_invalid_title">Token Invalid!</string>
+	<string name="title_activity_zipsearch_results_fragment">ZIP Search Results</string>
+	<string name="hello_world">Hello world!</string>
+	<string name="zip">ZIP Code</string>
 </resources>

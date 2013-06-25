@@ -67,5 +67,13 @@
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
 		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.ZIPSearchResultsFragment"
+			android:label="@string/title_activity_zipsearch_results_fragment"
+			android:parentActivityName="com.teamuniverse.drtmobile.ZIPSearchFragment" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.teamuniverse.drtmobile.ZIPSearchFragment" />
+		</activity>
 	</application>
 </manifest>

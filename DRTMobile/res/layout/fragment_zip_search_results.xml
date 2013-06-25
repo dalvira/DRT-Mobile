@@ -6,23 +6,20 @@
 	android:paddingLeft="@dimen/activity_horizontal_margin"
 	android:paddingRight="@dimen/activity_horizontal_margin"
 	android:paddingTop="@dimen/activity_vertical_margin"
-	tools:context=".ZIPSearchFragment" >
-	<EditText
-		android:id="@+id/zip_code"
-		android:layout_width="wrap_content"
+	tools:context=".ZIPSearchResultsFragment" >
+	<LinearLayout
+		android:id="@+id/zip_results_list"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
-		android:layout_centerHorizontal="true"
-		android:ems="10"
-		android:hint="@string/zip"
-		android:inputType="number" >
-		<requestFocus />
-	</EditText>
-	<Button
-		android:id="@+id/zip_button"
+		android:layout_margin="16dp"
+		android:orientation="vertical" >
+	</LinearLayout>
+	<ProgressBar
+		android:id="@+id/zip_progress"
+		style="?android:attr/progressBarStyleLarge"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@+id/zip_code"
-		android:layout_centerHorizontal="true"
-		android:text="@string/go" />
+		android:layout_alignTop="@+id/zip_results_list"
+		android:layout_centerHorizontal="true" />
 </RelativeLayout>

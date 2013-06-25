@@ -28,15 +28,16 @@ import com.teamuniverse.drtmobile.support.SectionAdder;
 public class SectionListActivity extends FragmentActivity implements
 		SectionListFragment.Callbacks {
 	
-	public final static String	FRAG_ID	= "com.teamuniverse.drtmobile.FRAG_ID";
+	public final static String			FRAG_ID	= "com.teamuniverse.drtmobile.FRAG_ID";
 	
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
-	public boolean				mTwoPane;
+	public boolean						mTwoPane;
+	public static SectionListActivity	main;
 	
-	private DatabaseManager		db;
+	private DatabaseManager				db;
 	
 	// The detail container view will be present only in the
 	// large-screen layouts (res/values-large and
@@ -47,6 +48,7 @@ public class SectionListActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_section_list);
+		main = this;
 		
 		mTwoPane = findViewById(R.id.section_detail_container) != null;
 		if (mTwoPane) {
@@ -122,7 +124,7 @@ public class SectionListActivity extends FragmentActivity implements
 		}
 	}
 	
-	public void putFragment(int id) {
+	public void putSection(int id) {
 		if (mTwoPane) {
 			db = new DatabaseManager(this);
 			db.sessionSet("selected_section", id + "");

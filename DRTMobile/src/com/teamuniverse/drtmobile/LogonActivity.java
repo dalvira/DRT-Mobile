@@ -32,10 +32,10 @@ public class LogonActivity extends Activity {
 	private static EditText		passEditText;
 	private static Button		goButton;
 	private static CheckBox		rememberATTUID;
-	private static ProgressBar	progress;
 	private static String[]		loginResults;
-	private static boolean		querying;
 	
+	private static ProgressBar	progress;
+	private static boolean		querying;
 	private Handler				handler;
 	private Activity			me;
 	
@@ -50,6 +50,7 @@ public class LogonActivity extends Activity {
 		passEditText = (EditText) findViewById(R.id.logon_password);
 		goButton = (Button) findViewById(R.id.logon_go);
 		rememberATTUID = (CheckBox) findViewById(R.id.logon_remember_me);
+		
 		progress = (ProgressBar) findViewById(R.id.logon_progress);
 		querying = false;
 		handler = new Handler();

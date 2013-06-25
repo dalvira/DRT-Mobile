@@ -11,6 +11,7 @@ import com.teamuniverse.drtmobile.DamageAssessmentFragment;
 import com.teamuniverse.drtmobile.GLCSearchFragment;
 import com.teamuniverse.drtmobile.ReportSelectionFragment;
 import com.teamuniverse.drtmobile.ZIPSearchFragment;
+import com.teamuniverse.drtmobile.ZIPSearchResultsFragment;
 
 /**
  * Helper class for adding sections and linking to their fragments.
@@ -35,8 +36,9 @@ public class SectionAdder {
 	public static final int			GLC_SEARCH			= 1;
 	public static final int			DAMAGE_ASSESSMENT	= 2;
 	public static final int			REPORT_SELECTION	= 3;
+	public static final int			ZIP_SEARCH_RESULTS	= 4;
 	public static final String[][]	SECTIONS_IN_LIST	= { { "ZIP Search", ZIP_SEARCH + "" }, { "GLC Search", GLC_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
-	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 3 };
+	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 3, 0 };
 	
 	public static Fragment getSection(int id) {
 		switch (id) {
@@ -48,6 +50,8 @@ public class SectionAdder {
 				return new DamageAssessmentFragment();
 			case REPORT_SELECTION:
 				return new ReportSelectionFragment();
+			case ZIP_SEARCH_RESULTS:
+				return new ZIPSearchResultsFragment();
 			default:
 				return new ZIPSearchFragment();
 		}

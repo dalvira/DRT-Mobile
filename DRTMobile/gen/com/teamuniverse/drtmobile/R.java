@@ -24,7 +24,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080009;
+        public static final int action_settings=0x7f08000d;
         public static final int logon_attuid=0x7f080001;
         public static final int logon_container=0x7f080000;
         public static final int logon_go=0x7f080004;
@@ -34,6 +34,10 @@ public final class R {
         public static final int section_detail=0x7f080008;
         public static final int section_detail_container=0x7f080006;
         public static final int section_list=0x7f080007;
+        public static final int zip_button=0x7f08000a;
+        public static final int zip_code=0x7f080009;
+        public static final int zip_progress=0x7f08000c;
+        public static final int zip_results_list=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_logon=0x7f030000;
@@ -60,7 +64,8 @@ public final class R {
         public static final int fragment_report_selection=0x7f030006;
         public static final int fragment_section_detail=0x7f030007;
         public static final int fragment_zip_search=0x7f030008;
-        public static final int section_detail_catalyst=0x7f030009;
+        public static final int fragment_zip_search_results=0x7f030009;
+        public static final int section_detail_catalyst=0x7f03000a;
     }
     public static final class menu {
         public static final int damage_assessment=0x7f070000;
@@ -68,24 +73,29 @@ public final class R {
         public static final int logon=0x7f070002;
         public static final int reports_selection=0x7f070003;
         public static final int zipsearch=0x7f070004;
+        public static final int zipsearch_results=0x7f070005;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
-        public static final int att_bubbles=0x7f05000b;
         public static final int attuid=0x7f050009;
         public static final int global_password=0x7f05000a;
         public static final int go=0x7f050008;
-        public static final int logon_does_not_exist=0x7f05000e;
-        public static final int logon_does_not_exist_title=0x7f05000f;
-        public static final int ok=0x7f05000d;
-        public static final int remember=0x7f05000c;
+        public static final int hello_world=0x7f050012;
+        public static final int logon_does_not_exist=0x7f05000d;
+        public static final int logon_does_not_exist_title=0x7f05000e;
+        public static final int ok=0x7f05000c;
+        public static final int remember=0x7f05000b;
+        public static final int title_activity_zipsearch_results_fragment=0x7f050011;
         public static final int title_fragment_damage_assessment=0x7f050006;
         public static final int title_fragment_glc_search=0x7f050004;
         public static final int title_fragment_reports_selection=0x7f050005;
         public static final int title_fragment_zip_search=0x7f050007;
         public static final int title_section_detail=0x7f050003;
         public static final int title_section_list=0x7f050002;
+        public static final int token_invalid=0x7f05000f;
+        public static final int token_invalid_title=0x7f050010;
+        public static final int zip=0x7f050013;
     }
     public static final class style {
         /** 
