@@ -61,6 +61,7 @@ public class LogonActivity extends Activity {
 		if (db.checkSetting("remember_attuid")) {
 			rememberATTUID.setChecked(true);
 			attuidEditText.setText(db.getATTUID());
+			passEditText.requestFocus();
 		}
 		db.close();
 		

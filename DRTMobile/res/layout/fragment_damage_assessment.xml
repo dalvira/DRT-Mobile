@@ -8,7 +8,28 @@
 	android:paddingTop="@dimen/activity_vertical_margin"
 	tools:context=".DamageAssessmentFragment" >
 	<TextView
+		android:id="@+id/title"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="@string/title_fragment_damage_assessment" />
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:gravity="center_horizontal"
+		android:text="@string/damage_assessment_title"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+	<TextView
+		android:id="@+id/subtitle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/title"
+		android:layout_centerHorizontal="true"
+		android:gravity="center_horizontal"
+		android:text="@string/result_subtitle"
+		android:textAppearance="?android:attr/textAppearanceSmall" />
+	<View
+		android:id="@+id/first_divider"
+		android:layout_width="fill_parent"
+		android:layout_height="1dp"
+		android:layout_below="@+id/subtitle"
+		android:layout_marginBottom="16dp"
+		android:background="?android:attr/listDivider" />
 </RelativeLayout>

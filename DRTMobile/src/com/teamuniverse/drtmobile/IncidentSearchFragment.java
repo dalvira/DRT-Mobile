@@ -2,6 +2,7 @@ package com.teamuniverse.drtmobile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,28 +26,28 @@ import com.teamuniverse.drtmobile.support.SectionAdder;
  * either contained in a {@link SectionListActivity} in two-pane mode (on
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
-public class ZIPSearchFragment extends Fragment {
+public class IncidentSearchFragment extends Fragment {
 	private static Button	search;
 	private static EditText	zipBox;
 	private static String	zip;
-	private static Activity	me;
+	private static Activity	m;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public ZIPSearchFragment() {
+	public IncidentSearchFragment() {
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		me = getActivity();
+		m = getActivity();
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_zip_search, container, false);
+		View view = inflater.inflate(R.layout.fragment_incident_search, container, false);
 		
 		zipBox = (EditText) view.findViewById(R.id.zip_code);
 		search = (Button) view.findViewById(R.id.zip_button);
@@ -73,17 +75,21 @@ public class ZIPSearchFragment extends Fragment {
 	
 	protected void search() {
 		zip = zipBox.getText().toString();
+		// Hide virtual keyboard
+		InputMethodManager imm = (InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(zipBox.getWindowToken(), 0);
+		imm.hideSoftInputFromWindow(zipBox.getWindowToken(), 0);
 		
 		if (!zip.equals("") && zip.length() == 5 && zip.matches("[0-9]{5}")) {
-			DatabaseManager db = new DatabaseManager(me);
+			DatabaseManager db = new DatabaseManager(m);
 			db.sessionSet("zip", zip);
 			db.close();
 			
-			SectionListActivity.main.putSection(SectionAdder.ZIP_SEARCH_RESULTS);
+			SectionListActivity.main.putSection(SectionAdder.INCIDENT_SEARCH_RESULTS);
 		} else {
 			// 1. Instantiate an AlertDialog.Builder with its
 			// constructor
-			AlertDialog.Builder builder = new AlertDialog.Builder(me);
+			AlertDialog.Builder builder = new AlertDialog.Builder(m);
 			// 2. Chain together various setter methods to set the
 			// dialog
 			// characteristics

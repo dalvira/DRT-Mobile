@@ -6,7 +6,7 @@
 	android:paddingLeft="@dimen/activity_horizontal_margin"
 	android:paddingRight="@dimen/activity_horizontal_margin"
 	android:paddingTop="@dimen/activity_vertical_margin"
-	tools:context=".ReportSelectionFragment" >
+	tools:context=".IncidentSearchFragment" >
 	<TextView
 		android:id="@+id/title"
 		android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
 		android:gravity="center_horizontal"
-		android:text="@string/report_selection_title"
+		android:text="@string/incident_title"
 		android:textAppearance="?android:attr/textAppearanceMedium" />
 	<TextView
 		android:id="@+id/subtitle"
@@ -23,7 +23,7 @@
 		android:layout_below="@+id/title"
 		android:layout_centerHorizontal="true"
 		android:gravity="center_horizontal"
-		android:text="@string/result_subtitle"
+		android:text="@string/zip_subtitle"
 		android:textAppearance="?android:attr/textAppearanceSmall" />
 	<View
 		android:id="@+id/first_divider"
@@ -32,4 +32,22 @@
 		android:layout_below="@+id/subtitle"
 		android:layout_marginBottom="16dp"
 		android:background="?android:attr/listDivider" />
+	<EditText
+		android:id="@+id/zip_code"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/first_divider"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/zip"
+		android:inputType="number" >
+		<requestFocus />
+	</EditText>
+	<Button
+		android:id="@+id/zip_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/zip_code"
+		android:layout_centerHorizontal="true"
+		android:text="@string/go" />
 </RelativeLayout>

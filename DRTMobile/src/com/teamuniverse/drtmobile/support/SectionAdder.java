@@ -7,11 +7,12 @@ import java.util.Map;
 
 import android.support.v4.app.Fragment;
 
+import com.teamuniverse.drtmobile.BuildingSearchFragment;
+import com.teamuniverse.drtmobile.BuildingSearchResultsFragment;
 import com.teamuniverse.drtmobile.DamageAssessmentFragment;
-import com.teamuniverse.drtmobile.GLCSearchFragment;
+import com.teamuniverse.drtmobile.IncidentSearchFragment;
+import com.teamuniverse.drtmobile.IncidentSearchResultsFragment;
 import com.teamuniverse.drtmobile.ReportSelectionFragment;
-import com.teamuniverse.drtmobile.ZIPSearchFragment;
-import com.teamuniverse.drtmobile.ZIPSearchResultsFragment;
 
 /**
  * Helper class for adding sections and linking to their fragments.
@@ -32,28 +33,32 @@ import com.teamuniverse.drtmobile.ZIPSearchResultsFragment;
  * 2. Put all of the listed sections before the subsections.
  */
 public class SectionAdder {
-	public static final int			ZIP_SEARCH			= 0;
-	public static final int			GLC_SEARCH			= 1;
-	public static final int			DAMAGE_ASSESSMENT	= 2;
-	public static final int			REPORT_SELECTION	= 3;
-	public static final int			ZIP_SEARCH_RESULTS	= 4;
-	public static final String[][]	SECTIONS_IN_LIST	= { { "ZIP Search", ZIP_SEARCH + "" }, { "GLC Search", GLC_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
-	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 3, 0 };
+	public static final int			INCIDENT_SEARCH			= 0;
+	public static final int			BUILDING_SEARCH			= 1;
+	public static final int			DAMAGE_ASSESSMENT		= 2;
+	public static final int			REPORT_SELECTION		= 3;
+	public static final int			INCIDENT_SEARCH_RESULTS	= 4;
+	public static final int			BUILDING_SEARCH_RESULTS	= 5;
+	public static final String[][]	SECTIONS_IN_LIST		= { { "Incident Search", INCIDENT_SEARCH + "" }, { "Building Search", BUILDING_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
+	public static final int[]		SECTION_PARENTS			= { 0, 1, 2, 3, 0, 1 };
+	public static final int[]		PARENTS_RPT_FIXER		= { 9, 9, 9, 0, 9, 9 };
 	
 	public static Fragment getSection(int id) {
 		switch (id) {
-			case ZIP_SEARCH:
-				return new ZIPSearchFragment();
-			case GLC_SEARCH:
-				return new GLCSearchFragment();
+			case INCIDENT_SEARCH:
+				return new IncidentSearchFragment();
+			case BUILDING_SEARCH:
+				return new BuildingSearchFragment();
 			case DAMAGE_ASSESSMENT:
 				return new DamageAssessmentFragment();
 			case REPORT_SELECTION:
 				return new ReportSelectionFragment();
-			case ZIP_SEARCH_RESULTS:
-				return new ZIPSearchResultsFragment();
+			case INCIDENT_SEARCH_RESULTS:
+				return new IncidentSearchResultsFragment();
+			case BUILDING_SEARCH_RESULTS:
+				return new BuildingSearchResultsFragment();
 			default:
-				return new ZIPSearchFragment();
+				return new IncidentSearchFragment();
 		}
 	}
 	

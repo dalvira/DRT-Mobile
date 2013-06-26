@@ -36,7 +36,7 @@
 				android:value="com.teamuniverse.drtmobile.SectionListActivity" />
 		</activity>
 		<activity
-			android:name="com.teamuniverse.drtmobile.ZIPSearchFragment"
+			android:name="com.teamuniverse.drtmobile.IncidentSearchFragment"
 			android:label="@string/title_fragment_zip_search"
 			android:parentActivityName="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" >
 			<meta-data
@@ -44,7 +44,7 @@
 				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
 		</activity>
 		<activity
-			android:name="com.teamuniverse.drtmobile.GLCSearchFragment"
+			android:name="com.teamuniverse.drtmobile.BuildingSearchFragment"
 			android:label="@string/title_fragment_glc_search"
 			android:parentActivityName="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" >
 			<meta-data
@@ -61,19 +61,23 @@
 		</activity>
 		<activity
 			android:name="com.teamuniverse.drtmobile.ReportSelectionFragment"
-			android:label="@string/title_fragment_reports_selection"
+			android:label="@string/title_fragment_report_selection"
 			android:parentActivityName="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
 		</activity>
 		<activity
-			android:name="com.teamuniverse.drtmobile.ZIPSearchResultsFragment"
+			android:name="com.teamuniverse.drtmobile.IncidentSearchResultsFragment"
 			android:label="@string/title_activity_zipsearch_results_fragment"
-			android:parentActivityName="com.teamuniverse.drtmobile.ZIPSearchFragment" >
+			android:parentActivityName="com.teamuniverse.drtmobile.IncidentSearchFragment" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.teamuniverse.drtmobile.ZIPSearchFragment" />
+		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.BuildingSearchResultsFragment"
+			android:label="@string/title_activity_building_search_result_fragment" >
 		</activity>
 	</application>
 </manifest>

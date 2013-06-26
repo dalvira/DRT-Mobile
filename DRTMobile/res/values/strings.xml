@@ -5,7 +5,7 @@
 	<string name="title_section_list">Sections</string>
 	<string name="title_section_detail">Section Detail</string>
 	<string name="title_fragment_glc_search">GLC Search</string>
-	<string name="title_fragment_reports_selection">Reports Selection</string>
+	<string name="title_fragment_report_selection">Report Selection</string>
 	<string name="title_fragment_damage_assessment">Damage Assessment</string>
 	<string name="title_fragment_zip_search">ZIP Search</string>
 	<string name="go">Go</string>
@@ -15,11 +15,18 @@
 	<string name="ok">OK</string>
 	<string name="logon_does_not_exist">That ATTUID was not found or does not correspond to an existing ATTUID. Your choices for testing are admin/password, report1/2pass, or report2/p@ss</string>
 	<string name="logon_does_not_exist_title">ATTUID Not Found!</string>
-	<string name="token_invalid">Your session token is no longer valid. Perhaps your session timed out!</string>
+	<string name="token_invalid">Your session timed out! Please log back in!</string>
 	<string name="token_invalid_title">Token Invalid!</string>
 	<string name="title_activity_zipsearch_results_fragment">ZIP Search Results</string>
 	<string name="hello_world">Hello world!</string>
 	<string name="zip">ZIP Code</string>
 	<string name="zip_invalid">The provided ZIP code is not valid! The ZIP must be five digits.</string>
 	<string name="zip_invalid_title">Invalid ZIP!</string>
+	<string name="result_subtitle">Search Result</string>
+	<string name="damage_assessment_title">Damage Assessment Reporting</string>
+	<string name="zip_subtitle">Enter ZIP Code to Search</string>
+	<string name="incident_title">List Incidents by ZIP Code</string>
+	<string name="building_title">Buildings w/ Incidents by ZIP Code</string>
+	<string name="report_selection_title">Report Selection by Type</string>
+	<string name="title_activity_building_search_result_fragment">BuildingSearchResultFragment</string>
 </resources>

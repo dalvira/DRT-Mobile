@@ -47,7 +47,7 @@ public class SectionListActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_section_list);
+		setContentView(R.layout.setup_activity_section_list);
 		main = this;
 		
 		mTwoPane = findViewById(R.id.section_detail_container) != null;
@@ -81,14 +81,14 @@ public class SectionListActivity extends FragmentActivity implements
 			String authorization = db.sessionGet("authorization");
 			int which;
 			if (selected.equals("")) {
-				if (authorization.equals("ADM")) which = 1;
-				else which = 3;
+				if (authorization.equals("ADM")) which = SectionAdder.INCIDENT_SEARCH;
+				else which = SectionAdder.REPORT_SELECTION;
 				db.sessionSet("selected_section", which + "");
 			} else which = Integer.parseInt(selected);
 			db.close();
 			
 			try {
-				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? 0
+				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? SectionAdder.PARENTS_RPT_FIXER[which]
 																																						: SectionAdder.SECTION_PARENTS[which]);
 				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(which)).commit();
 			} catch (Exception e) {

@@ -23,7 +23,7 @@ public class SectionDetailActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.section_detail_catalyst);
+		setContentView(R.layout.setup_section_detail_catalyst);
 		
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
