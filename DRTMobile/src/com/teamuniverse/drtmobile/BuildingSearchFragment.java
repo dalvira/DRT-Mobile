@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
+import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 
 /**
@@ -48,6 +49,7 @@ public class BuildingSearchFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_building_search, container, false);
+		LayoutSetterUpper.setup(m, view);
 		
 		zipBox = (EditText) view.findViewById(R.id.zip_code);
 		search = (Button) view.findViewById(R.id.zip_button);

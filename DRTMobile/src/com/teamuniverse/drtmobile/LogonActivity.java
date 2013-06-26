@@ -31,6 +31,8 @@ public class LogonActivity extends Activity {
 	private static Button		goButton;
 	private static CheckBox		rememberATTUID;
 	private static String[]		loginResults;
+	private static String		name;
+	private static String		pass;
 	
 	private static ProgressBar	progress;
 	private static boolean		querying;
@@ -99,8 +101,8 @@ public class LogonActivity extends Activity {
 			progress.setVisibility(View.VISIBLE);
 			new Thread(new Runnable() {
 				public void run() {
-					String name = attuidEditText.getText().toString();
-					String pass = passEditText.getText().toString();
+					name = attuidEditText.getText().toString();
+					pass = passEditText.getText().toString();
 					Webservice ws = new Webservice(getApplicationContext());
 					loginResults = ws.login(name, pass);
 					// Use the handler to execute a Runnable on the
@@ -144,6 +146,7 @@ public class LogonActivity extends Activity {
 										DatabaseManager db = new DatabaseManager(me);
 										db.sessionSet("token", loginResults[0]);
 										db.sessionSet("authorization", loginResults[1]);
+										db.sessionSet("attuid", name);
 										db.close();
 										
 										authorization = loginResults[1];

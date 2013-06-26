@@ -23,6 +23,7 @@ import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
+import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
 
 /**
  * A fragment representing a single Section detail screen. This fragment is
@@ -45,16 +46,17 @@ public class BuildingSearchResultsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		m = getActivity();
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_building_search_results, container, false);
+		LayoutSetterUpper.setup(m, view);
 		
 		progress = (ProgressBar) view.findViewById(R.id.zip_progress);
 		querying = false;
 		handler = new Handler();
-		m = getActivity();
 		
 		LinearLayout list = (LinearLayout) view.findViewById(R.id.zip_results_list);
 		search(list);
