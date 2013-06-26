@@ -1,7 +1,5 @@
 package com.teamuniverse.drtmobile;
 
-import java.util.Calendar;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -144,17 +142,12 @@ public class LogonActivity extends Activity {
 										
 										// Store session variables
 										DatabaseManager db = new DatabaseManager(me);
-										
 										db.sessionSet("token", loginResults[0]);
 										db.sessionSet("authorization", loginResults[1]);
+										db.close();
 										
 										authorization = loginResults[1];
 										SectionAdder.start(authorization);
-										
-										Calendar cal = Calendar.getInstance();
-										db.sessionSet("timestamp", cal.getTimeInMillis() + "");
-										
-										db.close();
 										
 										Intent detailIntent;
 										detailIntent = new Intent(me, SectionListActivity.class);
