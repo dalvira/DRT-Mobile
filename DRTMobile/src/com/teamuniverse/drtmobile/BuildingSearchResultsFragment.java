@@ -3,9 +3,6 @@ package com.teamuniverse.drtmobile;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -65,7 +62,6 @@ public class BuildingSearchResultsFragment extends Fragment {
 	}
 	
 	ArrayList<Incident>	results	= null;
-	AlertDialog.Builder	builder	= null;
 	boolean				success	= false;
 	
 	private void search(LinearLayout containerRef) {
@@ -87,23 +83,6 @@ public class BuildingSearchResultsFragment extends Fragment {
 						success = true;
 					} catch (TokenInvalidException e) {
 						e.printStackTrace();
-						// 1. Instantiate an AlertDialog.Builder with its
-						// constructor
-						builder = new AlertDialog.Builder(m);
-						// 2. Chain together various setter methods to set the
-						// dialog
-						// characteristics
-						builder.setMessage(R.string.token_invalid).setTitle(R.string.token_invalid_title);
-						// 3. Add an okay
-						builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-								Intent intent = new Intent(m.getApplicationContext(), LogonActivity.class);
-								intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-								startActivity(intent);
-							}
-						});
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -122,10 +101,11 @@ public class BuildingSearchResultsFragment extends Fragment {
 									// TODO add each search result here
 									TextView temp = new TextView(m);
 									temp.setText("Hello #" + i);
-									container.addView(temp); // 4. Get the
-								}							 // AlertDialog
-							} else builder.create().show();  // from create()
-						}									 // and show it
+									container.addView(temp);
+								}
+							} else LayoutSetterUpper.timedOut(m);
+							
+						}
 					}, 0);
 				}
 			}).start();

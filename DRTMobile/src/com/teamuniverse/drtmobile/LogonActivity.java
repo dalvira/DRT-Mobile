@@ -141,7 +141,6 @@ public class LogonActivity extends Activity {
 								} else {
 									
 									if (loginResults[0] != null) {
-										
 										// Store session variables
 										DatabaseManager db = new DatabaseManager(me);
 										db.sessionSet("token", loginResults[0]);
