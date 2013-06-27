@@ -185,20 +185,13 @@
 						android:maxLength="5"
 						android:selectAllOnFocus="true" >
 					</EditText>
-					<LinearLayout
-						style="?android:attr/buttonBarStyle"
-						android:layout_width="match_parent"
+					<Button
+						android:id="@+id/damage_assessment_add"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_alignParentBottom="true"
-						android:layout_centerHorizontal="true" >
-						<Button
-							android:id="@+id/damage_assessment_add"
-							style="?android:attr/buttonBarButtonStyle"
-							android:layout_width="0dip"
-							android:layout_height="wrap_content"
-							android:layout_weight="1"
-							android:text="@string/add" />
-					</LinearLayout>
+						android:layout_below="@+id/damage_add_zip"
+						android:layout_centerHorizontal="true"
+						android:text="@string/add" />
 				</RelativeLayout>
 			</FrameLayout>
 		</LinearLayout>

@@ -37,8 +37,7 @@ public class DamageAssessmentFragment extends Fragment {
 	private EditText[]			getEditTexts;
 	// private EditText[] addEditTexts;
 	private Button				getButton;
-	
-	// private Button addButton;
+	private Button				addButton;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -87,6 +86,14 @@ public class DamageAssessmentFragment extends Fragment {
 				}
 			});
 		}
+		
+		addButton = (Button) view.findViewById(R.id.damage_assessment_add);
+		addButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				add();
+			}
+		});
 		
 		TabHost tabHost = (TabHost) view.findViewById(android.R.id.tabhost);
 		tabHost.setup();
@@ -199,6 +206,10 @@ public class DamageAssessmentFragment extends Fragment {
 				}
 			}).start();
 		}
+	}
+	
+	private void add() {
+		// TODO this is to add reports!!
 	}
 	
 	@Override
