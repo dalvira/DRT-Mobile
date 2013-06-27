@@ -24,9 +24,20 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080012;
+        public static final int action_settings=0x7f08001d;
         public static final int attuid=0x7f08000b;
+        public static final int attuid2=0x7f080017;
         public static final int authorization=0x7f08000c;
+        public static final int damage_assessment_add=0x7f080010;
+        public static final int damage_assessment_address=0x7f080015;
+        public static final int damage_assessment_building=0x7f080014;
+        public static final int damage_assessment_get=0x7f08000f;
+        public static final int damage_assessment_pm=0x7f080012;
+        public static final int damage_assessment_state=0x7f080013;
+        public static final int damage_assessment_year=0x7f080016;
+        public static final int damage_assessment_zip=0x7f080011;
+        public static final int date=0x7f080019;
+        public static final int editText1=0x7f080018;
         public static final int first_divider=0x7f080008;
         public static final int logon_attuid=0x7f080001;
         public static final int logon_container=0x7f080000;
@@ -34,9 +45,9 @@ public final class R {
         public static final int logon_password=0x7f080002;
         public static final int logon_progress=0x7f080003;
         public static final int logon_remember_me=0x7f080005;
-        public static final int section_detail=0x7f080011;
-        public static final int section_detail_container=0x7f08000f;
-        public static final int section_list=0x7f080010;
+        public static final int section_detail=0x7f08001c;
+        public static final int section_detail_container=0x7f08001a;
+        public static final int section_list=0x7f08001b;
         public static final int subtitle=0x7f080007;
         public static final int title=0x7f080006;
         public static final int zip_button=0x7f08000a;
@@ -84,10 +95,16 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
+        public static final int add=0x7f05001e;
         public static final int app_name=0x7f050000;
         public static final int attuid=0x7f050009;
         public static final int building_title=0x7f05001a;
+        public static final int damage_assessment_address=0x7f050022;
+        public static final int damage_assessment_building=0x7f050021;
+        public static final int damage_assessment_pm=0x7f050020;
         public static final int damage_assessment_title=0x7f050017;
+        public static final int date=0x7f050025;
+        public static final int get=0x7f05001d;
         public static final int global_password=0x7f05000a;
         public static final int go=0x7f050008;
         public static final int hello_world=0x7f050012;
@@ -95,9 +112,11 @@ public final class R {
         public static final int logon_does_not_exist=0x7f05000d;
         public static final int logon_does_not_exist_title=0x7f05000e;
         public static final int ok=0x7f05000c;
+        public static final int phone=0x7f050024;
         public static final int remember=0x7f05000b;
         public static final int report_selection_title=0x7f05001b;
         public static final int result_subtitle=0x7f050016;
+        public static final int state=0x7f05001f;
         public static final int title_activity_building_search_result_fragment=0x7f05001c;
         public static final int title_activity_zipsearch_results_fragment=0x7f050011;
         public static final int title_fragment_damage_assessment=0x7f050006;
@@ -108,6 +127,7 @@ public final class R {
         public static final int title_section_list=0x7f050002;
         public static final int token_invalid=0x7f05000f;
         public static final int token_invalid_title=0x7f050010;
+        public static final int year=0x7f050023;
         public static final int zip=0x7f050013;
         public static final int zip_invalid=0x7f050014;
         public static final int zip_invalid_title=0x7f050015;

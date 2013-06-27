@@ -2,15 +2,15 @@ package com.teamuniverse.drtmobile;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.EditText;
 
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
+import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
 
 /**
@@ -19,10 +19,10 @@ import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class DamageAssessmentFragment extends Fragment {
-	private static ProgressBar	progress;
-	private static boolean		querying;
-	private Handler				handler;
-	private Activity			m;
+	// private static ProgressBar progress;
+	// private static boolean querying;
+	// private Handler handler;
+	private Activity	m;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -42,9 +42,69 @@ public class DamageAssessmentFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_damage_assessment, container, false);
 		LayoutSetterUpper.setup(m, view);
 		
-		progress = null;
-		querying = false;
-		handler = new Handler();
+		DatabaseManager db = new DatabaseManager(m);
+		((EditText) view.findViewById(R.id.attuid2)).setText(db.sessionGet("attuid"));
+		db.close();
+		
+		// progress = null;
+		// querying = false;
+		// handler = new Handler();
+		
+		// Incident incident = new Incident();
+		// incident.setAssessNotes(null);
+		// incident.setBuildingAddress(null);
+		// incident.setBuildingName(null);
+		// incident.setBuildingStatus(null);
+		// incident.setBuildingType(null);
+		// incident.setCompltnDate(null);
+		// incident.setComPowerIndicator(null);
+		// incident.setContactPhone(null);
+		// incident.setCreLead(null);
+		// incident.setDamageIndicator(null);
+		// incident.setElecIssueClsdIndicator(null);
+		// incident.setElecIssueIndicator(null);
+		// incident.setEnvIssueClsdIndicator(null);
+		// incident.setEnvIssueIndicator(null);
+		// incident.setEstCapCost(0);
+		// incident.setEstExpenseCost(0);
+		// incident.setEventName(null);
+		// incident.setFenceGateIssueClsdIndicator(null);
+		// incident.setFenceGateIssueIndicator(null);
+		// incident.setGenIssueClsdIndicator(null);
+		// incident.setGenIssueIndicator(null);
+		// incident.setGeoLoc(0);
+		// incident.setGroundsIssueClsdIndicator(null);
+		// incident.setGroundsIssueIndicator(null);
+		// incident.setIncidentCompltnDate(null);
+		// incident.setIncidentNotes(null);
+		// incident.setIncidentStatus(null);
+		// incident.setIncidentYear(0);
+		// incident.setInitialRptDate(null);
+		// incident.setMechIssueClsdIndicator(null);
+		// incident.setMechIssueIndicator(null);
+		// incident.setMobCOIndicator(null);
+		// incident.setOnGeneratorIndicator(null);
+		// incident.setOtherIssueClsdIndicator(null);
+		// incident.setOtherIssueIndicator(null);
+		// incident.setPlumbIssueClsdIndicator(null);
+		// incident.setPlumbIssueIndicator(null);
+		// incident.setPMAttuid(null);
+		// incident.setRecNumber(0);
+		// incident.setRecNumber(0);
+		// incident.setReqATTUID(null);
+		// incident.setRoofsIssueClsdIndicator(null);
+		// incident.setRoofsIssueIndicator(null);
+		// incident.setSafetyIssueClsdIndicator(null);
+		// incident.setSafetyIssueIndicator(null);
+		// incident.setState(null);
+		// incident.setStatusNotes(null);
+		// incident.setStructIssueClsdIndicator(null);
+		// incident.setStructIssueIndicator(null);
+		// incident.setUnOccupiableIndicator(null);
+		// incident.setWaterIssueClsdIndicator(null);
+		// incident.setWaterIssueIndicator(null);
+		// incident.setWorkReqNumber(null);
+		
 		return view;
 	}
 	

@@ -40,7 +40,8 @@
 		android:layout_centerHorizontal="true"
 		android:ems="10"
 		android:hint="@string/zip"
-		android:inputType="number" >
+		android:inputType="number"
+		android:maxLength="5" >
 		<requestFocus />
 	</EditText>
 	<Button

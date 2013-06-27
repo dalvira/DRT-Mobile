@@ -46,4 +46,114 @@
 		android:layout_alignBottom="@+id/first_divider"
 		android:layout_alignParentLeft="true"
 		android:textAppearance="?android:attr/textAppearanceSmall" />
+	<LinearLayout
+		style="?android:attr/buttonBarStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" >
+		<Button
+			android:id="@+id/damage_assessment_get"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/get" />
+		<Button
+			android:id="@+id/damage_assessment_add"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/add" />
+	</LinearLayout>
+	<EditText
+		android:id="@+id/damage_assessment_zip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/damage_assessment_pm"
+		android:layout_alignRight="@+id/subtitle"
+		android:layout_below="@+id/first_divider"
+		android:ems="10"
+		android:hint="@string/zip"
+		android:inputType="number"
+		android:maxLength="5" >
+		<requestFocus />
+	</EditText>
+	<EditText
+		android:id="@+id/damage_assessment_state"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignRight="@+id/damage_assessment_pm"
+		android:layout_below="@+id/first_divider"
+		android:layout_toRightOf="@+id/damage_assessment_zip"
+		android:ems="10"
+		android:hint="@string/state"
+		android:inputType="textCapCharacters"
+		android:maxLength="2" />
+	<EditText
+		android:id="@+id/damage_assessment_pm"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/damage_assessment_zip"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/damage_assessment_pm" />
+	<EditText
+		android:id="@+id/damage_assessment_building"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/damage_assessment_pm"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/damage_assessment_building"
+		android:inputType="textCapWords" />
+	<EditText
+		android:id="@+id/damage_assessment_address"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/damage_assessment_building"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/damage_assessment_address"
+		android:inputType="textPostalAddress" />
+	<EditText
+		android:id="@+id/damage_assessment_year"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/damage_assessment_address"
+		android:layout_below="@+id/damage_assessment_address"
+		android:layout_toLeftOf="@+id/subtitle"
+		android:ems="10"
+		android:hint="@string/year"
+		android:inputType="number"
+		android:maxLength="4" />
+	<EditText
+		android:id="@+id/attuid2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/subtitle"
+		android:layout_alignRight="@+id/damage_assessment_address"
+		android:layout_below="@+id/damage_assessment_address"
+		android:ems="10"
+		android:enabled="false"
+		android:hint="@string/attuid" />
+	<EditText
+		android:id="@+id/editText1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/attuid2"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/phone"
+		android:inputType="phone" />
+	<EditText
+		android:id="@+id/date"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/editText1"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/date"
+		android:inputType="date" />
 </RelativeLayout>
