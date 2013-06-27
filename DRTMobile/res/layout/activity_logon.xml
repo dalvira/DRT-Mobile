@@ -17,7 +17,8 @@
 		android:layout_centerHorizontal="true"
 		android:ems="10"
 		android:hint="@string/attuid"
-		android:inputType="textEmailAddress" >
+		android:inputType="textEmailAddress"
+		android:selectAllOnFocus="true" >
 		<requestFocus />
 	</EditText>
 	<EditText
@@ -28,7 +29,8 @@
 		android:layout_below="@+id/logon_attuid"
 		android:ems="10"
 		android:hint="@string/global_password"
-		android:inputType="textPassword" />
+		android:inputType="textPassword"
+		android:selectAllOnFocus="true" />
 	<ProgressBar
 		android:id="@+id/logon_progress"
 		android:layout_width="wrap_content"
