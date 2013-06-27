@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.att.intern.webservice.Incident;
 import com.teamuniverse.drtmobile.R;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.ErrorReporter;
@@ -28,7 +29,8 @@ import com.teamuniverse.drtmobile.support.SectionAdder;
 public class SectionListActivity extends FragmentActivity implements
 		SectionListFragment.Callbacks {
 	
-	public final static String			FRAG_ID	= "com.teamuniverse.drtmobile.FRAG_ID";
+	public final static String			FRAG_ID		= "com.teamuniverse.drtmobile.FRAG_ID";
+	public final static String			INCIDENT_ID	= "com.teamuniverse.drtmobile.INCIDENT_ID";
 	
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -141,4 +143,27 @@ public class SectionListActivity extends FragmentActivity implements
 		}
 	}
 	
+	public void putDamageAssessmentGet(int id, Incident infoContainer) {
+		if (mTwoPane) {
+			db = new DatabaseManager(this);
+			db.sessionSet("selected_section", id + "");
+			db.close();
+			try {
+				// TODO Make the fragment for this section
+				// FragmentTransaction ft =
+				// getSupportFragmentManager().beginTransaction();
+				// Fragment fragment =
+				// DamageAssessmentGetFragment.newInstance(infoContainer);
+				// ft.replace(R.id.section_detail_container, fragment);
+				// ft.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			Intent detailIntent = new Intent(this, SectionDetailActivity.class);
+			detailIntent.putExtra(FRAG_ID, id);
+			detailIntent.putExtra(INCIDENT_ID, infoContainer);
+			startActivity(detailIntent);
+		}
+	}
 }
