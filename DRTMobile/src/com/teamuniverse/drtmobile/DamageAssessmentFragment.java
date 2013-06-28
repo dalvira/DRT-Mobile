@@ -1,6 +1,9 @@
 package com.teamuniverse.drtmobile;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TabHost;
@@ -102,12 +106,35 @@ public class DamageAssessmentFragment extends Fragment {
 	
 	private void get() {
 		String text = getRecordNumber.getText().toString();
+		
+		// Hide virtual keyboard
+		InputMethodManager imm = (InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(getRecordNumber.getWindowToken(), 0);
+		
 		if (!text.equals("")) {
+			
 			db = new DatabaseManager(m);
 			db.sessionSet("record_number", text);
 			db.close();
 			
 			SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT_GET);
+		} else {
+			// 1. Instantiate an AlertDialog.Builder with its
+			// constructor
+			AlertDialog.Builder builder = new AlertDialog.Builder(m);
+			// 2. Chain together various setter methods to set the
+			// dialog
+			// characteristics
+			builder.setMessage(R.string.zip_invalid).setTitle(R.string.zip_invalid_title);
+			// 3. Add an okay
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+			// 4. Get the AlertDialog from create() and show it
+			builder.create().show();
 		}
 	}
 	

@@ -90,7 +90,7 @@ public class DamageGetFragment extends Fragment {
 							progress.setVisibility(View.GONE);
 							
 							if (success) {
-								if (result.equals("")) {
+								if (result == null) {
 									TextView temp = new TextView(m);
 									temp.setText("No result  found");
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
