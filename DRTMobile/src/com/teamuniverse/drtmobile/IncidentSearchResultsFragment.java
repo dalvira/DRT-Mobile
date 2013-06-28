@@ -52,10 +52,10 @@ public class IncidentSearchResultsFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_incident_search_results, container, false);
 		LayoutSetterUpper.setup(m, view);
 		
-		progress = (ProgressBar) view.findViewById(R.id.zip_progress);
+		progress = (ProgressBar) view.findViewById(R.id.progress);
 		querying = false;
 		handler = new Handler();
-		LinearLayout list = (LinearLayout) view.findViewById(R.id.zip_results_list);
+		LinearLayout list = (LinearLayout) view.findViewById(R.id.list_container);
 		search(list);
 		
 		return view;
@@ -95,7 +95,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 							if (success) {
 								if (results.size() == 0) {
 									TextView temp = new TextView(m);
-									temp.setText("No results to show");
+									temp.setText("No result to show");
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else for (int i = 0; i < results.size(); i++) {

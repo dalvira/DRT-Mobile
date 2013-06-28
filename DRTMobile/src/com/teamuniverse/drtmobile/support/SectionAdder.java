@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import com.teamuniverse.drtmobile.BuildingSearchFragment;
 import com.teamuniverse.drtmobile.BuildingSearchResultsFragment;
 import com.teamuniverse.drtmobile.DamageAssessmentFragment;
+import com.teamuniverse.drtmobile.DamageGetFragment;
 import com.teamuniverse.drtmobile.IncidentSearchFragment;
 import com.teamuniverse.drtmobile.IncidentSearchResultsFragment;
 import com.teamuniverse.drtmobile.ReportSelectionFragment;
@@ -39,9 +40,11 @@ public class SectionAdder {
 	public static final int			REPORT_SELECTION		= 3;
 	public static final int			INCIDENT_SEARCH_RESULTS	= 4;
 	public static final int			BUILDING_SEARCH_RESULTS	= 5;
+	public static final int			DAMAGE_ASSESSMENT_GET	= 6;
+	public static final int			DAMAGE_ASSESSMENT_ADD	= 7;
 	public static final String[][]	SECTIONS_IN_LIST		= { { "Incident Search", INCIDENT_SEARCH + "" }, { "Building Search", BUILDING_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
-	public static final int[]		SECTION_PARENTS			= { 0, 1, 2, 3, 0, 1 };
-	public static final int[]		PARENTS_RPT_FIXER		= { 9, 9, 9, 0, 9, 9 };
+	public static final int[]		SECTION_PARENTS			= { 0, 1, 2, 3, 0, 1, 2, 2 };
+	public static final int[]		PARENTS_RPT_FIXER		= { 9, 9, 9, 0, 9, 9, 9, 9 };
 	
 	public static Fragment getSection(int id) {
 		switch (id) {
@@ -57,6 +60,10 @@ public class SectionAdder {
 				return new IncidentSearchResultsFragment();
 			case BUILDING_SEARCH_RESULTS:
 				return new BuildingSearchResultsFragment();
+			case DAMAGE_ASSESSMENT_GET:
+				return new DamageGetFragment();
+				// case DAMAGE_ASSESSMENT_ADD:
+				// return new DamageAddFragment();
 			default:
 				return new IncidentSearchFragment();
 		}

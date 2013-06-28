@@ -1,7 +1,5 @@
 package com.teamuniverse.drtmobile;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,7 +25,7 @@ import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
  * either contained in a {@link SectionListActivity} in two-pane mode (on
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
-public class BuildingSearchResultsFragment extends Fragment {
+public class DamageGetFragment extends Fragment {
 	private static ProgressBar	progress;
 	private static boolean		querying;
 	private Handler				handler;
@@ -37,7 +35,7 @@ public class BuildingSearchResultsFragment extends Fragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public BuildingSearchResultsFragment() {
+	public DamageGetFragment() {
 	}
 	
 	@Override
@@ -61,8 +59,8 @@ public class BuildingSearchResultsFragment extends Fragment {
 		return view;
 	}
 	
-	ArrayList<Incident>	results	= null;
-	boolean				success	= false;
+	Incident	result	= null;
+	boolean		success	= false;
 	
 	private void search(LinearLayout containerRef) {
 		final LinearLayout container = containerRef;
@@ -75,11 +73,11 @@ public class BuildingSearchResultsFragment extends Fragment {
 					
 					DatabaseManager db = new DatabaseManager(m);
 					String token = db.sessionGet("token");
-					int zip = Integer.parseInt(db.sessionGet("zip"));
+					int recordNumber = Integer.parseInt(db.sessionGet("record_number"));
 					db.close();
 					
 					try {
-						results = ws.geolocSearch(token, zip);
+						result = ws.incidByRecNum(token, recordNumber);
 						success = true;
 					} catch (TokenInvalidException e) {
 						e.printStackTrace();
@@ -92,15 +90,15 @@ public class BuildingSearchResultsFragment extends Fragment {
 							progress.setVisibility(View.GONE);
 							
 							if (success) {
-								if (results.size() == 0) {
+								if (result.equals("")) {
 									TextView temp = new TextView(m);
-									temp.setText("No result to show");
+									temp.setText("No result  found");
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
-								} else for (int i = 0; i < results.size(); i++) {
+								} else {
 									// TODO add each search result here
 									TextView temp = new TextView(m);
-									temp.setText("Hello #" + i);
+									temp.setText("Hello #1");
 									container.addView(temp);
 								}
 							} else LayoutSetterUpper.timedOut(m);
@@ -127,3 +125,58 @@ public class BuildingSearchResultsFragment extends Fragment {
 		super.onPause();
 	}
 }
+
+// Incident incident = new Incident();
+// incident.setAssessNotes(null);
+// incident.setBuildingAddress(null);
+// incident.setBuildingName(null);
+// incident.setBuildingStatus(null);
+// incident.setBuildingType(null);
+// incident.setCompltnDate(null);
+// incident.setComPowerIndicator(null);
+// incident.setContactPhone(null);
+// incident.setCreLead(null);
+// incident.setDamageIndicator(null);
+// incident.setElecIssueClsdIndicator(null);
+// incident.setElecIssueIndicator(null);
+// incident.setEnvIssueClsdIndicator(null);
+// incident.setEnvIssueIndicator(null);
+// incident.setEstCapCost(0);
+// incident.setEstExpenseCost(0);
+// incident.setEventName(null);
+// incident.setFenceGateIssueClsdIndicator(null);
+// incident.setFenceGateIssueIndicator(null);
+// incident.setGenIssueClsdIndicator(null);
+// incident.setGenIssueIndicator(null);
+// incident.setGeoLoc(0);
+// incident.setGroundsIssueClsdIndicator(null);
+// incident.setGroundsIssueIndicator(null);
+// incident.setIncidentCompltnDate(null);
+// incident.setIncidentNotes(null);
+// incident.setIncidentStatus(null);
+// incident.setIncidentYear(0);
+// incident.setInitialRptDate(null);
+// incident.setMechIssueClsdIndicator(null);
+// incident.setMechIssueIndicator(null);
+// incident.setMobCOIndicator(null);
+// incident.setOnGeneratorIndicator(null);
+// incident.setOtherIssueClsdIndicator(null);
+// incident.setOtherIssueIndicator(null);
+// incident.setPlumbIssueClsdIndicator(null);
+// incident.setPlumbIssueIndicator(null);
+// incident.setPMAttuid(null);
+// incident.setRecNumber(0);
+// incident.setRecNumber(0);
+// incident.setReqATTUID(null);
+// incident.setRoofsIssueClsdIndicator(null);
+// incident.setRoofsIssueIndicator(null);
+// incident.setSafetyIssueClsdIndicator(null);
+// incident.setSafetyIssueIndicator(null);
+// incident.setState(null);
+// incident.setStatusNotes(null);
+// incident.setStructIssueClsdIndicator(null);
+// incident.setStructIssueIndicator(null);
+// incident.setUnOccupiableIndicator(null);
+// incident.setWaterIssueClsdIndicator(null);
+// incident.setWaterIssueIndicator(null);
+// incident.setWorkReqNumber(null);

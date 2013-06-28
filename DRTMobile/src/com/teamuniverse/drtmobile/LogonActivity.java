@@ -60,7 +60,7 @@ public class LogonActivity extends Activity {
 		db.sessionUnset();
 		if (db.checkSetting("remember_attuid")) {
 			rememberATTUID.setChecked(true);
-			attuidEditText.setText(db.getATTUID());
+			attuidEditText.setText(db.getFirstInfoOfType("attuid"));
 			passEditText.requestFocus();
 		}
 		db.close();
@@ -86,7 +86,7 @@ public class LogonActivity extends Activity {
 	
 	/**
 	 * This method accesses the web services to login with the passed username
-	 * and password. It does the query in a separate thread, so that the main
+	 * and password. It does the query in a separate thread, so that the m
 	 * thread is not bogged down.
 	 */
 	private void logon() {
@@ -105,7 +105,7 @@ public class LogonActivity extends Activity {
 					Webservice ws = new Webservice(getApplicationContext());
 					loginResults = ws.login(name, pass);
 					// Use the handler to execute a Runnable on the
-					// main thread in order to have access to the
+					// m thread in order to have access to the
 					// UI elements.
 					handler.postDelayed(new Runnable() {
 						public void run() {

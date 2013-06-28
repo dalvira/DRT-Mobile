@@ -87,7 +87,7 @@ public class IncidentSearchFragment extends Fragment {
 			db.sessionSet("zip", zip);
 			db.close();
 			
-			SectionListActivity.main.putSection(SectionAdder.INCIDENT_SEARCH_RESULTS);
+			SectionListActivity.m.putSection(SectionAdder.INCIDENT_SEARCH_RESULTS);
 		} else {
 			// 1. Instantiate an AlertDialog.Builder with its
 			// constructor

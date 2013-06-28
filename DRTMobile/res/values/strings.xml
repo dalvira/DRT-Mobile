@@ -39,4 +39,6 @@
 	<string name="report_date">mm/dd/yyyy</string>
 	<string name="andor">and/or</string>
 	<string name="city">City</string>
+	<string name="title_activity_damage_get_fragment">Get Damage Assessment Reports</string>
+	<string name="record_number">Record Number</string>
 </resources>

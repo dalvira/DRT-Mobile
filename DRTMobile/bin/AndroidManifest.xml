@@ -79,5 +79,9 @@
 			android:name="com.teamuniverse.drtmobile.BuildingSearchResultsFragment"
 			android:label="@string/title_fragment_building_search_results" >
 		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.DamageGetFragment"
+			android:label="@string/title_activity_damage_get_fragment" >
+		</activity>
 	</application>
 </manifest>

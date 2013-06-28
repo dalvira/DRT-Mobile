@@ -24,6 +24,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	private static final String	CONTENTS				= "record_content";
 	private static final String	ID						= "id";
 	
+	public static String		UNIQUE_INFO				= "attuid";
+	
 	// constructor
 	public DatabaseManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,24 +37,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// Build the query
+		// Build the Info table
 		String create_saved_info = "CREATE TABLE " + INFO_TABLE + "(" + TYPE + " TEXT," + CONTENTS + " TEXT" + ", " + ID + " INTEGER NOT NULL PRIMARY KEY autoincrement)";
 		// Execute the query
 		db.execSQL(create_saved_info);
 		
-		// // Build the query
-		// String create_saved_states = "CREATE TABLE " + SAVED_STATES_TABLE +
-		// "(" + PAGE + " TEXT," + TYPE + " TEXT," + CONTENTS + " TEXT" + ", " +
-		// ID + " INTEGER NOT NULL PRIMARY KEY autoincrement)";
-		// // Execute the query
-		// db.execSQL(create_saved_states);
-		
-		// Build the query
+		// Build the Settings table
 		String create_saved_settings = "CREATE TABLE " + SETTINGS_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
 		// Execute the query
 		db.execSQL(create_saved_settings);
 		
-		// Build the query
+		// Build the Session variable table
 		String create_session_variables = "CREATE TABLE " + SESSION_VARIABLES_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
 		// Execute the query
 		db.execSQL(create_session_variables);
@@ -90,7 +85,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(sqlQuery, null);
 		
-		// Loop through the results and add it to the temp_array
+		// Loop through the result and add it to the temp_array
 		if (c.moveToFirst()) {
 			do {
 				temp_array.add(c.getString(c.getColumnIndexOrThrow(CONTENTS)));
@@ -111,28 +106,26 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	 * type.
 	 * 
 	 * @param type
-	 * @return A String[] with all of the contents of the records
-	 *         which have types matching the supplied type
+	 * @return A String with the first of the contents of the records which have
+	 *         types matching the supplied type
 	 */
-	public String getATTUID() {
+	public String getFirstInfoOfType(String type) {
 		String match = "";
 		// The SQL Query
-		String sqlQuery = "SELECT * FROM " + INFO_TABLE + " WHERE " + TYPE + "=\"attuid\"";
+		String sqlQuery = "SELECT * FROM " + INFO_TABLE + " WHERE " + TYPE + "=\"" + type + "\"";
 		// Define database and cursor
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(sqlQuery, null);
 		
-		// Loop through the results and add it to the temp_array
+		// Loop through the result and add it to the temp_array
 		if (c.moveToFirst()) {
-			do {
-				match = c.getString(c.getColumnIndexOrThrow(CONTENTS));
-			} while (c.moveToNext());
+			match = c.getString(c.getColumnIndexOrThrow(CONTENTS));
 		}
 		// Close the cursor
 		if (c != null && !c.isClosed()) c.close();
 		// Close the database connection
 		db.close();
-		// Return the string array
+		// Return the string
 		return match;
 	}
 	
@@ -155,7 +148,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		String[] matches = getInfoByType(type);
 		
 		if (contents.equals("")) return;
-		else if (type.equals("attuid")) {
+		else if (type.equals(UNIQUE_INFO)) {
 			if (matches.length > 0) removeInfo(type, null);
 		} else {
 			for (int i = 0; i < matches.length; i++) {
@@ -228,7 +221,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		// Define database and cursor
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(sqlQuery, null);
-		// Loop through the results and add it to the temp_array
+		// Loop through the result and add it to the temp_array
 		if (c.moveToFirst()) {
 			do {
 				match = c.getString(c.getColumnIndexOrThrow(CONTENTS));
@@ -252,6 +245,19 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		
 		/* clearing the table */
 		db.delete(SESSION_VARIABLES_TABLE, "", null);
+		// close the database connection
+		db.close();
+	}
+	
+	/**
+	 * Clear a single session variable from the database. This approximates
+	 * session variables that are erased after the end of each session.
+	 */
+	public void sessionUnset(String which) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		/* clearing the table */
+		db.delete(SESSION_VARIABLES_TABLE, TYPE + "=\"" + which + "\"", null);
 		// close the database connection
 		db.close();
 	}
@@ -293,7 +299,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		// Define database and cursor
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(sqlQuery, null);
-		// Loop through the results and add it to the temp_array
+		// Loop through the result and add it to the temp_array
 		if (c.moveToFirst()) {
 			do {
 				match = c.getString(c.getColumnIndexOrThrow(CONTENTS));
@@ -329,7 +335,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	// // Define database and cursor
 	// SQLiteDatabase db = this.getWritableDatabase();
 	// Cursor c = db.rawQuery(sqlQuery, null);
-	// // Loop through the results and add it to the temp_array
+	// // Loop through the result and add it to the temp_array
 	// if (c.moveToFirst()) {
 	// do {
 	// match = c.getString(c.getColumnIndexOrThrow(CONTENTS));
