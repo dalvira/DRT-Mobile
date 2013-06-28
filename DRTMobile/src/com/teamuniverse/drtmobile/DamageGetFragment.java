@@ -92,7 +92,7 @@ public class DamageGetFragment extends Fragment {
 							if (success) {
 								if (result == null) {
 									TextView temp = new TextView(m);
-									temp.setText("No result  found");
+									temp.setText("No incident by that record number was found");
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else {
