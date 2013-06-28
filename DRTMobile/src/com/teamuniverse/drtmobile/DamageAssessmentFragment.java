@@ -102,12 +102,13 @@ public class DamageAssessmentFragment extends Fragment {
 	
 	private void get() {
 		String text = getRecordNumber.getText().toString();
-		
-		db = new DatabaseManager(m);
-		if (!text.equals("")) db.sessionSet("record_number", text);
-		db.close();
-		
-		SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT_GET);
+		if (!text.equals("")) {
+			db = new DatabaseManager(m);
+			db.sessionSet("record_number", text);
+			db.close();
+			
+			SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT_GET);
+		}
 	}
 	
 	private void add() {
