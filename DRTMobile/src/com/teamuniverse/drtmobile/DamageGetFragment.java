@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
+import com.teamuniverse.drtmobile.support.SectionAdder;
 
 /**
  * A fragment representing a single Section detail screen. This fragment is
@@ -29,7 +31,10 @@ public class DamageGetFragment extends Fragment {
 	private static ProgressBar	progress;
 	private static boolean		querying;
 	private Handler				handler;
+	private DatabaseManager		db;
 	private Activity			m;
+	
+	private Button				backButton;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -46,12 +51,27 @@ public class DamageGetFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_building_search_results, container, false);
+		View view = inflater.inflate(R.layout.fragment_damage_get, container, false);
 		LayoutSetterUpper.setup(m, view);
 		
 		progress = (ProgressBar) view.findViewById(R.id.progress);
 		querying = false;
 		handler = new Handler();
+		
+		db = new DatabaseManager(m);
+		db.sessionUnset("goto_tab");
+		db.close();
+		
+		backButton = (Button) view.findViewById(R.id.damage_assessment_back);
+		backButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				db = new DatabaseManager(m);
+				db.sessionSet("get_back", "true");
+				db.close();
+				SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT);
+			}
+		});
 		
 		LinearLayout list = (LinearLayout) view.findViewById(R.id.list_container);
 		search(list);
@@ -73,7 +93,7 @@ public class DamageGetFragment extends Fragment {
 					
 					DatabaseManager db = new DatabaseManager(m);
 					String token = db.sessionGet("token");
-					int recordNumber = Integer.parseInt(db.sessionGet("record_number"));
+					int recordNumber = (int) Long.parseLong(db.sessionGet("record_number"));
 					db.close();
 					
 					try {
@@ -92,11 +112,11 @@ public class DamageGetFragment extends Fragment {
 							if (success) {
 								if (result == null) {
 									TextView temp = new TextView(m);
-									temp.setText("No incident by that record number was found");
+									temp.setText(R.string.no_record);
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else {
-									// TODO add each search result here
+									// TODO add a search result here
 									TextView temp = new TextView(m);
 									temp.setText("Hello #1");
 									container.addView(temp);

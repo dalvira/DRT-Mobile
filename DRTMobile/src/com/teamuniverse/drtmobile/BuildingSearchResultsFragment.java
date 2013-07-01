@@ -94,7 +94,7 @@ public class BuildingSearchResultsFragment extends Fragment {
 							if (success) {
 								if (results.size() == 0) {
 									TextView temp = new TextView(m);
-									temp.setText("No result to show");
+									temp.setText(R.string.no_results);
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else for (int i = 0; i < results.size(); i++) {

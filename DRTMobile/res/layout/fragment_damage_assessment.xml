@@ -46,32 +46,33 @@
 		android:layout_alignBottom="@+id/first_divider"
 		android:layout_alignParentLeft="true"
 		android:textAppearance="?android:attr/textAppearanceSmall" />
-	<TabHost
-		android:id="@android:id/tabhost"
+	<ScrollView
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="fill_parent"
+		android:layout_above="@+id/damage_assessment_go_container"
 		android:layout_below="@+id/first_divider"
 		android:layout_centerHorizontal="true" >
-		<LinearLayout
+		<TabHost
+			android:id="@android:id/tabhost"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical" >
-			<TabWidget
-				android:id="@android:id/tabs"
+			android:layout_height="wrap_content" >
+			<LinearLayout
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" >
-			</TabWidget>
-			<FrameLayout
-				android:id="@android:id/tabcontent"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent" >
-				<ScrollView
-					android:id="@+id/damage_get"
+				android:layout_height="match_parent"
+				android:orientation="vertical" >
+				<TabWidget
+					android:id="@android:id/tabs"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" >
+				</TabWidget>
+				<FrameLayout
+					android:id="@android:id/tabcontent"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent" >
 					<RelativeLayout
+						android:id="@+id/damage_get"
 						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
+						android:layout_height="match_parent"
 						android:padding="16dp" >
 						<EditText
 							android:id="@+id/damage_get_record_number"
@@ -82,44 +83,41 @@
 							android:ems="10"
 							android:hint="@string/record_number"
 							android:imeOptions="actionGo"
-							android:inputType="number"
-							android:selectAllOnFocus="true" >
-							<requestFocus />
-						</EditText>
-						<Button
-							android:id="@+id/damage_assessment_get"
+							android:inputType="number" />
+					</RelativeLayout>
+					<RelativeLayout
+						android:id="@+id/damage_add"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:padding="16dp" >
+						<EditText
+							android:id="@+id/damage_add_zip"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:layout_below="@+id/damage_get_record_number"
+							android:layout_alignParentTop="true"
 							android:layout_centerHorizontal="true"
-							android:text="@string/get" />
+							android:ems="10"
+							android:hint="@string/zip"
+							android:inputType="number"
+							android:maxLength="5" />
 					</RelativeLayout>
-				</ScrollView>
-				<RelativeLayout
-					android:id="@+id/damage_add"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent" >
-					<EditText
-						android:id="@+id/damage_add_zip"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentTop="true"
-						android:layout_centerHorizontal="true"
-						android:ems="10"
-						android:hint="@string/zip"
-						android:inputType="number"
-						android:maxLength="5"
-						android:selectAllOnFocus="true" >
-					</EditText>
-					<Button
-						android:id="@+id/damage_assessment_add"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_below="@+id/damage_add_zip"
-						android:layout_centerHorizontal="true"
-						android:text="@string/add" />
-				</RelativeLayout>
-			</FrameLayout>
-		</LinearLayout>
-	</TabHost>
+				</FrameLayout>
+			</LinearLayout>
+		</TabHost>
+	</ScrollView>
+	<LinearLayout
+		android:id="@+id/damage_assessment_go_container"
+		style="?android:attr/buttonBarStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" >
+		<Button
+			android:id="@+id/damage_assessment_go"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/go" />
+	</LinearLayout>
 </RelativeLayout>

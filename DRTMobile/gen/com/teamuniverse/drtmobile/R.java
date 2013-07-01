@@ -24,15 +24,16 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080018;
+        public static final int action_settings=0x7f080019;
         public static final int attuid=0x7f08000c;
         public static final int authorization=0x7f08000b;
         public static final int damage_add=0x7f080012;
         public static final int damage_add_zip=0x7f080013;
-        public static final int damage_assessment_add=0x7f080014;
-        public static final int damage_assessment_get=0x7f080011;
-        public static final int damage_get=0x7f08000f;
-        public static final int damage_get_record_number=0x7f080010;
+        public static final int damage_assessment_back=0x7f080015;
+        public static final int damage_assessment_go=0x7f080014;
+        public static final int damage_assessment_go_container=0x7f08000f;
+        public static final int damage_get=0x7f080010;
+        public static final int damage_get_record_number=0x7f080011;
         public static final int first_divider=0x7f080008;
         public static final int list_container=0x7f08000e;
         public static final int logon_attuid=0x7f080001;
@@ -42,9 +43,9 @@ public final class R {
         public static final int logon_progress=0x7f080003;
         public static final int logon_remember_me=0x7f080005;
         public static final int progress=0x7f08000d;
-        public static final int section_detail=0x7f080017;
-        public static final int section_detail_container=0x7f080015;
-        public static final int section_list=0x7f080016;
+        public static final int section_detail=0x7f080018;
+        public static final int section_detail_container=0x7f080016;
+        public static final int section_list=0x7f080017;
         public static final int subtitle=0x7f080007;
         public static final int title=0x7f080006;
         public static final int zip_button=0x7f08000a;
@@ -97,10 +98,12 @@ public final class R {
         public static final int andor=0x7f050025;
         public static final int app_name=0x7f050000;
         public static final int attuid=0x7f05000b;
+        public static final int back=0x7f05002b;
         public static final int building_name=0x7f050020;
         public static final int building_title=0x7f05001b;
         public static final int city=0x7f050026;
         public static final int damage_assessment_title=0x7f050018;
+        public static final int damage_get_title=0x7f05002c;
         public static final int get=0x7f05001d;
         public static final int global_password=0x7f05000c;
         public static final int go=0x7f05000a;
@@ -108,9 +111,13 @@ public final class R {
         public static final int incident_title=0x7f05001a;
         public static final int logon_does_not_exist=0x7f05000f;
         public static final int logon_does_not_exist_title=0x7f050010;
+        public static final int no_record=0x7f050029;
+        public static final int no_results=0x7f05002a;
         public static final int ok=0x7f05000e;
         public static final int phone=0x7f050023;
         public static final int record_number=0x7f050028;
+        public static final int record_number_invalid=0x7f05002d;
+        public static final int record_number_invalid_title=0x7f05002e;
         public static final int remember=0x7f05000d;
         public static final int report_date=0x7f050024;
         public static final int report_selection_title=0x7f05001c;
@@ -134,15 +141,8 @@ public final class R {
         public static final int zip_subtitle=0x7f050019;
     }
     public static final class style {
-        /** 
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-	
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-		
+        /**  Base application theme, dependent on API level. This theme is replaced by AppBaseTheme from res/values-vXX/styles.xml on newer devices. 
+ Theme customizations available in newer API levels can go in res/values-vXX/styles.xml, while customizations related to backward-compatibility can go here. 
 
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
@@ -157,8 +157,8 @@ public final class R {
          */
         public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f060001;
+        public static final int SelectAll=0x7f060002;
     }
 }

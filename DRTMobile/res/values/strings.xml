@@ -41,4 +41,10 @@
 	<string name="city">City</string>
 	<string name="title_activity_damage_get_fragment">Get Damage Assessment Reports</string>
 	<string name="record_number">Record Number</string>
+	<string name="no_record">No report by that record number was found!</string>
+	<string name="no_results">No results to show!</string>
+	<string name="back">Back</string>
+	<string name="damage_get_title">Report by Record Number</string>
+	<string name="record_number_invalid">Please supply a valid record number!</string>
+	<string name="record_number_invalid_title">Invalid Record Number</string>
 </resources>

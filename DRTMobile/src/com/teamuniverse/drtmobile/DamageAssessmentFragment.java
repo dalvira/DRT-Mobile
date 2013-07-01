@@ -34,8 +34,8 @@ public class DamageAssessmentFragment extends Fragment {
 	private DatabaseManager	db;
 	
 	private EditText		getRecordNumber;
-	private Button			getButton;
-	private Button			addButton;
+	private Button			button;
+	private TabHost			tabHost;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,35 +56,7 @@ public class DamageAssessmentFragment extends Fragment {
 		LayoutSetterUpper.setup(m, view);
 		getRecordNumber = (EditText) view.findViewById(R.id.damage_get_record_number);
 		
-		getButton = (Button) view.findViewById(R.id.damage_assessment_get);
-		getButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				get();
-			}
-		});
-		
-		getRecordNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-					v.performClick();
-					getButton.performClick();
-					return true;
-				}
-				return false;
-			}
-		});
-		
-		addButton = (Button) view.findViewById(R.id.damage_assessment_add);
-		addButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				add();
-			}
-		});
-		
-		TabHost tabHost = (TabHost) view.findViewById(android.R.id.tabhost);
+		tabHost = (TabHost) view.findViewById(android.R.id.tabhost);
 		tabHost.setup();
 		// Get tab!
 		TabSpec tspec = tabHost.newTabSpec("Tab1");
@@ -97,6 +69,42 @@ public class DamageAssessmentFragment extends Fragment {
 		tspec.setIndicator("Add");
 		tabHost.addTab(tspec);
 		
+		db = new DatabaseManager(m);
+		String gotoAdd = db.sessionGet("goto_tab");
+		if (db.sessionGet("get_back").equals("true")) {
+			getRecordNumber.setText(db.sessionGet("record_number"));
+			db.sessionUnset("get_back");
+		}
+		db.close();
+		
+		if (gotoAdd.equals("add")) tabHost.setCurrentTab(1);
+		else getRecordNumber.requestFocus();
+		
+		button = (Button) view.findViewById(R.id.damage_assessment_go);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Hide virtual keyboard
+				InputMethodManager imm = (InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(m.getCurrentFocus().getWindowToken(), 0);
+				
+				if (tabHost.getCurrentTab() == 0) get();
+				else add();
+			}
+		});
+		
+		getRecordNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+					v.performClick();
+					button.performClick();
+					return true;
+				}
+				return false;
+			}
+		});
+		
 		// db = new DatabaseManager(m);
 		// ((EditText)
 		// view.findViewById(R.id.damage_add_attuid)).setText(db.sessionGet("attuid"));
@@ -107,12 +115,7 @@ public class DamageAssessmentFragment extends Fragment {
 	private void get() {
 		String text = getRecordNumber.getText().toString();
 		
-		// Hide virtual keyboard
-		InputMethodManager imm = (InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(getRecordNumber.getWindowToken(), 0);
-		
 		if (!text.equals("")) {
-			
 			db = new DatabaseManager(m);
 			db.sessionSet("record_number", text);
 			db.close();
@@ -125,7 +128,7 @@ public class DamageAssessmentFragment extends Fragment {
 			// 2. Chain together various setter methods to set the
 			// dialog
 			// characteristics
-			builder.setMessage(R.string.zip_invalid).setTitle(R.string.zip_invalid_title);
+			builder.setMessage(R.string.record_number_invalid).setTitle(R.string.record_number_invalid_title);
 			// 3. Add an okay
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
@@ -140,10 +143,10 @@ public class DamageAssessmentFragment extends Fragment {
 	
 	private void add() {
 		// TODO put all fields into session with DatabaseManager. Send to add
-		db = new DatabaseManager(m);
-		if (!"field1".equals("")) db.sessionSet("field1name", "field1");
-		db.close();
-		SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT_ADD);
+		// db = new DatabaseManager(m);
+		// if (!"field1".equals("")) db.sessionSet("field1name", "field1");
+		// db.close();
+		// SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT_ADD);
 	}
 	
 	@Override
