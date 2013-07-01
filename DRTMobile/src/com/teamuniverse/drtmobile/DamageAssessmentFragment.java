@@ -143,6 +143,7 @@ public class DamageAssessmentFragment extends Fragment {
 	
 	private void add() {
 		// TODO put all fields into session with DatabaseManager. Send to add
+		
 		// db = new DatabaseManager(m);
 		// if (!"field1".equals("")) db.sessionSet("field1name", "field1");
 		// db.close();

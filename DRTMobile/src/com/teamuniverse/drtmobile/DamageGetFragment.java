@@ -186,7 +186,6 @@ public class DamageGetFragment extends Fragment {
 // incident.setPlumbIssueIndicator(null);
 // incident.setPMAttuid(null);
 // incident.setRecNumber(0);
-// incident.setRecNumber(0);
 // incident.setReqATTUID(null);
 // incident.setRoofsIssueClsdIndicator(null);
 // incident.setRoofsIssueIndicator(null);

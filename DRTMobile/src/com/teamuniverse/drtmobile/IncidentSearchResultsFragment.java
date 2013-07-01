@@ -63,7 +63,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 	
 	ArrayList<Incident>	results	= null;
 	AlertDialog.Builder	builder	= null;
-	boolean				success	= false;
+	boolean				success	= true;
 	
 	private void search(LinearLayout containerRef) {
 		final LinearLayout container = containerRef;
@@ -81,8 +81,8 @@ public class IncidentSearchResultsFragment extends Fragment {
 					
 					try {
 						results = ws.geolocSearch(token, zip);
-						success = true;
 					} catch (TokenInvalidException e) {
+						success = false;
 						e.printStackTrace();
 					} catch (Exception e) {
 						e.printStackTrace();

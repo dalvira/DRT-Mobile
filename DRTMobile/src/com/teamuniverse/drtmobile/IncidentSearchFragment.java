@@ -1,10 +1,14 @@
 package com.teamuniverse.drtmobile;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,8 +18,13 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.att.intern.webservice.Incident;
+import com.att.intern.webservice.Webservice;
+import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
@@ -28,10 +37,18 @@ import com.teamuniverse.drtmobile.support.SectionAdder;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class IncidentSearchFragment extends Fragment {
-	private static Button	search;
-	private static EditText	zipBox;
-	private static String	zip;
-	private static Activity	m;
+	private static Button		search;
+	private static EditText		zipBox;
+	private static String		zip;
+	private Activity			m;
+	
+	private static ProgressBar	progress;
+	private static boolean		querying;
+	private Handler				handler;
+	private Button				addSample;
+	private DatabaseManager		db;
+	
+	public static int			num	= 1;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,6 +68,11 @@ public class IncidentSearchFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_incident_search, container, false);
 		LayoutSetterUpper.setup(m, view);
 		
+		progress = (ProgressBar) view.findViewById(R.id.progress);
+		querying = false;
+		handler = new Handler();
+		addSample = (Button) view.findViewById(R.id.add_sample);
+		
 		zipBox = (EditText) view.findViewById(R.id.zip_code);
 		search = (Button) view.findViewById(R.id.zip_button);
 		
@@ -69,6 +91,13 @@ public class IncidentSearchFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				search();
+			}
+		});
+		
+		addSample.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sample();
 			}
 		});
 		
@@ -105,6 +134,51 @@ public class IncidentSearchFragment extends Fragment {
 			});
 			// 4. Get the AlertDialog from create() and show it
 			builder.create().show();
+		}
+	}
+	
+	String						error	= "";
+	Hashtable<Integer, String>	validGLCs;
+	
+	protected void sample() {
+		if (!querying) {
+			querying = true;
+			progress.setVisibility(View.VISIBLE);
+			new Thread(new Runnable() {
+				public void run() {
+					db = new DatabaseManager(m);
+					String token = db.sessionGet("token");
+					db.close();
+					
+					Incident incident = new Incident();
+					incident.setGeoLoc(27685);
+					incident.setEventName("Catastrophie #" + num + "!");
+					
+					Webservice ws = new Webservice(m);
+					try {
+						validGLCs = ws.getGLCInfo();
+						ws.addIncident(token, incident);
+					} catch (TokenInvalidException e) {
+						LayoutSetterUpper.timedOut(m);
+					} catch (Exception e) {
+						error = e.getMessage();
+						e.printStackTrace();
+					}
+					handler.postDelayed(new Runnable() {
+						public void run() {
+							// Hide the progress bar
+							querying = false;
+							progress.setVisibility(View.GONE);
+							if (error.equals("")) Toast.makeText(m, "Made incident #" + num++ + " in 27685", Toast.LENGTH_SHORT).show();
+							else {
+								Enumeration<Integer> nums = validGLCs.keys();
+								while (nums.hasMoreElements())
+									Toast.makeText(m, "" + nums.nextElement(), Toast.LENGTH_SHORT).show();
+							}
+						}
+					}, 0);
+				}
+			}).start();
 		}
 	}
 	

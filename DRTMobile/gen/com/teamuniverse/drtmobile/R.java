@@ -24,7 +24,8 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080019;
+        public static final int action_settings=0x7f08001a;
+        public static final int add_sample=0x7f080016;
         public static final int attuid=0x7f08000c;
         public static final int authorization=0x7f08000b;
         public static final int damage_add=0x7f080012;
@@ -43,9 +44,9 @@ public final class R {
         public static final int logon_progress=0x7f080003;
         public static final int logon_remember_me=0x7f080005;
         public static final int progress=0x7f08000d;
-        public static final int section_detail=0x7f080018;
-        public static final int section_detail_container=0x7f080016;
-        public static final int section_list=0x7f080017;
+        public static final int section_detail=0x7f080019;
+        public static final int section_detail_container=0x7f080017;
+        public static final int section_list=0x7f080018;
         public static final int subtitle=0x7f080007;
         public static final int title=0x7f080006;
         public static final int zip_button=0x7f08000a;
