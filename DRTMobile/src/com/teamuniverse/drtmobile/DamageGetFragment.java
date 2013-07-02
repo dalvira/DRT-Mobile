@@ -34,8 +34,6 @@ public class DamageGetFragment extends Fragment {
 	private DatabaseManager		db;
 	private Activity			m;
 	
-	private Button				backButton;
-	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
@@ -62,14 +60,17 @@ public class DamageGetFragment extends Fragment {
 		db.sessionUnset("goto_tab");
 		db.close();
 		
-		backButton = (Button) view.findViewById(R.id.damage_assessment_back);
+		Button backButton = (Button) view.findViewById(R.id.damage_assessment_back);
 		backButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				db = new DatabaseManager(m);
-				db.sessionSet("get_back", "true");
+				db.sessionSet("back", "true");
+				String which = db.sessionGet("from");
+				db.sessionUnset("from");
 				db.close();
-				SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT);
+				if (which.equals("incident")) SectionListActivity.m.putSection(SectionAdder.INCIDENT_SEARCH_RESULTS);
+				else SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT);
 			}
 		});
 		

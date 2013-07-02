@@ -74,8 +74,12 @@ public class IncidentSearchFragment extends Fragment {
 		addSample = (Button) view.findViewById(R.id.add_sample);
 		
 		zipBox = (EditText) view.findViewById(R.id.zip_code);
-		search = (Button) view.findViewById(R.id.zip_button);
-		
+		db = new DatabaseManager(m);
+		if (db.sessionGet("back").equals("true")) {
+			zipBox.setText(db.sessionGet("zip"));
+			db.sessionUnset("back");
+		}
+		db.close();
 		zipBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -87,6 +91,7 @@ public class IncidentSearchFragment extends Fragment {
 			}
 		});
 		
+		search = (Button) view.findViewById(R.id.zip_button);
 		search.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

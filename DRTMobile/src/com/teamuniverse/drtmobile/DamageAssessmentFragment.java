@@ -71,9 +71,9 @@ public class DamageAssessmentFragment extends Fragment {
 		
 		db = new DatabaseManager(m);
 		String gotoAdd = db.sessionGet("goto_tab");
-		if (db.sessionGet("get_back").equals("true")) {
+		if (db.sessionGet("back").equals("true")) {
 			getRecordNumber.setText(db.sessionGet("record_number"));
-			db.sessionUnset("get_back");
+			db.sessionUnset("back");
 		}
 		db.close();
 		

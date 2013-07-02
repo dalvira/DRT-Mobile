@@ -47,4 +47,5 @@
 	<string name="damage_get_title">Report by Record Number</string>
 	<string name="record_number_invalid">Please supply a valid record number!</string>
 	<string name="record_number_invalid_title">Invalid Record Number</string>
+	<string name="default_color">Default Color</string>
 </resources>
