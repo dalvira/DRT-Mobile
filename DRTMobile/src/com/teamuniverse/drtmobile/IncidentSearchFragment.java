@@ -142,7 +142,8 @@ public class IncidentSearchFragment extends Fragment {
 		}
 	}
 	
-	String						error	= "";
+	String						error		= "";
+	String						addResult	= "";
 	Hashtable<Integer, String>	validGLCs;
 	
 	protected void sample() {
@@ -162,7 +163,7 @@ public class IncidentSearchFragment extends Fragment {
 					Webservice ws = new Webservice(m);
 					try {
 						validGLCs = ws.getGLCInfo();
-						ws.addIncident(token, incident);
+						addResult = ws.addIncident(token, incident);
 					} catch (TokenInvalidException e) {
 						LayoutSetterUpper.timedOut(m);
 					} catch (Exception e) {
@@ -174,6 +175,8 @@ public class IncidentSearchFragment extends Fragment {
 							// Hide the progress bar
 							querying = false;
 							progress.setVisibility(View.GONE);
+							// Toast.makeText(m, addResult,
+							// Toast.LENGTH_SHORT).show();
 							if (error.equals("")) Toast.makeText(m, "Made incident #" + num++ + " in 27685", Toast.LENGTH_SHORT).show();
 							else {
 								Enumeration<Integer> nums = validGLCs.keys();
