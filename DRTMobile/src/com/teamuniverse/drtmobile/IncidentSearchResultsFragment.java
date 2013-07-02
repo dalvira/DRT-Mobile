@@ -27,8 +27,8 @@ import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.SetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 
 /**
  * A fragment representing a single Section detail screen. This fragment is

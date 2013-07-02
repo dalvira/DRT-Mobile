@@ -28,8 +28,8 @@ import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.SetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 
 /**
  * A fragment representing a single Section detail screen. This fragment is
@@ -175,8 +175,7 @@ public class IncidentSearchFragment extends Fragment {
 							// Hide the progress bar
 							querying = false;
 							progress.setVisibility(View.GONE);
-							// Toast.makeText(m, addResult,
-							// Toast.LENGTH_SHORT).show();
+							Toast.makeText(m, addResult, Toast.LENGTH_SHORT).show();
 							if (error.equals("")) Toast.makeText(m, "Made incident #" + num++ + " in 27685", Toast.LENGTH_SHORT).show();
 							else {
 								Enumeration<Integer> nums = validGLCs.keys();
