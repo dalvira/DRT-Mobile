@@ -95,7 +95,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 			querying = true;
 			new Thread(new Runnable() {
 				public void run() {
-					Webservice ws = LogonActivity.ws;
+					Webservice ws = new Webservice(m);
 					
 					db = new DatabaseManager(m);
 					String token = db.sessionGet("token");

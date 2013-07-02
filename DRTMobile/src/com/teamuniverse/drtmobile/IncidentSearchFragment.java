@@ -160,7 +160,7 @@ public class IncidentSearchFragment extends Fragment {
 					incident.setGeoLoc(27685);
 					incident.setEventName("Catastrophie #" + num + "!");
 					
-					Webservice ws = LogonActivity.ws;
+					Webservice ws = new Webservice(m);
 					try {
 						validGLCs = ws.getGLCInfo();
 						addResult = ws.addIncident(token, incident);

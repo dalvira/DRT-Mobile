@@ -39,16 +39,12 @@ public class LogonActivity extends Activity {
 	private Handler				handler;
 	private Activity			me;
 	
-	public static Webservice	ws;
-	
 	public static String		authorization;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logon);
-		
-		ws = new Webservice(getApplicationContext());
 		
 		attuidEditText = (EditText) findViewById(R.id.logon_attuid);
 		passEditText = (EditText) findViewById(R.id.logon_password);
@@ -107,6 +103,8 @@ public class LogonActivity extends Activity {
 				public void run() {
 					name = attuidEditText.getText().toString();
 					pass = passEditText.getText().toString();
+					
+					Webservice ws = new Webservice(getApplicationContext());
 					loginResults = ws.login(name, pass);
 					// Use the handler to execute a Runnable on the
 					// m thread in order to have access to the

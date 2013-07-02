@@ -71,7 +71,7 @@ public class BuildingSearchResultsFragment extends Fragment {
 			querying = true;
 			new Thread(new Runnable() {
 				public void run() {
-					Webservice ws = LogonActivity.ws;
+					Webservice ws = new Webservice(m);
 					
 					DatabaseManager db = new DatabaseManager(m);
 					String token = db.sessionGet("token");
