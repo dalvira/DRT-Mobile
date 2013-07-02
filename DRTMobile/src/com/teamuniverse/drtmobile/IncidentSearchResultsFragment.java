@@ -126,7 +126,6 @@ public class IncidentSearchResultsFragment extends Fragment {
 									for (int i = 0; i < results.size(); i++) {
 										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 										
-										// TODO add each search result here
 										each = new LinearLayout(m);
 										each.setPadding(0, 4, 0, 4);
 										each.setTag(R.string.record_number, results.get(i).getRecNumber() + "");

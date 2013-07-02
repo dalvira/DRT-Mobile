@@ -19,8 +19,8 @@ import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.SetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 
 /**
  * A fragment representing a single Section detail screen. This fragment is
@@ -110,15 +110,16 @@ public class DamageGetFragment extends Fragment {
 							// Hide the progress bar
 							progress.setVisibility(View.GONE);
 							
+							TextView temp;
+							LinearLayout each;
 							if (success) {
 								if (result == null) {
-									TextView temp = new TextView(m);
+									temp = new TextView(m);
 									temp.setText(R.string.no_record);
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else {
-									// TODO add a search result here
-									TextView temp = new TextView(m);
+									temp = new TextView(m);
 									temp.setText("Hello #1");
 									container.addView(temp);
 								}
@@ -146,57 +147,3 @@ public class DamageGetFragment extends Fragment {
 		super.onPause();
 	}
 }
-
-// Incident incident = new Incident();
-// incident.setAssessNotes(null);
-// incident.setBuildingAddress(null);
-// incident.setBuildingName(null);
-// incident.setBuildingStatus(null);
-// incident.setBuildingType(null);
-// incident.setCompltnDate(null);
-// incident.setComPowerIndicator(null);
-// incident.setContactPhone(null);
-// incident.setCreLead(null);
-// incident.setDamageIndicator(null);
-// incident.setElecIssueClsdIndicator(null);
-// incident.setElecIssueIndicator(null);
-// incident.setEnvIssueClsdIndicator(null);
-// incident.setEnvIssueIndicator(null);
-// incident.setEstCapCost(0);
-// incident.setEstExpenseCost(0);
-// incident.setEventName(null);
-// incident.setFenceGateIssueClsdIndicator(null);
-// incident.setFenceGateIssueIndicator(null);
-// incident.setGenIssueClsdIndicator(null);
-// incident.setGenIssueIndicator(null);
-// incident.setGeoLoc(0);
-// incident.setGroundsIssueClsdIndicator(null);
-// incident.setGroundsIssueIndicator(null);
-// incident.setIncidentCompltnDate(null);
-// incident.setIncidentNotes(null);
-// incident.setIncidentStatus(null);
-// incident.setIncidentYear(0);
-// incident.setInitialRptDate(null);
-// incident.setMechIssueClsdIndicator(null);
-// incident.setMechIssueIndicator(null);
-// incident.setMobCOIndicator(null);
-// incident.setOnGeneratorIndicator(null);
-// incident.setOtherIssueClsdIndicator(null);
-// incident.setOtherIssueIndicator(null);
-// incident.setPlumbIssueClsdIndicator(null);
-// incident.setPlumbIssueIndicator(null);
-// incident.setPMAttuid(null);
-// incident.setRecNumber(0);
-// incident.setReqATTUID(null);
-// incident.setRoofsIssueClsdIndicator(null);
-// incident.setRoofsIssueIndicator(null);
-// incident.setSafetyIssueClsdIndicator(null);
-// incident.setSafetyIssueIndicator(null);
-// incident.setState(null);
-// incident.setStatusNotes(null);
-// incident.setStructIssueClsdIndicator(null);
-// incident.setStructIssueIndicator(null);
-// incident.setUnOccupiableIndicator(null);
-// incident.setWaterIssueClsdIndicator(null);
-// incident.setWaterIssueIndicator(null);
-// incident.setWorkReqNumber(null);

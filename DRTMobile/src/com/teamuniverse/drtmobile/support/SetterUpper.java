@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.att.intern.webservice.Incident;
 import com.teamuniverse.drtmobile.LogonActivity;
 import com.teamuniverse.drtmobile.R;
 
@@ -38,5 +39,61 @@ public class SetterUpper {
 				dialog.cancel();
 			}
 		});
+	}
+	
+	public static IncidentInfoList getIncidentContents(Incident i) {
+		// incident.getAssessNotes();
+		// incident.getBuildingAddress();
+		// incident.getBuildingName();
+		// incident.getBuildingStatus();
+		// incident.getBuildingType();
+		// incident.getCompltnDate();
+		// incident.getComPowerIndicator();
+		// incident.getContactPhone();
+		// incident.getCreLead();
+		// incident.getDamageIndicator();
+		// incident.getElecIssueClsdIndicator();
+		// incident.getElecIssueIndicator();
+		// incident.getEnvIssueClsdIndicator();
+		// incident.getEnvIssueIndicator();
+		// incident.getEstCapCost(0);
+		// incident.getEstExpenseCost(0);
+		// incident.getEventName();
+		// incident.getFenceGateIssueClsdIndicator();
+		// incident.getFenceGateIssueIndicator();
+		// incident.getGenIssueClsdIndicator();
+		// incident.getGenIssueIndicator();
+		// incident.getGeoLoc(0);
+		// incident.getGroundsIssueClsdIndicator();
+		// incident.getGroundsIssueIndicator();
+		// incident.getIncidentCompltnDate();
+		// incident.getIncidentNotes();
+		// incident.getIncidentStatus();
+		// incident.getIncidentYear(0);
+		// incident.getInitialRptDate();
+		// incident.getMechIssueClsdIndicator();
+		// incident.getMechIssueIndicator();
+		// incident.getMobCOIndicator();
+		// incident.getOnGeneratorIndicator();
+		// incident.getOtherIssueClsdIndicator();
+		// incident.getOtherIssueIndicator();
+		// incident.getPlumbIssueClsdIndicator();
+		// incident.getPlumbIssueIndicator();
+		// incident.getPMAttuid();
+		// incident.getRecNumber(0);
+		// incident.getReqATTUID();
+		// incident.getRoofsIssueClsdIndicator();
+		// incident.getRoofsIssueIndicator();
+		// incident.getSafetyIssueClsdIndicator();
+		// incident.getSafetyIssueIndicator();
+		// incident.getState();
+		// incident.getStatusNotes();
+		// incident.getStructIssueClsdIndicator();
+		// incident.getStructIssueIndicator();
+		// incident.getUnOccupiableIndicator();
+		// incident.getWaterIssueClsdIndicator();
+		// incident.getWaterIssueIndicator();
+		// incident.getWorkReqNumber();
+		return new IncidentInfoList("first", "filler");
 	}
 }
