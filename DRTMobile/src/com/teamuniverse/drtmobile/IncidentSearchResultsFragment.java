@@ -103,7 +103,6 @@ public class IncidentSearchResultsFragment extends Fragment {
 					db.close();
 					
 					try {
-						// ws.resetData();
 						results = ws.geolocSearch(token, zip);
 					} catch (TokenInvalidException e) {
 						success = false;

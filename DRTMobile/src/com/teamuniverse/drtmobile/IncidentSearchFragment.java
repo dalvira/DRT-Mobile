@@ -158,7 +158,9 @@ public class IncidentSearchFragment extends Fragment {
 					
 					Incident incident = new Incident();
 					incident.setGeoLoc(27685);
-					incident.setEventName("Catastrophie #" + num + "!");
+					incident.setEventName("Event #" + num + "!");
+					incident.setIncidentStatus("Open");
+					incident.setIncidentNotes("Sample number " + num);
 					
 					Webservice ws = new Webservice(m);
 					try {
