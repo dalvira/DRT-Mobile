@@ -139,7 +139,7 @@ public class SectionListActivity extends FragmentActivity implements
 			}
 		} else {
 			Intent detailIntent = new Intent(this, SectionDetailActivity.class);
-			detailIntent.putExtra(FRAG_ID, id);
+			detailIntent.putExtra(FRAG_ID, id + "");
 			startActivity(detailIntent);
 		}
 	}
