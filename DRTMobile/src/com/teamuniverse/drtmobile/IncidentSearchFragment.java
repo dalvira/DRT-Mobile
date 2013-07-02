@@ -28,7 +28,7 @@ import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 
 /**
@@ -66,7 +66,7 @@ public class IncidentSearchFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_incident_search, container, false);
-		LayoutSetterUpper.setup(m, view);
+		SetterUpper.setup(m, view);
 		
 		progress = (ProgressBar) view.findViewById(R.id.progress);
 		querying = false;
@@ -160,12 +160,12 @@ public class IncidentSearchFragment extends Fragment {
 					incident.setGeoLoc(27685);
 					incident.setEventName("Catastrophie #" + num + "!");
 					
-					Webservice ws = new Webservice(m);
+					Webservice ws = LogonActivity.ws;
 					try {
 						validGLCs = ws.getGLCInfo();
 						addResult = ws.addIncident(token, incident);
 					} catch (TokenInvalidException e) {
-						LayoutSetterUpper.timedOut(m);
+						SetterUpper.timedOut(m);
 					} catch (Exception e) {
 						error = e.getMessage();
 						e.printStackTrace();

@@ -19,7 +19,7 @@ import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 
 /**
@@ -50,7 +50,7 @@ public class DamageGetFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_damage_get, container, false);
-		LayoutSetterUpper.setup(m, view);
+		SetterUpper.setup(m, view);
 		
 		progress = (ProgressBar) view.findViewById(R.id.progress);
 		querying = false;
@@ -90,7 +90,7 @@ public class DamageGetFragment extends Fragment {
 			querying = true;
 			new Thread(new Runnable() {
 				public void run() {
-					Webservice ws = new Webservice(m);
+					Webservice ws = LogonActivity.ws;
 					
 					DatabaseManager db = new DatabaseManager(m);
 					String token = db.sessionGet("token");
@@ -122,7 +122,7 @@ public class DamageGetFragment extends Fragment {
 									temp.setText("Hello #1");
 									container.addView(temp);
 								}
-							} else LayoutSetterUpper.timedOut(m);
+							} else SetterUpper.timedOut(m);
 							
 						}
 					}, 0);

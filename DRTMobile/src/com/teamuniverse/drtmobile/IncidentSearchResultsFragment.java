@@ -27,7 +27,7 @@ import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 
 /**
@@ -61,7 +61,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_incident_search_results, container, false);
-		LayoutSetterUpper.setup(m, view);
+		SetterUpper.setup(m, view);
 		
 		progress = (ProgressBar) view.findViewById(R.id.progress);
 		querying = false;
@@ -95,7 +95,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 			querying = true;
 			new Thread(new Runnable() {
 				public void run() {
-					Webservice ws = new Webservice(m);
+					Webservice ws = LogonActivity.ws;
 					
 					db = new DatabaseManager(m);
 					String token = db.sessionGet("token");
@@ -190,7 +190,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 								}
 								// Hide the progress bar
 								progress.setVisibility(View.GONE);
-							} else LayoutSetterUpper.timedOut(m);
+							} else SetterUpper.timedOut(m);
 						}
 					}, 0);
 				}

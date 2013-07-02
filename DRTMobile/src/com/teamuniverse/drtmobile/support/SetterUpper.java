@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.teamuniverse.drtmobile.LogonActivity;
 import com.teamuniverse.drtmobile.R;
 
-public class LayoutSetterUpper {
+public class SetterUpper {
 	public static void setup(Activity m, View view) {
 		// Set up the attuid and authorization displayer
 		DatabaseManager db = new DatabaseManager(m);

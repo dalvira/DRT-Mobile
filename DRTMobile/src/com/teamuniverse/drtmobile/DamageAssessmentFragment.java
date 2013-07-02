@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 
 /**
@@ -53,7 +53,7 @@ public class DamageAssessmentFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_damage_assessment, container, false);
-		LayoutSetterUpper.setup(m, view);
+		SetterUpper.setup(m, view);
 		getRecordNumber = (EditText) view.findViewById(R.id.damage_get_record_number);
 		
 		tabHost = (TabHost) view.findViewById(android.R.id.tabhost);

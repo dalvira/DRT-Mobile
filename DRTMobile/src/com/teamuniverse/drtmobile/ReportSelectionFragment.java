@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
-import com.teamuniverse.drtmobile.support.LayoutSetterUpper;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 
 /**
  * A fragment representing a single Section detail screen. This fragment is
@@ -38,7 +38,7 @@ public class ReportSelectionFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_report_selection, container, false);
-		LayoutSetterUpper.setup(m, view);
+		SetterUpper.setup(m, view);
 		
 		// progress = null;
 		// querying = false;
