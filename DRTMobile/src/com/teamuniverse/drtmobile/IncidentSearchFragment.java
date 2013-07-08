@@ -147,47 +147,81 @@ public class IncidentSearchFragment extends Fragment {
 	Hashtable<Integer, String>	validGLCs;
 	
 	protected void sample() {
-		if (!querying) {
-			querying = true;
-			progress.setVisibility(View.VISIBLE);
-			new Thread(new Runnable() {
-				public void run() {
-					db = new DatabaseManager(m);
-					String token = db.sessionGet("token");
-					db.close();
-					
-					Incident incident = new Incident();
-					incident.setGeoLoc(27685);
-					incident.setEventName("Event #" + num + "!");
-					incident.setIncidentStatus("Open");
-					incident.setIncidentNotes("Sample number " + num);
-					
-					Webservice ws = new Webservice(m);
-					try {
-						validGLCs = ws.getGLCInfo();
-						addResult = ws.addIncident(token, incident);
-					} catch (TokenInvalidException e) {
-						SetterUpper.timedOut(m);
-					} catch (Exception e) {
-						error = e.getMessage();
-						e.printStackTrace();
-					}
-					handler.postDelayed(new Runnable() {
-						public void run() {
-							// Hide the progress bar
-							querying = false;
-							progress.setVisibility(View.GONE);
-							Toast.makeText(m, addResult, Toast.LENGTH_SHORT).show();
-							if (error.equals("")) Toast.makeText(m, "Made incident #" + num++ + " in 27685", Toast.LENGTH_SHORT).show();
-							else {
-								Enumeration<Integer> nums = validGLCs.keys();
-								while (nums.hasMoreElements())
-									Toast.makeText(m, "" + nums.nextElement(), Toast.LENGTH_SHORT).show();
-							}
-						}
-					}, 0);
+		zip = zipBox.getText().toString();
+		if (!zip.equals("") && zip.length() == 5 && zip.matches("[0-9]{5}") && !zip.equals("27685") && !zip.equals("74685") && !zip.equals("88534") && !zip.equals("27689") && !zip.equals("63784") && !zip.equals("78549")) {
+			// 1. Instantiate an AlertDialog.Builder with its
+			// constructor
+			AlertDialog.Builder builder = new AlertDialog.Builder(m);
+			// 2. Chain together various methods to set the dialog
+			// characteristics
+			builder.setMessage("ZIP must be one of: 27685, 74685, 88534, 27689, 63784, or 78549 to be successfully added!").setTitle("Not a eligible ZIP!");
+			// 3. Add an okay
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
 				}
-			}).start();
+			});
+			// 4. Get the AlertDialog from create() and show it
+			builder.create().show();
+		} else if (!zip.equals("") && zip.length() == 5 && zip.matches("[0-9]{5}")) {
+			final int theZip = Integer.parseInt(zip);
+			if (!querying) {
+				querying = true;
+				progress.setVisibility(View.VISIBLE);
+				new Thread(new Runnable() {
+					public void run() {
+						db = new DatabaseManager(m);
+						String token = db.sessionGet("token");
+						db.close();
+						
+						Incident incident = new Incident();
+						incident.setGeoLoc(theZip);
+						incident.setEventName("Event #" + num + "!");
+						incident.setIncidentStatus("Open");
+						incident.setIncidentNotes("Sample number " + num);
+						
+						Webservice ws = new Webservice(m);
+						try {
+							validGLCs = ws.getGLCInfo();
+							ws.addIncident(token, incident);
+						} catch (TokenInvalidException e) {
+							SetterUpper.timedOut(m);
+						} catch (Exception e) {
+							error = e.getMessage();
+							e.printStackTrace();
+						}
+						handler.postDelayed(new Runnable() {
+							public void run() {
+								// Hide the progress bar
+								querying = false;
+								progress.setVisibility(View.GONE);
+								if (error.equals("")) Toast.makeText(m, "Made incident #" + num++ + " in " + theZip, Toast.LENGTH_SHORT).show();
+								else {
+									Enumeration<Integer> nums = validGLCs.keys();
+									while (nums.hasMoreElements())
+										Toast.makeText(m, "" + nums.nextElement(), Toast.LENGTH_SHORT).show();
+								}
+							}
+						}, 0);
+					}
+				}).start();
+			}
+		} else {
+			// 1. Instantiate an AlertDialog.Builder with its constructor
+			AlertDialog.Builder builder = new AlertDialog.Builder(m);
+			// 2. Chain together various setter to set the dialog
+			// characteristics
+			builder.setMessage(R.string.zip_invalid).setTitle(R.string.zip_invalid_title);
+			// 3. Add an okay
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+			// 4. Get the AlertDialog from create() and show it
+			builder.create().show();
 		}
 	}
 	
