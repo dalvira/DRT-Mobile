@@ -44,13 +44,6 @@
 		android:maxLength="5" >
 		<requestFocus />
 	</EditText>
-	<Button
-		android:id="@+id/zip_button"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/zip_code"
-		android:layout_centerHorizontal="true"
-		android:text="@string/go" />
 	<TextView
 		android:id="@+id/authorization"
 		android:layout_width="wrap_content"
@@ -65,13 +58,6 @@
 		android:layout_alignBottom="@+id/first_divider"
 		android:layout_alignParentLeft="true"
 		android:textAppearance="?android:attr/textAppearanceSmall" />
-	<Button
-		android:id="@+id/add_sample"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"
-		android:text="Add Sample Incident" />
 	<ProgressBar
 		android:id="@+id/progress"
 		style="?android:attr/progressBarStyleLarge"
@@ -80,4 +66,27 @@
 		android:layout_above="@+id/add_sample"
 		android:layout_centerHorizontal="true"
 		android:visibility="gone" />
+	<LinearLayout
+		android:id="@+id/go_button_container"
+		style="?android:attr/buttonBarStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" >
+		<Button
+			android:id="@+id/go_button"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/go" />
+	</LinearLayout>
+	<Button
+		android:id="@+id/add_sample"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@+id/go_button_container"
+		android:layout_centerHorizontal="true"
+		android:text="Add Sample Incident"
+		tools:ignore="HardcodedText" />
 </RelativeLayout>

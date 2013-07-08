@@ -19,8 +19,8 @@ import android.widget.TextView;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.SetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 
 /**
  * A fragment representing a single Section detail screen. This fragment is
@@ -52,7 +52,7 @@ public class BuildingSearchFragment extends Fragment {
 		SetterUpper.setup(m, view);
 		
 		zipBox = (EditText) view.findViewById(R.id.zip_code);
-		search = (Button) view.findViewById(R.id.zip_button);
+		search = (Button) view.findViewById(R.id.go_button);
 		
 		zipBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override

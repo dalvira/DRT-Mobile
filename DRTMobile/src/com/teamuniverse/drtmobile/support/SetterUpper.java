@@ -21,12 +21,10 @@ public class SetterUpper {
 	
 	public static void timedOut(Activity activity) {
 		final Activity m = activity;
-		// 1. Instantiate an AlertDialog.Builder with its
-		// constructor
+		// 1. Instantiate an AlertDialog.Builder with its constructor
 		AlertDialog.Builder builder = new AlertDialog.Builder(m);
-		// 2. Chain together various setter methods to set the
-		// dialog
-		// characteristics
+		// 2. Chain together various methods to set the dialog characteristics
+		// TODO add a login in the pop-up with a custom dialog layout
 		builder.setMessage(R.string.token_invalid).setTitle(R.string.token_invalid_title);
 		// 3. Add an okay
 		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

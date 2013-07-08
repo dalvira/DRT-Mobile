@@ -91,7 +91,7 @@ public class IncidentSearchFragment extends Fragment {
 			}
 		});
 		
-		search = (Button) view.findViewById(R.id.zip_button);
+		search = (Button) view.findViewById(R.id.go_button);
 		search.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

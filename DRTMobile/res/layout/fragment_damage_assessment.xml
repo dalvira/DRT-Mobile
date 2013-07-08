@@ -106,14 +106,14 @@
 		</TabHost>
 	</ScrollView>
 	<LinearLayout
-		android:id="@+id/damage_assessment_go_container"
+		android:id="@+id/go_button_container"
 		style="?android:attr/buttonBarStyle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true" >
 		<Button
-			android:id="@+id/damage_assessment_go"
+			android:id="@+id/go_button"
 			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dip"
 			android:layout_height="wrap_content"

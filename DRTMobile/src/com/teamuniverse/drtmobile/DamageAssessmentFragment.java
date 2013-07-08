@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.SetterUpper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 
 /**
  * A fragment representing a single Section detail screen. This fragment is
@@ -80,7 +80,7 @@ public class DamageAssessmentFragment extends Fragment {
 		if (gotoAdd.equals("add")) tabHost.setCurrentTab(1);
 		else getRecordNumber.requestFocus();
 		
-		button = (Button) view.findViewById(R.id.damage_assessment_go);
+		button = (Button) view.findViewById(R.id.go_button);
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

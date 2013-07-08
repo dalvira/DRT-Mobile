@@ -127,7 +127,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 										
 										each = new LinearLayout(m);
-										each.setPadding(0, 4, 0, 4);
+										each.setPadding(0, 6, 0, 6);
 										each.setTag(R.string.record_number, results.get(i).getRecNumber() + "");
 										each.setOrientation(LinearLayout.HORIZONTAL);
 										each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
