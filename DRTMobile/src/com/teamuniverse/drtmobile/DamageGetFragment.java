@@ -121,7 +121,11 @@ public class DamageGetFragment extends Fragment {
 								} else {
 									temp = new TextView(m);
 									temp.setText("Hello #1");
-									container.addView(temp);
+									
+									each = new LinearLayout(m);
+									each.addView(temp);
+									
+									container.addView(each);
 								}
 							} else SetterUpper.timedOut(m);
 							
