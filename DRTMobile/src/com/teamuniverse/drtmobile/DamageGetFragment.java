@@ -16,13 +16,13 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.att.intern.webservice.Incident;
 import com.att.intern.webservice.Webservice;
 import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.IncidentInfo;
+import com.teamuniverse.drtmobile.support.IncidentHelper;
+import com.teamuniverse.drtmobile.support.IncidentHelper.IncidentInfo;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 import com.teamuniverse.drtmobile.support.SetterUpper;
 
@@ -86,8 +86,8 @@ public class DamageGetFragment extends Fragment {
 		return view;
 	}
 	
-	Incident	result	= null;
-	boolean		success	= false;
+	IncidentHelper	result	= null;
+	boolean			success	= false;
 	
 	private void search(LinearLayout containerRef) {
 		final LinearLayout container = containerRef;
@@ -104,7 +104,7 @@ public class DamageGetFragment extends Fragment {
 					db.close();
 					
 					try {
-						result = ws.incidByRecNum(token, recordNumber);
+						result = (IncidentHelper) ws.incidByRecNum(token, recordNumber);
 						success = true;
 					} catch (TokenInvalidException e) {
 						e.printStackTrace();
@@ -125,7 +125,7 @@ public class DamageGetFragment extends Fragment {
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else {
-									IncidentInfo[] infos = IncidentInfo.getInfos(result);
+									IncidentInfo[] infos = result.getInfos();
 									for (int i = 0; i < infos.length; i++) {
 										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 										

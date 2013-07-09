@@ -148,7 +148,7 @@ public class IncidentSearchFragment extends Fragment {
 	
 	protected void sample() {
 		zip = zipBox.getText().toString();
-		if (!zip.equals("") && zip.length() == 5 && zip.matches("[0-9]{5}") && !zip.equals("27685") && !zip.equals("74685") && !zip.equals("88534") && !zip.equals("27689") && !zip.equals("63784") && !zip.equals("78549")) {
+		if (!zip.matches("[0-9]{5}") || (!zip.equals("27685") && !zip.equals("74685") && !zip.equals("88534") && !zip.equals("27689") && !zip.equals("63784") && !zip.equals("78549"))) {
 			// 1. Instantiate an AlertDialog.Builder with its
 			// constructor
 			AlertDialog.Builder builder = new AlertDialog.Builder(m);
@@ -164,7 +164,7 @@ public class IncidentSearchFragment extends Fragment {
 			});
 			// 4. Get the AlertDialog from create() and show it
 			builder.create().show();
-		} else if (!zip.equals("") && zip.length() == 5 && zip.matches("[0-9]{5}")) {
+		} else {
 			final int theZip = Integer.parseInt(zip);
 			if (!querying) {
 				querying = true;
@@ -207,21 +207,6 @@ public class IncidentSearchFragment extends Fragment {
 					}
 				}).start();
 			}
-		} else {
-			// 1. Instantiate an AlertDialog.Builder with its constructor
-			AlertDialog.Builder builder = new AlertDialog.Builder(m);
-			// 2. Chain together various setter to set the dialog
-			// characteristics
-			builder.setMessage(R.string.zip_invalid).setTitle(R.string.zip_invalid_title);
-			// 3. Add an okay
-			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
-			// 4. Get the AlertDialog from create() and show it
-			builder.create().show();
 		}
 	}
 	

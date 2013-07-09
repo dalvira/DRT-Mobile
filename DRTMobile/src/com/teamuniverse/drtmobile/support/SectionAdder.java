@@ -46,6 +46,16 @@ public class SectionAdder {
 	public static final int[]		SECTION_PARENTS			= { 0, 1, 2, 3, 0, 1, 2, 2 };
 	public static final int[]		PARENTS_RPT_FIXER		= { 9, 9, 9, 0, 9, 9, 9, 9 };
 	
+	/**
+	 * This method facilitates dynamic fragment changing based on user input by
+	 * simplifying the initialization of different fragment types into one line
+	 * at the call location.
+	 * 
+	 * @param id
+	 *            The numerical ID of the desired fragment, as found as a final
+	 *            int of SectionAdder.
+	 * @return The fragment that will be put into the appropriate activity.
+	 */
 	public static Fragment getSection(int id) {
 		switch (id) {
 			case INCIDENT_SEARCH:
@@ -79,6 +89,15 @@ public class SectionAdder {
 	 */
 	public static Map<String, Section>	ITEM_MAP;
 	
+	/**
+	 * This method takes the current user's authorization and displays only the
+	 * relevant section options. Call this method before going to the
+	 * SectionListActivity in order to have sections listed.
+	 * 
+	 * @param authorization
+	 *            The authorization level of the current user. It should be
+	 *            either "ADM" or "RPT".
+	 */
 	public static void start(String authorization) {
 		ITEMS = new ArrayList<Section>();
 		ITEM_MAP = new HashMap<String, Section>();
@@ -89,6 +108,12 @@ public class SectionAdder {
 		} else addSection(new Section(SECTIONS_IN_LIST[3][0], SECTIONS_IN_LIST[3][1]));
 	}
 	
+	/**
+	 * Method to add a section to the mapping, in order for it to be shown in
+	 * the list.
+	 * 
+	 * @param section
+	 */
 	private static void addSection(Section section) {
 		ITEMS.add(section);
 		ITEM_MAP.put(section.id, section);
@@ -105,16 +130,25 @@ public class SectionAdder {
 		 * The first argument must be the title displayed in the section list,
 		 * the second will be an integer stored inside a String.
 		 */
-		public Section(String title, String id) {
+		private Section(String title, String id) {
 			this.id = id;
 			this.title = title;
 		}
 		
+		/**
+		 * Returns the title of the section, in order for it to display properly
+		 * in the list.
+		 */
 		@Override
 		public String toString() {
 			return title;
 		}
 		
+		/**
+		 * Returns a String containing the int id of the calling section.
+		 * 
+		 * @return The int id contained in a String.
+		 */
 		public String getId() {
 			return id;
 		}

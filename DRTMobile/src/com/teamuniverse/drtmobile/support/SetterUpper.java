@@ -10,15 +10,43 @@ import android.widget.TextView;
 import com.teamuniverse.drtmobile.LogonActivity;
 import com.teamuniverse.drtmobile.R;
 
+/**
+ * This class contains methods that help with various parts of the app. The
+ * methods allow the developer to meet particular needs multiple times without
+ * much repeated code
+ * 
+ * @author ef183v
+ * 
+ */
 public class SetterUpper {
-	public static void setup(Activity m, View view) {
+	/**
+	 * This method is to be used in the fragments that need to display the
+	 * ATTUID of the current user and the authorization level of the current
+	 * user. It fills it the TextViews by searching for the IDs that should have
+	 * been used in the XML.
+	 * 
+	 * @param activity
+	 *            The activity filled in which the TextViews need to be.
+	 * @param parent
+	 *            The view that contains the TextViews.
+	 */
+	public static void setup(Activity activity, View parent) {
 		// Set up the attuid and authorization displayer
-		DatabaseManager db = new DatabaseManager(m);
-		((TextView) view.findViewById(R.id.attuid)).setText(db.sessionGet("attuid"));
-		((TextView) view.findViewById(R.id.authorization)).setText(db.sessionGet("authorization"));
+		DatabaseManager db = new DatabaseManager(activity);
+		((TextView) parent.findViewById(R.id.attuid)).setText(db.sessionGet("attuid"));
+		((TextView) parent.findViewById(R.id.authorization)).setText(db.sessionGet("authorization"));
 		db.close();
 	}
 	
+	/**
+	 * Call this method in the InvalidTokenException catch clause of the
+	 * try-catches surrounding all instances of Webservice access. This will
+	 * display a dialog in the case of token time out that will prompt the user
+	 * to sign in again.
+	 * 
+	 * @param activity
+	 *            The activity from which the method is called.
+	 */
 	public static void timedOut(Activity activity) {
 		final Activity m = activity;
 		// 1. Instantiate an AlertDialog.Builder with its constructor

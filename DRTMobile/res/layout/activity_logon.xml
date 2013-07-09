@@ -3,52 +3,82 @@
 	android:id="@+id/logon_container"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="16dp"
-	android:paddingBottom="@dimen/activity_vertical_margin"
-	android:paddingLeft="@dimen/activity_horizontal_margin"
-	android:paddingRight="@dimen/activity_horizontal_margin"
-	android:paddingTop="@dimen/activity_vertical_margin"
 	tools:context=".LogonActivity" >
-	<EditText
-		android:id="@+id/logon_attuid"
-		android:layout_width="wrap_content"
+	<ImageView
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
 		android:layout_alignParentTop="true"
-		android:layout_centerHorizontal="true"
-		android:ems="10"
-		android:hint="@string/attuid"
-		android:inputType="textEmailAddress" >
-		<requestFocus />
-	</EditText>
-	<EditText
-		android:id="@+id/logon_password"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignLeft="@+id/logon_attuid"
-		android:layout_below="@+id/logon_attuid"
-		android:ems="10"
-		android:hint="@string/global_password"
-		android:inputType="textPassword" />
-	<ProgressBar
-		android:id="@+id/logon_progress"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignTop="@+id/logon_go"
-		android:layout_toLeftOf="@+id/logon_go"
-		android:visibility="invisible" />
-	<Button
-		android:id="@+id/logon_go"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/logon_password"
-		android:layout_centerHorizontal="true"
-		android:text="@string/go" />
-	<CheckBox
-		android:id="@+id/logon_remember_me"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/logon_progress"
-		android:layout_centerHorizontal="true"
-		android:text="@string/remember"
-		android:textSize="12sp" />
+		android:contentDescription="background"
+		android:scaleType="centerCrop"
+		android:src="@drawable/att" />
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:padding="16dp" >
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignBottom="@+id/login_box"
+			android:layout_alignLeft="@+id/login_box"
+			android:layout_alignRight="@+id/login_box"
+			android:layout_alignTop="@+id/login_box"
+			android:contentDescription="login_box_background"
+			android:scaleType="fitXY"
+			android:src="@drawable/bordered_box" />
+		<RelativeLayout
+			android:id="@+id/login_box"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="40dp"
+			android:paddingBottom="16dp"
+			android:paddingLeft="16dp"
+			android:paddingRight="16dp"
+			android:paddingTop="8dp" >
+			<EditText
+				android:id="@+id/logon_attuid"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:layout_centerHorizontal="true"
+				android:ems="10"
+				android:hint="@string/attuid"
+				android:inputType="textEmailAddress" >
+				<requestFocus />
+			</EditText>
+			<EditText
+				android:id="@+id/logon_password"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignLeft="@+id/logon_attuid"
+				android:layout_below="@+id/logon_attuid"
+				android:ems="10"
+				android:hint="@string/global_password"
+				android:inputType="textPassword" />
+			<CheckBox
+				android:id="@+id/logon_remember_me"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/logon_password"
+				android:layout_centerHorizontal="true"
+				android:text="@string/remember"
+				android:textSize="12sp" />
+			<Button
+				android:id="@+id/go_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/logon_remember_me"
+				android:layout_centerHorizontal="true"
+				android:text="@string/go" />
+			<ProgressBar
+				android:id="@+id/logon_progress"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignTop="@+id/go_button"
+				android:layout_toLeftOf="@+id/go_button"
+				android:visibility="invisible" />
+		</RelativeLayout>
+	</RelativeLayout>
 </RelativeLayout>

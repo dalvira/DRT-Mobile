@@ -71,6 +71,10 @@ public class SectionListActivity extends FragmentActivity implements
 		db.close();
 	}
 	
+	/**
+	 * This methods returns the user to the section at which the user was before
+	 * pausing, if applicable.
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -124,6 +128,17 @@ public class SectionListActivity extends FragmentActivity implements
 		}
 	}
 	
+	/**
+	 * This method dynamically puts a section in the SectionDetailActivity part
+	 * of the screen. In tablet view, it adds the section to the right side, in
+	 * phone view, it simply starts the fragment as fullscreen. Call it with a
+	 * reference to the final int of SectionAdder that refers to the desired
+	 * fragment.
+	 * 
+	 * @param id
+	 *            The integer ID of the desired fragment. This should be a
+	 *            reference to the appropriate final int of SectionAdder.
+	 */
 	public void putSection(int id) {
 		if (mTwoPane) {
 			db = new DatabaseManager(this);

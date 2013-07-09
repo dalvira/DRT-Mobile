@@ -82,7 +82,7 @@ public class BuildingSearchFragment extends Fragment {
 		imm.hideSoftInputFromWindow(zipBox.getWindowToken(), 0);
 		imm.hideSoftInputFromWindow(zipBox.getWindowToken(), 0);
 		
-		if (!zip.equals("") && zip.length() == 5 && zip.matches("[0-9]{5}")) {
+		if (zip.matches("[0-9]{5}")) {
 			DatabaseManager db = new DatabaseManager(m);
 			db.sessionSet("zip", zip);
 			db.close();

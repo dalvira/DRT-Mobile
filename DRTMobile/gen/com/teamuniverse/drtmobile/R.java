@@ -11,47 +11,53 @@ public final class R {
     public static final class attr {
     }
     public static final class dimen {
-        /**  Default screen margins, per the Android Design guidelines. 
-
+        public static final int activity_bottom_margin=0x7f040003;
+        /** 
          Customize dimensions originally defined in res/values/dimens.xml (such as
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
 	
          */
-        public static final int activity_horizontal_margin=0x7f040000;
-        public static final int activity_vertical_margin=0x7f040001;
+        public static final int activity_horizontal_margin=0x7f040004;
+        /**  Default screen margins, per the Android Design guidelines. 
+         */
+        public static final int activity_left_margin=0x7f040000;
+        public static final int activity_right_margin=0x7f040002;
+        public static final int activity_top_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int att=0x7f020000;
+        public static final int bordered_box=0x7f020001;
+        public static final int flower=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
     }
     public static final class id {
-        public static final int action_settings=0x7f08001b;
-        public static final int add_sample=0x7f080017;
-        public static final int attuid=0x7f08000b;
-        public static final int authorization=0x7f08000a;
-        public static final int back_button=0x7f080011;
-        public static final int back_button_container=0x7f08000f;
-        public static final int damage_add=0x7f080015;
-        public static final int damage_add_zip=0x7f080016;
-        public static final int damage_assessment_go_container=0x7f080012;
-        public static final int damage_get=0x7f080013;
-        public static final int damage_get_record_number=0x7f080014;
-        public static final int first_divider=0x7f080008;
-        public static final int go_button=0x7f08000d;
-        public static final int go_button_container=0x7f08000c;
-        public static final int list_container=0x7f080010;
-        public static final int logon_attuid=0x7f080001;
+        public static final int action_settings=0x7f08001a;
+        public static final int add_sample=0x7f080016;
+        public static final int attuid=0x7f08000a;
+        public static final int authorization=0x7f080009;
+        public static final int back_button=0x7f08000f;
+        public static final int back_button_container=0x7f08000e;
+        public static final int damage_add=0x7f080014;
+        public static final int damage_add_zip=0x7f080015;
+        public static final int damage_get=0x7f080012;
+        public static final int damage_get_record_number=0x7f080013;
+        public static final int first_divider=0x7f080007;
+        public static final int go_button=0x7f080005;
+        public static final int go_button_container=0x7f08000b;
+        public static final int list_container=0x7f080011;
+        public static final int login_box=0x7f080001;
+        public static final int logon_attuid=0x7f080002;
         public static final int logon_container=0x7f080000;
-        public static final int logon_go=0x7f080004;
-        public static final int logon_password=0x7f080002;
-        public static final int logon_progress=0x7f080003;
-        public static final int logon_remember_me=0x7f080005;
-        public static final int progress=0x7f08000e;
-        public static final int section_detail=0x7f08001a;
-        public static final int section_detail_container=0x7f080018;
-        public static final int section_list=0x7f080019;
-        public static final int subtitle=0x7f080007;
-        public static final int title=0x7f080006;
-        public static final int zip_code=0x7f080009;
+        public static final int logon_password=0x7f080003;
+        public static final int logon_progress=0x7f080006;
+        public static final int logon_remember_me=0x7f080004;
+        public static final int progress=0x7f080010;
+        public static final int section_detail=0x7f080019;
+        public static final int section_detail_container=0x7f080017;
+        public static final int section_list=0x7f080018;
+        public static final int subtitle=0x7f080008;
+        public static final int title=0x7f08000c;
+        public static final int zip_code=0x7f08000d;
     }
     public static final class layout {
         public static final int activity_logon=0x7f030000;

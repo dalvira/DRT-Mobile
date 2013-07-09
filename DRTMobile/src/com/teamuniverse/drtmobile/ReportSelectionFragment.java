@@ -29,12 +29,19 @@ public class ReportSelectionFragment extends Fragment {
 	public ReportSelectionFragment() {
 	}
 	
+	/**
+	 * Define the Activity object m to facilitate use later in the activity.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		m = getActivity();
 	}
 	
+	/**
+	 * Call SetterUpper.setup() to fill in the ATTUID and authorization of the
+	 * current user.
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_report_selection, container, false);
