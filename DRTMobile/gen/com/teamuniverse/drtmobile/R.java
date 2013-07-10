@@ -31,7 +31,7 @@ public final class R {
         public static final int ic_launcher=0x7f020002;
     }
     public static final class id {
-        public static final int action_settings=0x7f08001a;
+        public static final int action_settings=0x7f08001b;
         public static final int add_sample=0x7f080016;
         public static final int attuid=0x7f08000a;
         public static final int authorization=0x7f080009;
@@ -52,10 +52,11 @@ public final class R {
         public static final int logon_progress=0x7f080006;
         public static final int logon_remember_me=0x7f080004;
         public static final int progress=0x7f08000e;
-        public static final int section_detail=0x7f080019;
-        public static final int section_detail_container=0x7f080017;
-        public static final int section_list=0x7f080018;
+        public static final int section_detail=0x7f08001a;
+        public static final int section_detail_container=0x7f080018;
+        public static final int section_list=0x7f080019;
         public static final int subtitle=0x7f080008;
+        public static final int time_out=0x7f080017;
         public static final int title=0x7f08000d;
         public static final int zip_code=0x7f080011;
     }
@@ -91,6 +92,7 @@ public final class R {
         public static final int setup_activity_section_twopane=0x7f03000d;
         public static final int setup_fragment_section_detail=0x7f03000e;
         public static final int setup_section_detail_catalyst=0x7f03000f;
+        public static final int timed_out_dialog=0x7f030010;
     }
     public static final class menu {
         public static final int building_search_result=0x7f070000;
@@ -106,33 +108,35 @@ public final class R {
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
-        public static final int add=0x7f05001f;
+        public static final int add=0x7f05001e;
         public static final int app_name=0x7f050000;
         public static final int attuid=0x7f05000d;
-        public static final int back=0x7f050024;
-        public static final int building_title=0x7f05001c;
-        public static final int damage_add_title=0x7f050029;
-        public static final int damage_assessment_title=0x7f050019;
-        public static final int damage_get_title=0x7f050025;
-        public static final int damage_update_title=0x7f05002b;
-        public static final int default_color=0x7f050028;
-        public static final int get=0x7f05001e;
+        public static final int back=0x7f050023;
+        public static final int building_title=0x7f05001b;
+        public static final int cancel=0x7f05002b;
+        public static final int damage_add_title=0x7f050028;
+        public static final int damage_assessment_title=0x7f050018;
+        public static final int damage_get_title=0x7f050024;
+        public static final int damage_update_title=0x7f05002a;
+        public static final int default_color=0x7f050027;
+        public static final int get=0x7f05001d;
         public static final int global_password=0x7f05000e;
         public static final int go=0x7f05000c;
-        public static final int incident_title=0x7f05001b;
+        public static final int incident_title=0x7f05001a;
         public static final int logon_does_not_exist=0x7f050011;
         public static final int logon_does_not_exist_title=0x7f050012;
-        public static final int new_information_damage_assessment_subtitle=0x7f05002a;
-        public static final int no_record=0x7f050022;
-        public static final int no_results=0x7f050023;
+        public static final int new_information_damage_assessment_subtitle=0x7f050029;
+        public static final int no_record=0x7f050021;
+        public static final int no_results=0x7f050022;
         public static final int ok=0x7f050010;
-        public static final int record_number=0x7f050021;
-        public static final int record_number_invalid=0x7f050026;
-        public static final int record_number_invalid_title=0x7f050027;
+        public static final int record_number=0x7f050020;
+        public static final int record_number_invalid=0x7f050025;
+        public static final int record_number_invalid_title=0x7f050026;
         public static final int remember=0x7f05000f;
-        public static final int report_selection_title=0x7f05001d;
-        public static final int result_subtitle=0x7f050018;
-        public static final int title_activity_damage_get_fragment=0x7f050020;
+        public static final int report_selection_title=0x7f05001c;
+        public static final int result_subtitle=0x7f050017;
+        public static final int timed_out_title=0x7f050013;
+        public static final int title_activity_damage_get_fragment=0x7f05001f;
         public static final int title_fragment_building_search_results=0x7f050008;
         public static final int title_fragment_damage_add=0x7f05000b;
         public static final int title_fragment_damage_assessment=0x7f050006;
@@ -143,12 +147,10 @@ public final class R {
         public static final int title_fragment_zipsearch_results=0x7f050009;
         public static final int title_section_detail=0x7f050003;
         public static final int title_section_list=0x7f050002;
-        public static final int token_invalid=0x7f050013;
-        public static final int token_invalid_title=0x7f050014;
-        public static final int zip=0x7f050015;
-        public static final int zip_invalid=0x7f050016;
-        public static final int zip_invalid_title=0x7f050017;
-        public static final int zip_subtitle=0x7f05001a;
+        public static final int zip=0x7f050014;
+        public static final int zip_invalid=0x7f050015;
+        public static final int zip_invalid_title=0x7f050016;
+        public static final int zip_subtitle=0x7f050019;
     }
     public static final class style {
         /**  Base application theme, dependent on API level. This theme is replaced by AppBaseTheme from res/values-vXX/styles.xml on newer devices. 

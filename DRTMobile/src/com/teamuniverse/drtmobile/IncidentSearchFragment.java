@@ -47,11 +47,8 @@ public class IncidentSearchFragment extends Fragment {
 	private Handler				handler;
 	private DatabaseManager		db;
 	
-	/** The search button view */
-	private static Button		search;
 	private static EditText		zipBox;
 	private static String		zip;
-	private Button				addSample;
 	public static int			num	= 1;
 	
 	/**
@@ -75,7 +72,6 @@ public class IncidentSearchFragment extends Fragment {
 		progress = (ProgressBar) view.findViewById(R.id.progress);
 		querying = false;
 		handler = new Handler();
-		addSample = (Button) view.findViewById(R.id.add_sample);
 		
 		zipBox = (EditText) view.findViewById(R.id.zip_code);
 		db = new DatabaseManager(m);
@@ -95,18 +91,24 @@ public class IncidentSearchFragment extends Fragment {
 			}
 		});
 		
-		search = (Button) view.findViewById(R.id.go_button);
-		search.setOnClickListener(new View.OnClickListener() {
+		((Button) view.findViewById(R.id.go_button)).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				search();
 			}
 		});
 		
-		addSample.setOnClickListener(new View.OnClickListener() {
+		((Button) view.findViewById(R.id.add_sample)).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				sample();
+			}
+		});
+		
+		((Button) view.findViewById(R.id.time_out)).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				SetterUpper.timedOut(m);
 			}
 		});
 		

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingBottom="16dp"
+	android:paddingLeft="16dp"
+	android:paddingRight="16dp"
+	android:paddingTop="8dp" >
+	<EditText
+		android:id="@+id/logon_attuid"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:ems="10"
+		android:hint="@string/attuid"
+		android:inputType="textEmailAddress" >
+		<requestFocus />
+	</EditText>
+	<EditText
+		android:id="@+id/logon_password"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignLeft="@+id/logon_attuid"
+		android:layout_below="@+id/logon_attuid"
+		android:ems="10"
+		android:hint="@string/global_password"
+		android:inputType="textPassword" />
+	<CheckBox
+		android:id="@+id/logon_remember_me"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/logon_password"
+		android:layout_centerHorizontal="true"
+		android:text="@string/remember"
+		android:textSize="12sp" />
+	<ProgressBar
+		android:id="@+id/logon_progress"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@+id/logon_remember_me"
+		android:layout_toLeftOf="@+id/logon_remember_me"
+		android:visibility="invisible" />
+</RelativeLayout>
