@@ -36,18 +36,31 @@ import com.teamuniverse.drtmobile.ReportSelectionFragment;
  * 2. Put all of the listed sections before the subsections.
  */
 public class SectionAdder {
-	public static final int			INCIDENT_SEARCH		= 0;
-	public static final int			BUILDING_SEARCH		= 1;
-	public static final int			DAMAGE_ASSESSMENT	= 2;
-	public static final int			REPORT_SELECTION	= 3;
-	public static final int			INCIDENT_RESULTS	= 4;
-	public static final int			BUILDING_RESULTS	= 5;
-	public static final int			DAMAGE_GET			= 6;
-	public static final int			DAMAGE_ADD			= 7;
-	public static final int			DAMAGE_UPDATE		= 8;
-	public static final String[][]	SECTIONS_IN_LIST	= { { "Incident Search", INCIDENT_SEARCH + "" }, { "Building Search", BUILDING_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
-	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 3, 0, 1, 2, 2, 2 };
-	public static final int[]		PARENTS_RPT_FIXER	= { 9, 9, 9, 0, 9, 9, 9, 9, 9 };
+	public static final int				INCIDENT_SEARCH		= 0;
+	public static final int				BUILDING_SEARCH		= 1;
+	public static final int				DAMAGE_ASSESSMENT	= 2;
+	public static final int				REPORT_SELECTION	= 3;
+	public static final int				INCIDENT_RESULTS	= 4;
+	public static final int				BUILDING_RESULTS	= 5;
+	public static final int				DAMAGE_GET			= 6;
+	public static final int				DAMAGE_ADD			= 7;
+	public static final int				DAMAGE_UPDATE		= 8;
+	/** All of the sections that can be shown in the section list */
+	public static final String[][]		SECTIONS_IN_LIST	= {
+			{ "Incident Search", INCIDENT_SEARCH + "" },
+			{ "Building Search", BUILDING_SEARCH + "" },
+			{ "Damage Assessment", DAMAGE_ASSESSMENT + "" },
+			{ "Report Selection", REPORT_SELECTION + "" }	};
+	public static final int[]			SECTION_PARENTS		= { 0, 1, 2, 3, 0,
+			1, 2, 2, 2										};
+	public static final int[]			PARENTS_RPT_FIXER	= { 9, 9, 9, 0, 9,
+			9, 9, 9, 9										};
+	
+	public static AuthorizationPair[]	authorization		= {};
+	
+	/** Empty constructor to allow for dynamic starting */
+	public SectionAdder() {
+	}
 	
 	/**
 	 * This method facilitates dynamic fragment changing based on user input by
@@ -99,18 +112,27 @@ public class SectionAdder {
 	 * relevant section options. Call this method before going to the
 	 * SectionListActivity in order to have sections listed.
 	 * 
-	 * @param authorization
+	 * @param currentAuthorization
 	 *            The authorization level of the current user. It should be
 	 *            either "ADM" or "RPT".
 	 */
-	public static void start(String authorization) {
+	public void start(String currentAuthorization) {
 		ITEMS = new ArrayList<Section>();
 		ITEM_MAP = new HashMap<String, Section>();
 		
-		if (authorization.equals("ADM")) {
-			for (int i = 0; i < SECTIONS_IN_LIST.length; i++)
-				addSection(new Section(SECTIONS_IN_LIST[i][0], SECTIONS_IN_LIST[i][1]));
-		} else addSection(new Section(SECTIONS_IN_LIST[3][0], SECTIONS_IN_LIST[3][1]));
+		authorization = new AuthorizationPair[] {
+				new AuthorizationPair("ADM", new int[] { INCIDENT_SEARCH,
+						BUILDING_SEARCH, DAMAGE_ASSESSMENT, REPORT_SELECTION }),
+				new AuthorizationPair("RPT", new int[] { REPORT_SELECTION }) };
+		
+		for (int i = 0; i < authorization.length; i++) {
+			if (currentAuthorization.equals(authorization[i].getLevel())) {
+				for (int j = 0; j < authorization[i].getAllowed().length; j++) {
+					addSection(new Section(SECTIONS_IN_LIST[authorization[i].getAllowed()[j]][0], SECTIONS_IN_LIST[authorization[i].getAllowed()[j]][1]));
+				}
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -128,7 +150,9 @@ public class SectionAdder {
 	 * A section that points to the respective fragment.
 	 */
 	public static class Section {
+		/** The id that will correspond to the Section's id */
 		private String	id;
+		/** The title that will be shown in the section list */
 		private String	title;
 		
 		/***
@@ -156,6 +180,24 @@ public class SectionAdder {
 		 */
 		public String getId() {
 			return id;
+		}
+	}
+	
+	private class AuthorizationPair {
+		String	level;
+		int[]	allowed;
+		
+		private AuthorizationPair(String level, int[] allowed) {
+			this.level = level;
+			this.allowed = allowed.clone();
+		}
+		
+		private String getLevel() {
+			return level;
+		}
+		
+		private int[] getAllowed() {
+			return allowed;
 		}
 	}
 }

@@ -30,7 +30,8 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class DamageAssessmentFragment extends Fragment {
-	private Activity		m;
+	/** The shortcut to the current activity */
+	private static Activity	m;
 	private DatabaseManager	db;
 	
 	private EditText		getRecordNumber;

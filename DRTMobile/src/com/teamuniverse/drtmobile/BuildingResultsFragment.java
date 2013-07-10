@@ -28,10 +28,14 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class BuildingResultsFragment extends Fragment {
+	/** The shortcut to the current activity */
+	private static Activity		m;
+	/** The progress bar that is shown to indicate background processes */
 	private static ProgressBar	progress;
+	/** A boolean that will stop many clicks from starting a bunch of threads */
 	private static boolean		querying;
+	/** The handler that will allow the multi-threading */
 	private Handler				handler;
-	private Activity			m;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the

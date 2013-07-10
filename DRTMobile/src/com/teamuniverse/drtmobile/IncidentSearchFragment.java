@@ -37,17 +37,21 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class IncidentSearchFragment extends Fragment {
+	/** The shortcut to the current activity */
+	private static Activity		m;
+	/** The progress bar that is shown to indicate background processes */
+	private static ProgressBar	progress;
+	/** A boolean that will stop many clicks from starting a bunch of threads */
+	private static boolean		querying;
+	/** The handler that will allow the multi-threading */
+	private Handler				handler;
+	private DatabaseManager		db;
+	
+	/** The search button view */
 	private static Button		search;
 	private static EditText		zipBox;
 	private static String		zip;
-	private Activity			m;
-	
-	private static ProgressBar	progress;
-	private static boolean		querying;
-	private Handler				handler;
 	private Button				addSample;
-	private DatabaseManager		db;
-	
 	public static int			num	= 1;
 	
 	/**

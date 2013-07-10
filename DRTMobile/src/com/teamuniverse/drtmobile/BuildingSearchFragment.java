@@ -28,10 +28,12 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class BuildingSearchFragment extends Fragment {
+	/** The shortcut to the current activity */
+	private static Activity	m;
+	
 	private static Button	search;
 	private static EditText	zipBox;
 	private static String	zip;
-	private static Activity	m;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the

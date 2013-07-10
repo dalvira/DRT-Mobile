@@ -10,22 +10,34 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseManager extends SQLiteOpenHelper {
-	/* Our database variables */
-	private static final String	DATABASE_NAME			= "DisasterReporter";
-	private static final int	DATABASE_VERSION		= 1;
-	/* Our tables and fields */
-	public static final String	INFO_TABLE				= "saved_info";
-	public static final String	SETTINGS_TABLE			= "saved_settings";
-	public static final String	SESSION_VARIABLES_TABLE	= "session_variables";
+	/** The name of our database, named after the application. */
+	private static final String		DATABASE_NAME			= "DRTMobile";
+	/** The database version, use this to update the database structure. */
+	private static final int		DATABASE_VERSION		= 1;
 	
-	// private static final String PAGE = "relevant_page";
-	private static final String	TYPE					= "record_type";
-	private static final String	CONTENTS				= "record_content";
-	private static final String	ID						= "id";
+	/* Table names!! */
+	/** The table to store persistent String information. */
+	public static final String		INFO_TABLE				= "saved_info";
+	/** The table to store persistent boolean data. */
+	public static final String		SETTINGS_TABLE			= "saved_settings";
+	/** The table to store data to be forgotten at the end of each session. */
+	public static final String		SESSION_VARIABLES_TABLE	= "session_variables";
+	/** All of the tables in a String[]. */
+	public static final String[]	TABLES					= { INFO_TABLE,
+			SETTINGS_TABLE, SESSION_VARIABLES_TABLE		};
 	
-	public static String		UNIQUE_INFO				= "attuid";
+	/* All of our fields!! */
+	/** The first field. This one can often be non-unique among records. */
+	private static final String		TYPE					= "record_type";
+	/** The content bound to a specific type when entered into database. */
+	private static final String		CONTENTS				= "record_content";
+	/** The primary key for tables where the type can be repeated. */
+	private static final String		ID						= "id";
 	
-	// constructor
+	/** The types for which there can be only one record in the info table. */
+	public static String[]			UNIQUE_INFO				= { "attuid" };
+	
+	/** Construct a new DatabaseManager object to access the database. */
 	public DatabaseManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -37,17 +49,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// Build the Info table
-		String create_saved_info = "CREATE TABLE " + INFO_TABLE + "(" + TYPE + " TEXT," + CONTENTS + " TEXT" + ", " + ID + " INTEGER NOT NULL PRIMARY KEY autoincrement)";
+		String create_saved_info = "CREATE TABLE IF NOT EXISTS " + INFO_TABLE + "(" + TYPE + " TEXT," + CONTENTS + " TEXT" + ", " + ID + " INTEGER NOT NULL PRIMARY KEY autoincrement)";
 		// Execute the query
 		db.execSQL(create_saved_info);
 		
 		// Build the Settings table
-		String create_saved_settings = "CREATE TABLE " + SETTINGS_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
+		String create_saved_settings = "CREATE TABLE IF NOT EXISTS " + SETTINGS_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
 		// Execute the query
 		db.execSQL(create_saved_settings);
 		
 		// Build the Session variable table
-		String create_session_variables = "CREATE TABLE " + SESSION_VARIABLES_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
+		String create_session_variables = "CREATE TABLE IF NOT EXISTS " + SESSION_VARIABLES_TABLE + "(" + TYPE + " TEXT PRIMARY KEY," + CONTENTS + " TEXT)";
 		// Execute the query
 		db.execSQL(create_session_variables);
 	}
@@ -71,8 +83,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	 * type.
 	 * 
 	 * @param type
+	 *            The type to be matched to the records, the match of which will
+	 *            be returned.
 	 * @return A String[] with all of the contents of the records
-	 *         which have types matching the supplied type
+	 *         which have types matching the supplied type.
 	 */
 	public String[] getInfoByType(String type) {
 		ArrayList<String> temp_array = new ArrayList<String>();
@@ -100,12 +114,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	}
 	
 	/**
-	 * Method to get information in the table that matches the supplied info
-	 * type.
+	 * Method to get the first information in the table that matches the
+	 * supplied info type.
 	 * 
 	 * @param type
-	 * @return A String with the first of the contents of the records which have
-	 *         types matching the supplied type
+	 *            The type that will be used to find the returned match.
+	 * @return A String with the first of the contents of the records which has
+	 *         type matching the supplied type
 	 */
 	public String getFirstInfoOfType(String type) {
 		String match = "";
@@ -129,28 +144,25 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	
 	/**
 	 * Add a record to the table with type and contents as supplied. Duplicates
-	 * will not be added, and adding a display name when one is already saved
-	 * will result in an overwrite.
+	 * will not be added, and adding a field designated in UNIQUE_INFO when one
+	 * is already saved will result in an overwrite.
 	 * 
 	 * @param type
-	 *            The type of info to be inserted. This should be either
-	 *            "location", "email", or "display_name"
+	 *            The type of info to be inserted.
 	 * @param contents
-	 *            The info that is being inserted as the supplied type. Location
-	 *            should be entered as "latitude longitude", email should be
-	 *            entered as "address@host.suffix", and display name should be
-	 *            entered as "name". Only one display name can be added at a
-	 *            time
+	 *            The info that is being inserted as the supplied type.
 	 */
 	public void addInfo(String type, String contents) {
 		String[] matches = getInfoByType(type);
 		
 		if (contents.equals("")) return;
-		else if (type.equals(UNIQUE_INFO)) {
-			if (matches.length > 0) removeInfo(type, null);
-		} else {
-			for (int i = 0; i < matches.length; i++) {
-				if (matches[i].equals(contents)) return;
+		else for (int i = 0; i < UNIQUE_INFO.length; i++) {
+			if (type.equals(UNIQUE_INFO[i])) {
+				if (matches.length > 0) removeInfo(type, null);
+			} else {
+				for (int j = 0; j < matches.length; j++) {
+					if (matches[j].equals(contents)) return;
+				}
 			}
 		}
 		
@@ -166,6 +178,15 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		db.close();
 	}
 	
+	/**
+	 * Removes an info of the supplied type and contents. Only infos for whom
+	 * the information is known can be removed.
+	 * 
+	 * @param type
+	 *            The type to remove.
+	 * @param contents
+	 *            The contents of the field to be removed.
+	 */
 	public void removeInfo(String type, String contents) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		String values = TYPE + "=\"" + type + "\"";
@@ -320,21 +341,27 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	 *            The name of the table all of whose values will be deleted. Use
 	 *            carefully!
 	 */
-	public void clearTable(String which) throws SQLiteException {
+	public void dropTable(String which) throws SQLiteException {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		/* clearing the table */
-		// db.execSQL("DELETE * FROM " + which);
-		db.delete(which, "", null);
+		db.execSQL("DROP TABLE IF EXISTS " + which);
+		
+		// Then we run the onCreate() method again //
+		onCreate(db);
+		
 		// close the database connection
 		db.close();
 	}
 	
-	public void clearAllTables() {
+	/**
+	 * This method clears all information and initializes all tables as new
+	 */
+	public void dropAllTables() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		db.execSQL("DROP TABLE IF EXISTS " + INFO_TABLE);
-		db.execSQL("DROP TABLE IF EXISTS " + SETTINGS_TABLE);
+		// Drop all the tables
+		for (int i = 0; i < TABLES.length; i++)
+			db.execSQL("DROP TABLE IF EXISTS " + TABLES[i]);
 		
 		// Then we run the onCreate() method again //
 		onCreate(db);

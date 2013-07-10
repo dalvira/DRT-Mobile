@@ -25,21 +25,30 @@ import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 
 public class LogonActivity extends Activity {
-	// create the reference variables for the Layout views
-	private static EditText		attuidEditText;
-	private static EditText		passEditText;
-	private static Button		goButton;
-	private static CheckBox		rememberATTUID;
-	private static String[]		loginResults;
-	private static String		name;
-	private static String		pass;
-	
+	/** The shortcut to the current activity */
+	private static Activity		m;
+	/** The progress bar that is shown to indicate background processes */
 	private static ProgressBar	progress;
+	/** A boolean that will stop many clicks from starting a bunch of threads */
 	private static boolean		querying;
+	/** The handler that will allow the multi-threading */
 	private Handler				handler;
-	private Activity			me;
 	
-	public static String		authorization;
+	// create the reference variables for the Layout views and contents
+	/** The EditText that contains the user's ATTUID */
+	private static EditText		attuidEditText;
+	/** The EditText that contains the user's password */
+	private static EditText		passEditText;
+	/** The go Button */
+	private static Button		goButton;
+	/** The remember my ATTUID CheckBox */
+	private static CheckBox		rememberATTUID;
+	/** The String[] that will hold the results of the call to Webservice */
+	private static String[]		loginResults;
+	/** The user's name, taken from attuidEditText */
+	private static String		name;
+	/** The user's password, taken from passEditText */
+	private static String		pass;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +63,7 @@ public class LogonActivity extends Activity {
 		progress = (ProgressBar) findViewById(R.id.logon_progress);
 		querying = false;
 		handler = new Handler();
-		me = this;
+		m = this;
 		
 		DatabaseManager db = new DatabaseManager(this);
 		db.sessionUnset();
@@ -66,6 +75,7 @@ public class LogonActivity extends Activity {
 		}
 		db.close();
 		
+		/* This sets the listener for the go button, which calls logon() */
 		goButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -73,14 +83,17 @@ public class LogonActivity extends Activity {
 			}
 		});
 		
+		/*
+		 * This sets the editor listener for passEditText, which clicks the go
+		 * button when enter is pressed
+		 */
 		passEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
 					goButton.performClick();
 					return true;
-				}
-				return false;
+				} else return false;
 			}
 		});
 	}
@@ -121,7 +134,7 @@ public class LogonActivity extends Activity {
 									if (loginResults[2].equals("rcFailure")) {
 										// 1. Instantiate an AlertDialog.Builder
 										// with its constructor
-										AlertDialog.Builder builder = new AlertDialog.Builder(me);
+										AlertDialog.Builder builder = new AlertDialog.Builder(m);
 										// 2. Chain together various setter
 										// methods
 										// to set the dialog
@@ -143,17 +156,16 @@ public class LogonActivity extends Activity {
 									
 									if (loginResults[0] != null) {
 										// Store session variables
-										DatabaseManager db = new DatabaseManager(me);
+										DatabaseManager db = new DatabaseManager(m);
 										db.sessionSet("token", loginResults[0]);
 										db.sessionSet("authorization", loginResults[1]);
 										db.sessionSet("attuid", name);
 										db.close();
 										
-										authorization = loginResults[1];
-										SectionAdder.start(authorization);
+										new SectionAdder().start(loginResults[1]);
 										
 										Intent detailIntent;
-										detailIntent = new Intent(me, SectionListActivity.class);
+										detailIntent = new Intent(m, SectionListActivity.class);
 										startActivity(detailIntent);
 									}
 								}
@@ -167,6 +179,10 @@ public class LogonActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Unset all of the session variables every time the Logon screen is shown.
+	 * This ensures that the user will have to sign in again.
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -176,6 +192,10 @@ public class LogonActivity extends Activity {
 		db.close();
 	}
 	
+	/**
+	 * Put the ATTUID in the field into the MySQLite database if the remember m
+	 * CheckBox is checked, else remove any saved ATTUID
+	 */
 	@Override
 	protected void onPause() {
 		super.onPause();

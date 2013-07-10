@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.att.intern.webservice.Incident;
 import com.att.intern.webservice.Webservice;
 import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
@@ -32,11 +33,15 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class DamageGetFragment extends Fragment {
+	/** The shortcut to the current activity */
+	private static Activity		m;
+	/** The progress bar that is shown to indicate background processes */
 	private static ProgressBar	progress;
+	/** A boolean that will stop many clicks from starting a bunch of threads */
 	private static boolean		querying;
+	/** The handler that will allow the multi-threading */
 	private Handler				handler;
 	private DatabaseManager		db;
-	private Activity			m;
 	
 	private final int			COLUMNS	= 2;
 	
@@ -86,8 +91,8 @@ public class DamageGetFragment extends Fragment {
 		return view;
 	}
 	
-	IncidentHelper	result	= null;
-	boolean			success	= false;
+	Incident	result	= null;
+	boolean		success	= false;
 	
 	private void search(LinearLayout containerRef) {
 		final LinearLayout container = containerRef;
@@ -104,7 +109,7 @@ public class DamageGetFragment extends Fragment {
 					db.close();
 					
 					try {
-						result = (IncidentHelper) ws.incidByRecNum(token, recordNumber);
+						result = ws.incidByRecNum(token, recordNumber);
 						success = true;
 					} catch (TokenInvalidException e) {
 						e.printStackTrace();
@@ -125,7 +130,7 @@ public class DamageGetFragment extends Fragment {
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else {
-									IncidentInfo[] infos = result.getInfos();
+									IncidentInfo[] infos = new IncidentHelper().getInfos(result);
 									for (int i = 0; i < infos.length; i++) {
 										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 										
