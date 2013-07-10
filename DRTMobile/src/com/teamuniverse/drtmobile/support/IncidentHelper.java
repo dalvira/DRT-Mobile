@@ -18,13 +18,17 @@ public class IncidentHelper extends Incident {
 	 */
 	private static final long	serialVersionUID	= -4119664774967242074L;
 	
+	/** Empty constructor to do operations locally */
+	private IncidentHelper() {
+	}
+	
 	/**
 	 * The method that extracts all of the available infos from the incident
 	 * that calls it.
 	 * 
 	 * @return An IncidentInfo[] that has all of the informations.
 	 */
-	public IncidentInfo[] getInfos(Incident inc) {
+	public static IncidentInfo[] getInfos(Incident inc) {
 		boolean[] whichs = new boolean[] {
 				!(inc.getAssessNotes() == null),
 				!(inc.getBuildingAddress() == null),
@@ -86,84 +90,86 @@ public class IncidentHelper extends Incident {
 		IncidentInfo[] info = new IncidentInfo[size];
 		int index = 0, stepper = 0;
 		
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Assess Notes", inc.getAssessNotes());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Building Address", inc.getBuildingAddress());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Bulding Name", inc.getBuildingName());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Building Status", inc.getBuildingStatus());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Building Type", inc.getBuildingType());
+		final IncidentHelper me = new IncidentHelper();
 		
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Completion Date", inc.getCompltnDate());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Com Power Indicator", inc.getComPowerIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Contact Phone Number", inc.getContactPhone());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("CRE Lead", inc.getCreLead());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Damage Indicator", inc.getDamageIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Assess Notes", inc.getAssessNotes());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Building Address", inc.getBuildingAddress());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Bulding Name", inc.getBuildingName());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Building Status", inc.getBuildingStatus());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Building Type", inc.getBuildingType());
 		
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Elec Issue Closed Indicator", inc.getElecIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Elec Issue Indicator", inc.getElecIssueIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Env Issue Closed Indicator", inc.getEnvIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("EnvIssue Indicator", inc.getEnvIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Completion Date", inc.getCompltnDate());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Com Power Indicator", inc.getComPowerIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Contact Phone Number", inc.getContactPhone());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("CRE Lead", inc.getCreLead());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Damage Indicator", inc.getDamageIndicator());
+		
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Elec Issue Closed Indicator", inc.getElecIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Elec Issue Indicator", inc.getElecIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Env Issue Closed Indicator", inc.getEnvIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("EnvIssue Indicator", inc.getEnvIssueIndicator());
 		if (whichs[stepper++]) {
-			info[index++] = new IncidentInfo("Estimated Cap Cost", inc.getEstCapCost());
+			info[index++] = me.new IncidentInfo("Estimated Cap Cost", inc.getEstCapCost());
 		} // TODO int return from incident call
 		if (whichs[stepper++]) {
-			info[index++] = new IncidentInfo("Estimated Expense Cost", inc.getEstExpenseCost());
+			info[index++] = me.new IncidentInfo("Estimated Expense Cost", inc.getEstExpenseCost());
 		} // TODO int return from incident call
 		
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Event Name", inc.getEventName());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Fence Gate Issue Closed Indicator", inc.getFenceGateIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Fence Gate Issue Indicator", inc.getFenceGateIssueIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("General Issue Closed Indicator", inc.getGenIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("General Issue Indicator", inc.getGenIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Event Name", inc.getEventName());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Fence Gate Issue Closed Indicator", inc.getFenceGateIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Fence Gate Issue Indicator", inc.getFenceGateIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("General Issue Closed Indicator", inc.getGenIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("General Issue Indicator", inc.getGenIssueIndicator());
 		
 		if (whichs[stepper++]) {
-			info[index++] = new IncidentInfo("ZIP Code", inc.getGeoLoc());
+			info[index++] = me.new IncidentInfo("ZIP Code", inc.getGeoLoc());
 		} // TODO int return from incident call
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Grounds Issue Closed Indicator", inc.getGroundsIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Grounds Issue Indicator", inc.getGroundsIssueIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Incident Completion Date", inc.getIncidentCompltnDate());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Incident Notes", inc.getIncidentNotes());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Grounds Issue Closed Indicator", inc.getGroundsIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Grounds Issue Indicator", inc.getGroundsIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Incident Completion Date", inc.getIncidentCompltnDate());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Incident Notes", inc.getIncidentNotes());
 		
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Incident Status", inc.getIncidentStatus());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Incident Status", inc.getIncidentStatus());
 		if (whichs[stepper++]) {
-			info[index++] = new IncidentInfo("Incident Year", inc.getIncidentYear());
+			info[index++] = me.new IncidentInfo("Incident Year", inc.getIncidentYear());
 		} // TODO int return from incident call
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Initial Report Date", inc.getInitialRptDate());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Mechanical Issue Closed Indicator", inc.getMechIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Mechanical Issue Indicator", inc.getMechIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Initial Report Date", inc.getInitialRptDate());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Mechanical Issue Closed Indicator", inc.getMechIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Mechanical Issue Indicator", inc.getMechIssueIndicator());
 		
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Mob CO Indicator", inc.getMobCOIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("On Generator Indicator", inc.getOnGeneratorIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Other Issue Closed Indicator", inc.getOtherIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Other Issue Indicator", inc.getOtherIssueIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Plumb Issue Closed Indicator", inc.getPlumbIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Mob CO Indicator", inc.getMobCOIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("On Generator Indicator", inc.getOnGeneratorIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Other Issue Closed Indicator", inc.getOtherIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Other Issue Indicator", inc.getOtherIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Plumb Issue Closed Indicator", inc.getPlumbIssueClsdIndicator());
 		
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Plumb Issue Indicator", inc.getPlumbIssueIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("PM ATTUID", inc.getPMAttuid());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Plumb Issue Indicator", inc.getPlumbIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("PM ATTUID", inc.getPMAttuid());
 		if (whichs[stepper++]) {
-			info[index++] = new IncidentInfo("Record Number", inc.getRecNumber());
+			info[index++] = me.new IncidentInfo("Record Number", inc.getRecNumber());
 		} // TODO int return from incident call
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Req ATTUID", inc.getReqATTUID());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Roofs Issue Closed Indicator", inc.getRoofsIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Req ATTUID", inc.getReqATTUID());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Roofs Issue Closed Indicator", inc.getRoofsIssueClsdIndicator());
 		
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Roofs Issue Indicator", inc.getRoofsIssueIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Safety Issue Closed Indicator", inc.getSafetyIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Safety Issue Indicator", inc.getSafetyIssueIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("State", inc.getState());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Status Notes", inc.getStatusNotes());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Roofs Issue Indicator", inc.getRoofsIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Safety Issue Closed Indicator", inc.getSafetyIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Safety Issue Indicator", inc.getSafetyIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("State", inc.getState());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Status Notes", inc.getStatusNotes());
 		
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Structural Issue Closed Indicator", inc.getStructIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Structural Issue Indicator", inc.getStructIssueIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Unoccupiable Indicator", inc.getUnOccupiableIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Water Issue Closed Indicator", inc.getWaterIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = new IncidentInfo("Water Issue Indicator", inc.getWaterIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Structural Issue Closed Indicator", inc.getStructIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Structural Issue Indicator", inc.getStructIssueIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Unoccupiable Indicator", inc.getUnOccupiableIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Water Issue Closed Indicator", inc.getWaterIssueClsdIndicator());
+		if (whichs[stepper++]) info[index++] = me.new IncidentInfo("Water Issue Indicator", inc.getWaterIssueIndicator());
 		
-		if (whichs[stepper]) info[index++] = new IncidentInfo("Work Req Number", inc.getWorkReqNumber());
+		if (whichs[stepper]) info[index++] = me.new IncidentInfo("Work Req Number", inc.getWorkReqNumber());
 		
 		return info;
 	}
 	
 	/**
-	 * The class thet defines the object that contains each field of
+	 * The class that defines the object that contains each field of
 	 * information. The object is defined of a String key and an Object value.
 	 * 
 	 * @author ef183v

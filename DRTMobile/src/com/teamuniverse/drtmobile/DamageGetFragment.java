@@ -130,7 +130,7 @@ public class DamageGetFragment extends Fragment {
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else {
-									IncidentInfo[] infos = new IncidentHelper().getInfos(result);
+									IncidentInfo[] infos = IncidentHelper.getInfos(result);
 									for (int i = 0; i < infos.length; i++) {
 										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 										
@@ -145,6 +145,7 @@ public class DamageGetFragment extends Fragment {
 											each.setTag(R.string.default_color, "color");
 										} else each.setTag(R.string.default_color, "none");
 										
+										// TODO make update dialog!!!
 										// each.setOnTouchListener(new
 										// OnTouchListener() {
 										// @Override
