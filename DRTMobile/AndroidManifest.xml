@@ -68,7 +68,7 @@
 				android:value="com.teamuniverse.drtmobile.sectionsetup.SectionListActivity" />
 		</activity>
 		<activity
-			android:name="com.teamuniverse.drtmobile.IncidentSearchResultsFragment"
+			android:name="com.teamuniverse.drtmobile.IncidentResultsFragment"
 			android:label="@string/title_fragment_zipsearch_results"
 			android:parentActivityName="com.teamuniverse.drtmobile.IncidentSearchFragment" >
 			<meta-data
@@ -76,7 +76,7 @@
 				android:value="com.teamuniverse.drtmobile.ZIPSearchFragment" />
 		</activity>
 		<activity
-			android:name="com.teamuniverse.drtmobile.BuildingSearchResultsFragment"
+			android:name="com.teamuniverse.drtmobile.BuildingResultsFragment"
 			android:label="@string/title_fragment_building_search_results" >
 		</activity>
 		<activity

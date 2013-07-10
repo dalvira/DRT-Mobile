@@ -27,7 +27,7 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * either contained in a {@link SectionListActivity} in two-pane mode (on
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
-public class BuildingSearchResultsFragment extends Fragment {
+public class BuildingResultsFragment extends Fragment {
 	private static ProgressBar	progress;
 	private static boolean		querying;
 	private Handler				handler;
@@ -37,7 +37,7 @@ public class BuildingSearchResultsFragment extends Fragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public BuildingSearchResultsFragment() {
+	public BuildingResultsFragment() {
 	}
 	
 	@Override
@@ -48,7 +48,7 @@ public class BuildingSearchResultsFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_building_search_results, container, false);
+		View view = inflater.inflate(R.layout.fragment_building_results, container, false);
 		SetterUpper.setup(m, view);
 		
 		progress = (ProgressBar) view.findViewById(R.id.progress);

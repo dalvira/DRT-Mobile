@@ -6,7 +6,7 @@
 	android:paddingLeft="@dimen/activity_left_margin"
 	android:paddingRight="@dimen/activity_right_margin"
 	android:paddingTop="@dimen/activity_top_margin"
-	tools:context=".BuildingSearchResultsFragment" >
+	tools:context=".IncidentResultsFragment" >
 	<View
 		android:id="@+id/first_divider"
 		android:layout_width="fill_parent"
@@ -80,6 +80,4 @@
 			android:orientation="vertical" >
 		</LinearLayout>
 	</ScrollView>
-	<TextView>
-	</TextView>
 </RelativeLayout>

@@ -120,7 +120,7 @@ public class DamageAssessmentFragment extends Fragment {
 			db.sessionSet("record_number", text);
 			db.close();
 			
-			SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT_GET);
+			SectionListActivity.m.putSection(SectionAdder.DAMAGE_GET);
 		} else {
 			// 1. Instantiate an AlertDialog.Builder with its
 			// constructor
@@ -147,7 +147,7 @@ public class DamageAssessmentFragment extends Fragment {
 		// db = new DatabaseManager(m);
 		// if (!"field1".equals("")) db.sessionSet("field1name", "field1");
 		// db.close();
-		// SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT_ADD);
+		// SectionListActivity.m.putSection(SectionAdder.DAMAGE_ADD);
 	}
 	
 	@Override

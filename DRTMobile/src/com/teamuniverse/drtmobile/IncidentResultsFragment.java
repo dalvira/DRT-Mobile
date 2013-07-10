@@ -35,7 +35,7 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * either contained in a {@link SectionListActivity} in two-pane mode (on
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
-public class IncidentSearchResultsFragment extends Fragment {
+public class IncidentResultsFragment extends Fragment {
 	private static final int	COLUMNS	= 3;
 	
 	private static ProgressBar	progress;
@@ -49,7 +49,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public IncidentSearchResultsFragment() {
+	public IncidentResultsFragment() {
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_incident_search_results, container, false);
+		View view = inflater.inflate(R.layout.fragment_incident_results, container, false);
 		SetterUpper.setup(m, view);
 		
 		progress = (ProgressBar) view.findViewById(R.id.progress);
@@ -160,7 +160,7 @@ public class IncidentSearchResultsFragment extends Fragment {
 														db.sessionSet("record_number", (String) v.getTag(R.string.record_number));
 														db.sessionSet("from", "incident");
 														db.close();
-														SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT_GET);
+														SectionListActivity.m.putSection(SectionAdder.DAMAGE_GET);
 														
 														break;
 												}

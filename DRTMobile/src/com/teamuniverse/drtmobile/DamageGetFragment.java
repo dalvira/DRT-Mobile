@@ -75,7 +75,7 @@ public class DamageGetFragment extends Fragment {
 				String which = db.sessionGet("from");
 				db.sessionUnset("from");
 				db.close();
-				if (which.equals("incident")) SectionListActivity.m.putSection(SectionAdder.INCIDENT_SEARCH_RESULTS);
+				if (which.equals("incident")) SectionListActivity.m.putSection(SectionAdder.INCIDENT_RESULTS);
 				else SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT);
 			}
 		});
@@ -176,7 +176,7 @@ public class DamageGetFragment extends Fragment {
 										// v.getTag(R.string.record_number));
 										// db.sessionSet("from", "incident");
 										// db.close();
-										// SectionListActivity.m.putSection(SectionAdder.DAMAGE_ASSESSMENT_GET);
+										// SectionListActivity.m.putSection(SectionAdder.DAMAGE_GET);
 										//
 										// break;
 										// }
