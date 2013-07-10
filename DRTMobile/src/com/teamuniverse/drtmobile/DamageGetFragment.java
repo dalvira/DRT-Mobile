@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -103,7 +105,7 @@ public class DamageGetFragment extends Fragment {
 				public void run() {
 					Webservice ws = new Webservice(m);
 					
-					DatabaseManager db = new DatabaseManager(m);
+					db = new DatabaseManager(m);
 					String token = db.sessionGet("token");
 					int recordNumber = (int) Long.parseLong(db.sessionGet("record_number"));
 					db.close();
@@ -145,50 +147,31 @@ public class DamageGetFragment extends Fragment {
 											each.setTag(R.string.default_color, "color");
 										} else each.setTag(R.string.default_color, "none");
 										
-										// TODO make update dialog!!!
-										// each.setOnTouchListener(new
-										// OnTouchListener() {
-										// @Override
-										// public boolean onTouch(View v,
-										// MotionEvent event) {
-										// switch (event.getAction()) {
-										// case MotionEvent.ACTION_DOWN:
-										// v.setBackgroundColor(Color.rgb(0x33,
-										// 0xb5, 0xe5));
-										// break;
-										// case MotionEvent.ACTION_MOVE:
-										// v.setBackgroundColor(Color.rgb(0x33,
-										// 0xb5, 0xe5));
-										// break;
-										// case MotionEvent.ACTION_CANCEL:
-										// if
-										// (v.getTag(R.string.default_color).equals("color"))
-										// v.setBackgroundColor(Color.rgb(220,
-										// 220, 220));
-										// else
-										// v.setBackgroundColor(Color.TRANSPARENT);
-										// break;
-										// case MotionEvent.ACTION_UP:
-										// if
-										// (v.getTag(R.string.default_color).equals("color"))
-										// v.setBackgroundColor(Color.rgb(220,
-										// 220, 220));
-										// else
-										// v.setBackgroundColor(Color.TRANSPARENT);
-										//
-										// db = new DatabaseManager(m);
-										// db.sessionSet("record_number",
-										// (String)
-										// v.getTag(R.string.record_number));
-										// db.sessionSet("from", "incident");
-										// db.close();
-										// SectionListActivity.m.putSection(SectionAdder.DAMAGE_GET);
-										//
-										// break;
-										// }
-										// return true;
-										// }
-										// });
+										each.setOnTouchListener(new OnTouchListener() {
+											@Override
+											public boolean onTouch(View v, MotionEvent event) {
+												switch (event.getAction()) {
+													case MotionEvent.ACTION_DOWN:
+														v.setBackgroundColor(Color.rgb(0x33, 0xb5, 0xe5));
+														break;
+													case MotionEvent.ACTION_MOVE:
+														v.setBackgroundColor(Color.rgb(0x33, 0xb5, 0xe5));
+														break;
+													case MotionEvent.ACTION_CANCEL:
+														if (v.getTag(R.string.default_color).equals("color")) v.setBackgroundColor(Color.rgb(220, 220, 220));
+														else v.setBackgroundColor(Color.TRANSPARENT);
+														break;
+													case MotionEvent.ACTION_UP:
+														if (v.getTag(R.string.default_color).equals("color")) v.setBackgroundColor(Color.rgb(220, 220, 220));
+														else v.setBackgroundColor(Color.TRANSPARENT);
+														
+														// TODO add popup here
+														
+														break;
+												}
+												return true;
+											}
+										});
 										
 										for (int j = 0; j < COLUMNS; j++) {
 											temp = new TextView(m);
