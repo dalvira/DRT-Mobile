@@ -162,7 +162,7 @@ public class LogonActivity extends Activity {
 										db.sessionSet("attuid", name);
 										db.close();
 										
-										new SectionAdder().start(loginResults[1]);
+										SectionAdder.start(loginResults[1]);
 										
 										Intent detailIntent;
 										detailIntent = new Intent(m, SectionListActivity.class);
