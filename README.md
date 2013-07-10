@@ -17,7 +17,7 @@ How the classes correspond to business requirements:
 
 	IncidentSearchFragment.java	: BR-1.B, BR-1.E
 
-	IncidentResultFragment.java	: BR-1.C
+	IncidentResultsFragment.java	: BR-1.C
 
 	BuildingSearchFragment		: BR-1.D, BR-1.E
 
@@ -40,9 +40,9 @@ How business requirements correspond to classes:
 
 	BR-1.B : IncidentSearchFragment.java
 
-	BR-1.C : IncidentResultFragment.java
+	BR-1.C : IncidentResultsFragment.java
 
-	BR-1.D : BuildingSearchFragment.java, BuildingResultFragment.java
+	BR-1.D : BuildingSearchFragment.java, BuildingResultsFragment.java
 
 	BR-1.E : IncidentSearchFragment.java, BuildingSearchFragment.java
 
@@ -59,7 +59,7 @@ How the classes correspond to system requirements:
 
 	IncidentSearchFragment.java	: SR-1.F
 
-	IncidentResultFragment.java	: SR-1.F
+	IncidentResultsFragment.java	: SR-1.F
 
 	BuildingSearchFragment		: SR-1.F
 
@@ -88,7 +88,7 @@ How system requirements correspond to classes:
 
 	SR-1.E : DamageAddFragment.java
 
-	SR-1.F : IncidentSearchFragment.java, IncidentResultFragment.java, BuildingSearchFragment.java, BuildingResultFragment.java
+	SR-1.F : IncidentSearchFragment.java, IncidentResultsFragment.java, BuildingSearchFragment.java, BuildingResultsFragment.java
 
 	SR-2.A : DamageGetFragment.java, DamageUpdateFragment.java
 

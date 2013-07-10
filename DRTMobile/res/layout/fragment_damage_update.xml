@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingBottom="@dimen/activity_bottom_margin"
+	android:paddingLeft="@dimen/activity_left_margin"
+	android:paddingRight="@dimen/activity_right_margin"
+	android:paddingTop="@dimen/activity_top_margin"
+	tools:context=".DamageUpdateFragment" >
+	<View
+		android:id="@+id/first_divider"
+		android:layout_width="fill_parent"
+		android:layout_height="1dp"
+		android:layout_below="@+id/subtitle"
+		android:layout_marginBottom="16dp"
+		android:background="?android:attr/listDivider" />
+	<TextView
+		android:id="@+id/authorization"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBottom="@+id/first_divider"
+		android:layout_alignParentRight="true"
+		android:textAppearance="?android:attr/textAppearanceSmall" />
+	<TextView
+		android:id="@+id/attuid"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBottom="@+id/first_divider"
+		android:layout_alignParentLeft="true"
+		android:textAppearance="?android:attr/textAppearanceSmall" />
+	<LinearLayout
+		android:id="@+id/back_button_container"
+		style="?android:attr/buttonBarStyle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" >
+		<Button
+			android:id="@+id/back_button"
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/back" />
+	</LinearLayout>
+	<TextView
+		android:id="@+id/title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:gravity="center_horizontal"
+		android:text="@string/damage_update_title"
+		android:textAppearance="?android:attr/textAppearanceMedium" />
+	<TextView
+		android:id="@+id/subtitle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/title"
+		android:layout_centerHorizontal="true"
+		android:gravity="center_horizontal"
+		android:text="@string/new_information_damage_assessment_subtitle"
+		android:textAppearance="?android:attr/textAppearanceSmall" />
+</RelativeLayout>

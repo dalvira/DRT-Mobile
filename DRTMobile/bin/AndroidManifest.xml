@@ -83,5 +83,21 @@
 			android:name="com.teamuniverse.drtmobile.DamageGetFragment"
 			android:label="@string/title_activity_damage_get_fragment" >
 		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.DamageUpdateFragment"
+			android:label="@string/title_fragment_damage_update"
+			android:parentActivityName="com.teamuniverse.drtmobile.DamageGetFragment" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.teamuniverse.drtmobile.DamageGetFragment" />
+		</activity>
+		<activity
+			android:name="com.teamuniverse.drtmobile.DamageAddFragment"
+			android:label="@string/title_fragment_damage_add"
+			android:parentActivityName="com.teamuniverse.drtmobile.DamageAssessmentFragment" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.teamuniverse.drtmobile.DamageAssessmentFragment" />
+		</activity>
 	</application>
 </manifest>

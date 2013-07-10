@@ -9,8 +9,10 @@ import android.support.v4.app.Fragment;
 
 import com.teamuniverse.drtmobile.BuildingResultsFragment;
 import com.teamuniverse.drtmobile.BuildingSearchFragment;
+import com.teamuniverse.drtmobile.DamageAddFragment;
 import com.teamuniverse.drtmobile.DamageAssessmentFragment;
 import com.teamuniverse.drtmobile.DamageGetFragment;
+import com.teamuniverse.drtmobile.DamageUpdateFragment;
 import com.teamuniverse.drtmobile.IncidentResultsFragment;
 import com.teamuniverse.drtmobile.IncidentSearchFragment;
 import com.teamuniverse.drtmobile.ReportSelectionFragment;
@@ -42,9 +44,10 @@ public class SectionAdder {
 	public static final int			BUILDING_RESULTS	= 5;
 	public static final int			DAMAGE_GET			= 6;
 	public static final int			DAMAGE_ADD			= 7;
+	public static final int			DAMAGE_UPDATE		= 8;
 	public static final String[][]	SECTIONS_IN_LIST	= { { "Incident Search", INCIDENT_SEARCH + "" }, { "Building Search", BUILDING_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
-	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 3, 0, 1, 2, 2 };
-	public static final int[]		PARENTS_RPT_FIXER	= { 9, 9, 9, 0, 9, 9, 9, 9 };
+	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 3, 0, 1, 2, 2, 2 };
+	public static final int[]		PARENTS_RPT_FIXER	= { 9, 9, 9, 0, 9, 9, 9, 9, 9 };
 	
 	/**
 	 * This method facilitates dynamic fragment changing based on user input by
@@ -72,8 +75,10 @@ public class SectionAdder {
 				return new BuildingResultsFragment();
 			case DAMAGE_GET:
 				return new DamageGetFragment();
-				// case DAMAGE_ADD:
-				// return new DamageAddFragment();
+			case DAMAGE_ADD:
+				return new DamageAddFragment();
+			case DAMAGE_UPDATE:
+				return new DamageUpdateFragment();
 			default:
 				return new IncidentSearchFragment();
 		}

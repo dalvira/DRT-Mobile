@@ -16,14 +16,14 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * either contained in a {@link SectionListActivity} in two-pane mode (on
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
-public class ReportSelectionFragment extends Fragment {
+public class DamageAddFragment extends Fragment {
 	private Activity	m;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public ReportSelectionFragment() {
+	public DamageAddFragment() {
 	}
 	
 	/**
