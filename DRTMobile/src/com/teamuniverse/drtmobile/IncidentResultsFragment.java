@@ -102,7 +102,7 @@ public class IncidentResultsFragment extends Fragment {
 					
 					db = new DatabaseManager(m);
 					String token = db.sessionGet("token");
-					int zip = Integer.parseInt(db.sessionGet("zip"));
+					int zip = (int) Long.parseLong(db.sessionGet("zip"));
 					db.close();
 					
 					try {
@@ -189,9 +189,9 @@ public class IncidentResultsFragment extends Fragment {
 										container.addView(each);
 									}
 								}
-								// Hide the progress bar
-								progress.setVisibility(View.GONE);
 							} else SetterUpper.timedOut(m);
+							// Hide the progress bar
+							progress.setVisibility(View.GONE);
 						}
 					}, 0);
 				}

@@ -137,55 +137,63 @@ public class DamageGetFragment extends Fragment {
 										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 										
 										each = new LinearLayout(m);
-										each.setPadding(0, 4, 0, 4);
+										each.setPadding(0, 6, 0, 6);
 										each.setOrientation(LinearLayout.HORIZONTAL);
 										each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-										// each.setClickable(true);
-										
-										if (i % 2 == 1) {
-											each.setBackgroundColor(Color.rgb(220, 220, 220));
-											each.setTag(R.string.default_color, "color");
-										} else each.setTag(R.string.default_color, "none");
-										
-										each.setOnTouchListener(new OnTouchListener() {
-											@Override
-											public boolean onTouch(View v, MotionEvent event) {
-												switch (event.getAction()) {
-													case MotionEvent.ACTION_DOWN:
-														v.setBackgroundColor(Color.rgb(0x33, 0xb5, 0xe5));
-														break;
-													case MotionEvent.ACTION_MOVE:
-														v.setBackgroundColor(Color.rgb(0x33, 0xb5, 0xe5));
-														break;
-													case MotionEvent.ACTION_CANCEL:
-														if (v.getTag(R.string.default_color).equals("color")) v.setBackgroundColor(Color.rgb(220, 220, 220));
-														else v.setBackgroundColor(Color.TRANSPARENT);
-														break;
-													case MotionEvent.ACTION_UP:
-														if (v.getTag(R.string.default_color).equals("color")) v.setBackgroundColor(Color.rgb(220, 220, 220));
-														else v.setBackgroundColor(Color.TRANSPARENT);
-														
-														// TODO add popup here
-														
-														break;
-												}
-												return true;
-											}
-										});
 										
 										for (int j = 0; j < COLUMNS; j++) {
 											temp = new TextView(m);
 											temp.setGravity(Gravity.CENTER);
 											temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
-											if (j == 0) temp.setText(infos[i].getKey());
+											if (j == 0) temp.setText(infos[i].getKey().substring(7));
 											else if (j == 1) {
 												try {
 													temp.setText((String) infos[i].getValue());
 												} catch (ClassCastException e) {
 													temp.setText((Integer) infos[i].getValue() + "");
 												}
+												each.setTag(R.id.field_label, temp);
 											}
 											each.addView(temp);
+										}
+										
+										int which = Integer.parseInt(infos[i].getKey().substring(0, 2));
+										switch (which) {
+											case 38:
+												break;
+											default:
+												each.setClickable(true);
+												
+												each.setTag(R.string.edit_in_place, infos[i].getKey());
+												
+												if (i % 2 == 1) {
+													each.setBackgroundColor(Color.rgb(220, 220, 220));
+													each.setTag(R.string.default_color, "color");
+												} else each.setTag(R.string.default_color, "none");
+												
+												each.setOnTouchListener(new OnTouchListener() {
+													@Override
+													public boolean onTouch(View v, MotionEvent event) {
+														switch (event.getAction()) {
+															case MotionEvent.ACTION_DOWN:
+																v.setBackgroundColor(Color.rgb(0x33, 0xb5, 0xe5));
+																break;
+															case MotionEvent.ACTION_MOVE:
+																v.setBackgroundColor(Color.rgb(0x33, 0xb5, 0xe5));
+																break;
+															case MotionEvent.ACTION_CANCEL:
+																if (v.getTag(R.string.default_color).equals("color")) v.setBackgroundColor(Color.rgb(220, 220, 220));
+																else v.setBackgroundColor(Color.TRANSPARENT);
+																break;
+															case MotionEvent.ACTION_UP:
+																if (v.getTag(R.string.default_color).equals("color")) v.setBackgroundColor(Color.rgb(220, 220, 220));
+																else v.setBackgroundColor(Color.TRANSPARENT);
+																SetterUpper.editInPlace(m, result, (String) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
+																break;
+														}
+														return true;
+													}
+												});
 										}
 										
 										container.addView(each);

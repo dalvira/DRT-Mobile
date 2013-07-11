@@ -19,7 +19,7 @@
 	<string name="ok">OK</string>
 	<string name="logon_does_not_exist">That ATTUID was not found or does not correspond to an existing ATTUID. Your choices for testing are admin/password, report1/2pass, or report2/p@ss</string>
 	<string name="logon_does_not_exist_title">ATTUID Not Found!</string>
-	<string name="timed_out_title">Session Time Out! Log In Again:</string>
+	<string name="timed_out_title">Session Timed Out! Log In to Unlock:</string>
 	<string name="zip">ZIP Code</string>
 	<string name="zip_invalid">The provided ZIP code is not valid! The ZIP must be five digits.</string>
 	<string name="zip_invalid_title">Invalid ZIP!</string>
@@ -44,4 +44,14 @@
 	<string name="new_information_damage_assessment_subtitle">New Information for Damage Assessment</string>
 	<string name="damage_update_title">Update Damage Assessment</string>
 	<string name="cancel">Cancel</string>
+	<string name="contents">New Contents</string>
+	<string name="edit_in_place">Edit Field</string>
+	<string-array name="YON">
+		<item>Y</item>
+		<item>N</item>
+	</string-array>
+	<string-array name="OOC">
+		<item>Open</item>
+		<item>Closed</item>
+	</string-array>
 </resources>

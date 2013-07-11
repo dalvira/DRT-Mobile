@@ -171,7 +171,7 @@ public class IncidentSearchFragment extends Fragment {
 			// 4. Get the AlertDialog from create() and show it
 			builder.create().show();
 		} else {
-			final int theZip = Integer.parseInt(zip);
+			final int theZip = (int) Long.parseLong(zip);
 			if (!querying) {
 				querying = true;
 				progress.setVisibility(View.VISIBLE);

@@ -38,7 +38,7 @@
 			android:paddingRight="16dp"
 			android:paddingTop="8dp" >
 			<EditText
-				android:id="@+id/logon_attuid"
+				android:id="@+id/attuid"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_alignParentTop="true"
@@ -49,19 +49,19 @@
 				<requestFocus />
 			</EditText>
 			<EditText
-				android:id="@+id/logon_password"
+				android:id="@+id/password"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_alignLeft="@+id/logon_attuid"
-				android:layout_below="@+id/logon_attuid"
+				android:layout_alignLeft="@+id/attuid"
+				android:layout_below="@+id/attuid"
 				android:ems="10"
 				android:hint="@string/global_password"
 				android:inputType="textPassword" />
 			<CheckBox
-				android:id="@+id/logon_remember_me"
+				android:id="@+id/remember_me"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_below="@+id/logon_password"
+				android:layout_below="@+id/password"
 				android:layout_centerHorizontal="true"
 				android:text="@string/remember"
 				android:textSize="12sp" />
@@ -69,11 +69,11 @@
 				android:id="@+id/go_button"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_below="@+id/logon_remember_me"
+				android:layout_below="@+id/remember_me"
 				android:layout_centerHorizontal="true"
 				android:text="@string/go" />
 			<ProgressBar
-				android:id="@+id/logon_progress"
+				android:id="@+id/progress"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_alignTop="@+id/go_button"

@@ -42,7 +42,7 @@ public class SectionDetailActivity extends FragmentActivity {
 			// using a fragment transaction.
 			try {
 				String id = getIntent().getStringExtra(SectionListActivity.FRAG_ID);
-				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(Integer.parseInt(id))).commit();
+				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection((int) Long.parseLong(id))).commit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

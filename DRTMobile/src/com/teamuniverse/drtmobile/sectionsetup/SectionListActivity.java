@@ -88,7 +88,7 @@ public class SectionListActivity extends FragmentActivity implements
 				if (authorization.equals("ADM")) which = SectionAdder.INCIDENT_SEARCH;
 				else which = SectionAdder.REPORT_SELECTION;
 				db.sessionSet("selected_section", which + "");
-			} else which = Integer.parseInt(selected);
+			} else which = (int) Long.parseLong(selected);
 			db.close();
 			
 			try {
@@ -115,7 +115,7 @@ public class SectionListActivity extends FragmentActivity implements
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 			try {
-				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(Integer.parseInt(id))).commit();
+				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection((int) Long.parseLong(id))).commit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

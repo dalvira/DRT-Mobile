@@ -55,12 +55,12 @@ public class LogonActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logon);
 		
-		attuidEditText = (EditText) findViewById(R.id.logon_attuid);
-		passEditText = (EditText) findViewById(R.id.logon_password);
+		attuidEditText = (EditText) findViewById(R.id.attuid);
+		passEditText = (EditText) findViewById(R.id.password);
 		goButton = (Button) findViewById(R.id.go_button);
-		rememberATTUID = (CheckBox) findViewById(R.id.logon_remember_me);
+		rememberATTUID = (CheckBox) findViewById(R.id.remember_me);
 		
-		progress = (ProgressBar) findViewById(R.id.logon_progress);
+		progress = (ProgressBar) findViewById(R.id.progress);
 		querying = false;
 		handler = new Handler();
 		m = this;

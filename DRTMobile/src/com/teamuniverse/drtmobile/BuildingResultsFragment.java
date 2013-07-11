@@ -79,7 +79,7 @@ public class BuildingResultsFragment extends Fragment {
 					
 					DatabaseManager db = new DatabaseManager(m);
 					String token = db.sessionGet("token");
-					int zip = Integer.parseInt(db.sessionGet("zip"));
+					int zip = (int) Long.parseLong(db.sessionGet("zip"));
 					db.close();
 					
 					try {
