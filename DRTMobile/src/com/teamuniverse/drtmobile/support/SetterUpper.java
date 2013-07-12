@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -67,6 +69,17 @@ public class SetterUpper {
 	private static boolean	timedOutQuerying;
 	/** The String[] that will hold the results of the call to Webservice */
 	private static String[]	loginResults;
+	
+	public static void setSelected(Activity m, View v) {
+		v.setBackgroundColor(m.getResources().getColor(R.color.selected));
+	}
+	
+	public static void setUnSelected(Activity m, View v, boolean isTransparent) {
+		if (isTransparent) {
+			if (Build.FINGERPRINT.startsWith("generic")) v.setBackgroundColor(m.getResources().getColor(R.color.fake_tansparent));
+			else v.setBackgroundColor(Color.TRANSPARENT);
+		} else v.setBackgroundColor(m.getResources().getColor(R.color.unselected_gray));
+	}
 	
 	/**
 	 * Call this method in the InvalidTokenException catch clause of the
@@ -232,9 +245,9 @@ public class SetterUpper {
 	
 	public static void editInPlace(Activity activity, Incident incident, String specs, TextView theField) {
 		final Activity m = activity;
-		String midNewContents;
+		String oldContents;
 		if (!editInPlaceFilling) {
-			midNewContents = theField.getText().toString();
+			oldContents = theField.getText().toString();
 			editInPlaceFilling = true;
 			// 1. Instantiate an AlertDialog.Builder with its constructor
 			AlertDialog.Builder builder = new AlertDialog.Builder(m);
@@ -261,7 +274,7 @@ public class SetterUpper {
 				newSpin.setAdapter(adapter);
 				
 				// Set the default selected position!!!
-				if (midNewContents.equals("Y") || midNewContents.equals("Open") || midNewContents.equals("OPEN")) {
+				if (oldContents.equals("Y") || oldContents.equals("Open") || oldContents.equals("OPEN")) {
 					newSpin.setSelection(0);
 				} else newSpin.setSelection(1);
 				
@@ -283,7 +296,7 @@ public class SetterUpper {
 			} else if (type.equals("DAT")) {
 				newText.setVisibility(View.GONE);
 				newSpin.setVisibility(View.GONE);
-				newDate.init((int) Long.parseLong(midNewContents.substring(0, 4)), (int) Long.parseLong(midNewContents.substring(5, 7)) - 1, (int) Long.parseLong(midNewContents.substring(8)), new OnDateChangedListener() {
+				newDate.init((int) Long.parseLong(oldContents.substring(0, 4)), (int) Long.parseLong(oldContents.substring(5, 7)) - 1, (int) Long.parseLong(oldContents.substring(8)), new OnDateChangedListener() {
 					@Override
 					public void onDateChanged(DatePicker arg0, int y, int m, int d) {
 						newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0"
@@ -304,8 +317,8 @@ public class SetterUpper {
 				}
 				newSpin.setVisibility(View.GONE);
 				newDate.setVisibility(View.GONE);
-				if (which == 7) newText.setText(midNewContents.replaceAll("-", ""));
-				else newText.setText(midNewContents);
+				if (which == 7) newText.setText(oldContents.replaceAll("-", ""));
+				else newText.setText(oldContents);
 				if (!limit.equals("00")) {
 					InputFilter[] filters = new InputFilter[1];
 					filters[0] = new InputFilter.LengthFilter((int) Long.parseLong(limit));
@@ -352,7 +365,7 @@ public class SetterUpper {
 			
 			Button theButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 			SetterUpper me = new SetterUpper();
-			theButton.setOnClickListener(me.new EditInPlaceDialogListener(dialog, m, incident, which, progress, newText, type, theField));
+			theButton.setOnClickListener(me.new EditInPlaceDialogListener(dialog, m, incident, which, progress, newText, type, theField, oldContents));
 		}
 	}
 	
@@ -366,8 +379,9 @@ public class SetterUpper {
 		private final Handler		handler;
 		private final String		type;
 		private final TextView		theField;
+		private final String		oldContents;
 		
-		public EditInPlaceDialogListener(Dialog dialog, Activity m, Incident incident, int which, ProgressBar progress, EditText newContentsBox, String type, TextView theField) {
+		public EditInPlaceDialogListener(Dialog dialog, Activity m, Incident incident, int which, ProgressBar progress, EditText newContentsBox, String type, TextView theField, String oldContents) {
 			this.dialog = dialog;
 			this.m = m;
 			this.incident = incident;
@@ -377,9 +391,11 @@ public class SetterUpper {
 			this.handler = new Handler();
 			this.type = type;
 			this.theField = theField;
+			this.oldContents = oldContents;
 		}
 		
 		private boolean	success	= false;
+		private boolean	timed	= false;
 		
 		@Override
 		public void onClick(View v) {
@@ -412,8 +428,10 @@ public class SetterUpper {
 							ws.updateIncidentbyRecnum(token, incident);
 							success = true;
 						} catch (TokenInvalidException e) {
-							timedOut(m);
+							IncidentHelper.setFieldByLabel(incident, which, oldContents);
+							timed = true;
 						} catch (Exception e) {
+							IncidentHelper.setFieldByLabel(incident, which, oldContents);
 							e.printStackTrace();
 						}
 						
@@ -421,8 +439,10 @@ public class SetterUpper {
 						// m thread in order to have access to the
 						// UI elements.
 						handler.postDelayed(new Runnable() {
+							
 							public void run() {
 								// Hide the progress bar
+								if (timed) timedOut(m);
 								try {
 									progress.setVisibility(View.INVISIBLE);
 									editInPlaceQuerying = false;

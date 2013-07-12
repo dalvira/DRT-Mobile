@@ -192,7 +192,8 @@ public class IncidentSearchFragment extends Fragment {
 							validGLCs = ws.getGLCInfo();
 							ws.addIncident(token, incident);
 						} catch (TokenInvalidException e) {
-							SetterUpper.timedOut(m);
+							error = e.getMessage();
+							e.printStackTrace();
 						} catch (Exception e) {
 							error = e.getMessage();
 							e.printStackTrace();
@@ -204,6 +205,7 @@ public class IncidentSearchFragment extends Fragment {
 								progress.setVisibility(View.GONE);
 								if (error.equals("")) Toast.makeText(m, "Made incident #" + num++ + " in " + theZip, Toast.LENGTH_SHORT).show();
 								else {
+									SetterUpper.timedOut(m);
 									Enumeration<Integer> nums = validGLCs.keys();
 									while (nums.hasMoreElements())
 										Toast.makeText(m, "" + nums.nextElement(), Toast.LENGTH_SHORT).show();

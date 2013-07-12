@@ -11,6 +11,17 @@ Thanks for using our creation! <3
 
 ----------------------------------------------------------------------------
 
+Left to do:
+
+DamageAssessmentFragment.java - add() **
+DamageAddFragment.java
+
+ReportSelectionFragment.java ***
+Two subsections yet to be created
+	CRE report selection
+	Admin can report selection
+
+
 How the classes correspond to business requirements:
 
 	LogonActivity.java		: BR-1.A

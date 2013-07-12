@@ -176,18 +176,18 @@ public class DamageGetFragment extends Fragment {
 													public boolean onTouch(View v, MotionEvent event) {
 														switch (event.getAction()) {
 															case MotionEvent.ACTION_DOWN:
-																v.setBackgroundColor(Color.rgb(0x33, 0xb5, 0xe5));
+																SetterUpper.setSelected(m, v);
 																break;
 															case MotionEvent.ACTION_MOVE:
-																v.setBackgroundColor(Color.rgb(0x33, 0xb5, 0xe5));
+																SetterUpper.setSelected(m, v);
 																break;
 															case MotionEvent.ACTION_CANCEL:
-																if (v.getTag(R.string.default_color).equals("color")) v.setBackgroundColor(Color.rgb(220, 220, 220));
-																else v.setBackgroundColor(Color.TRANSPARENT);
+																if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
+																else SetterUpper.setUnSelected(m, v, true);
 																break;
 															case MotionEvent.ACTION_UP:
-																if (v.getTag(R.string.default_color).equals("color")) v.setBackgroundColor(Color.rgb(220, 220, 220));
-																else v.setBackgroundColor(Color.TRANSPARENT);
+																if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
+																else SetterUpper.setUnSelected(m, v, true);
 																SetterUpper.editInPlace(m, result, (String) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
 																break;
 														}

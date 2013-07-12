@@ -34,7 +34,7 @@ public class SectionListActivity extends FragmentActivity implements
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
-	public boolean						mTwoPane;
+	public static boolean				mTwoPane;
 	public static SectionListActivity	m;
 	
 	private DatabaseManager				db;

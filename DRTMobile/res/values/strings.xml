@@ -54,4 +54,7 @@
 		<item>Open</item>
 		<item>Closed</item>
 	</string-array>
+	<color name="fake_tansparent">#fefefe</color>
+	<color name="selected">#33b5e5</color>
+	<color name="unselected_gray">#dcdcdc</color>
 </resources>
