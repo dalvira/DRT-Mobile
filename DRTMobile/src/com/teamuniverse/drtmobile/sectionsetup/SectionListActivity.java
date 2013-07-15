@@ -85,7 +85,7 @@ public class SectionListActivity extends FragmentActivity implements
 			String authorization = db.sessionGet("authorization");
 			int which;
 			if (selected.equals("")) {
-				if (authorization.equals("ADM")) which = SectionAdder.INCIDENT_SEARCH;
+				if (authorization.equals("ADM")) which = SectionAdder.INCIDENT_ZIP_SEARCH;
 				else which = SectionAdder.REPORT_SELECTION;
 				db.sessionSet("selected_section", which + "");
 			} else which = (int) Long.parseLong(selected);

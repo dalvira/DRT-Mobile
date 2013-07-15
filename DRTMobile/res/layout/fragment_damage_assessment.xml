@@ -6,7 +6,7 @@
 	android:paddingLeft="@dimen/activity_left_margin"
 	android:paddingRight="@dimen/activity_right_margin"
 	android:paddingTop="@dimen/activity_top_margin"
-	tools:context=".DamageAssessmentFragment" >
+	tools:context=".IncidentRecNumSearchFragment" >
 	<View
 		android:id="@+id/first_divider"
 		android:layout_width="fill_parent"
