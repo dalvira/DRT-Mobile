@@ -4,13 +4,11 @@
 	<string name="action_settings">Settings</string>
 	<string name="title_section_list">Sections</string>
 	<string name="title_section_detail">Section Details</string>
-	<string name="title_fragment_glc_search">GLC Search</string>
 	<string name="title_fragment_report_selection">Report Selection</string>
 	<string name="title_fragment_damage_assessment">Damage Assessment</string>
 	<string name="title_fragment_zip_search">ZIP Search</string>
 	<string name="title_fragment_building_search_results">Building Search Results</string>
 	<string name="title_fragment_zipsearch_results">ZIP Search Results</string>
-	<string name="title_fragment_damage_update">Update Damage Assessment</string>
 	<string name="title_fragment_damage_add">Add Damage Assessment</string>
 	<string name="go">Go</string>
 	<string name="attuid">ATTUID</string>
@@ -24,7 +22,7 @@
 	<string name="zip_invalid">The provided ZIP code is not valid! The ZIP must be five digits.</string>
 	<string name="zip_invalid_title">Invalid ZIP!</string>
 	<string name="result_subtitle">Search Result</string>
-	<string name="damage_assessment_title">Damage Assessment Reporting</string>
+	<string name="incident_rec_num_search_title">Find Incident by Record Number</string>
 	<string name="zip_subtitle">Enter ZIP Code to Search</string>
 	<string name="incident_title">List Incidents by ZIP Code</string>
 	<string name="building_title">Buildings w/ Incidents by ZIP Code</string>
@@ -58,4 +56,5 @@
 	<color name="selected">#33b5e5</color>
 	<color name="unselected_gray">#dcdcdc</color>
 	<string name="edit_in_place_error">Invalid Contents</string>
+	<string name="incident_rec_num_search_subtitle">Enter Record Number to Search</string>
 </resources>
