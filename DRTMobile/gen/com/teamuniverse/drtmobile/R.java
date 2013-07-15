@@ -46,15 +46,15 @@ public final class R {
         public static final int authorization=0x7f0a000d;
         public static final int back_button=0x7f0a000f;
         public static final int back_button_container=0x7f0a000e;
-        public static final int damage_add=0x7f0a0016;
-        public static final int damage_add_zip=0x7f0a0017;
-        public static final int damage_get=0x7f0a0014;
-        public static final int damage_get_record_number=0x7f0a0015;
+        public static final int damage_add=0x7f0a0014;
+        public static final int damage_add_zip=0x7f0a0015;
+        public static final int damage_get=0x7f0a0012;
+        public static final int damage_get_record_number=0x7f0a0013;
         public static final int field_label=0x7f0a0007;
         public static final int first_divider=0x7f0a000b;
         public static final int go_button=0x7f0a0005;
-        public static final int go_button_container=0x7f0a0012;
-        public static final int list_container=0x7f0a0011;
+        public static final int go_button_container=0x7f0a0011;
+        public static final int list_container=0x7f0a0016;
         public static final int login_box=0x7f0a0001;
         public static final int logon_container=0x7f0a0000;
         public static final int new_date=0x7f0a000a;
@@ -69,23 +69,21 @@ public final class R {
         public static final int subtitle=0x7f0a000c;
         public static final int time_out=0x7f0a0019;
         public static final int title=0x7f0a0010;
-        public static final int zip_code=0x7f0a0013;
+        public static final int zip_code=0x7f0a0017;
     }
     public static final class layout {
         public static final int activity_logon=0x7f030000;
         public static final int dialog_edit_in_place=0x7f030001;
         public static final int dialog_timed_out=0x7f030002;
         public static final int divider_line=0x7f030003;
-        public static final int fragment_building_results=0x7f030004;
-        public static final int fragment_building_search=0x7f030005;
-        public static final int fragment_damage_add=0x7f030006;
-        public static final int fragment_damage_assessment=0x7f030007;
-        public static final int fragment_damage_get=0x7f030008;
-        public static final int fragment_damage_update=0x7f030009;
-        public static final int fragment_incident_results=0x7f03000a;
-        public static final int fragment_incident_search=0x7f03000b;
-        public static final int fragment_report_selection=0x7f03000c;
-        public static final int setup_activity_section_detail=0x7f03000d;
+        public static final int fragment_damage_add=0x7f030004;
+        public static final int fragment_damage_assessment=0x7f030005;
+        public static final int fragment_damage_get=0x7f030006;
+        public static final int fragment_damage_update=0x7f030007;
+        public static final int fragment_incident_results=0x7f030008;
+        public static final int fragment_incident_search=0x7f030009;
+        public static final int fragment_report_selection=0x7f03000a;
+        public static final int setup_activity_section_detail=0x7f03000b;
         /** 
     Layout alias to replace the single-pane version of the layout with a
     two-pane version on Large screens.
@@ -101,22 +99,21 @@ public final class R {
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
 	
          */
-        public static final int setup_activity_section_list=0x7f03000e;
-        public static final int setup_activity_section_twopane=0x7f03000f;
-        public static final int setup_fragment_section_detail=0x7f030010;
-        public static final int setup_section_detail_catalyst=0x7f030011;
+        public static final int setup_activity_section_list=0x7f03000c;
+        public static final int setup_activity_section_twopane=0x7f03000d;
+        public static final int setup_fragment_section_detail=0x7f03000e;
+        public static final int setup_section_detail_catalyst=0x7f03000f;
     }
     public static final class menu {
-        public static final int building_search_result=0x7f090000;
-        public static final int damage_add=0x7f090001;
-        public static final int damage_assessment=0x7f090002;
-        public static final int damage_get=0x7f090003;
-        public static final int damage_update=0x7f090004;
-        public static final int glcsearch=0x7f090005;
-        public static final int logon=0x7f090006;
-        public static final int reports_selection=0x7f090007;
-        public static final int zipsearch=0x7f090008;
-        public static final int zipsearch_results=0x7f090009;
+        public static final int damage_add=0x7f090000;
+        public static final int damage_assessment=0x7f090001;
+        public static final int damage_get=0x7f090002;
+        public static final int damage_update=0x7f090003;
+        public static final int glcsearch=0x7f090004;
+        public static final int logon=0x7f090005;
+        public static final int reports_selection=0x7f090006;
+        public static final int zipsearch=0x7f090007;
+        public static final int zipsearch_results=0x7f090008;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;

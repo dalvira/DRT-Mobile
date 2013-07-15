@@ -116,6 +116,9 @@ public class LogonActivity extends Activity {
 			imm.hideSoftInputFromWindow(attuidEditText.getWindowToken(), 0);
 			querying = true;
 			progress.setVisibility(View.VISIBLE);
+			attuidEditText.setEnabled(false);
+			passEditText.setEnabled(false);
+			goButton.setEnabled(false);
 			new Thread(new Runnable() {
 				public void run() {
 					name = attuidEditText.getText().toString();
@@ -128,54 +131,68 @@ public class LogonActivity extends Activity {
 					// UI elements.
 					handler.postDelayed(new Runnable() {
 						public void run() {
-							// Hide the progress bar
-							try {
-								progress.setVisibility(View.INVISIBLE);
-								querying = false;
+							if (loginResults[0] == null) {
 								
-								if (loginResults[0] == null) {
+								if (loginResults[2].equals("rcFailure")) {
+									// 1. Instantiate an AlertDialog.Builder
+									// with its constructor
+									AlertDialog.Builder builder = new AlertDialog.Builder(m);
+									// 2. Chain together various setter
+									// methods
+									// to set the dialog
+									// characteristics
+									builder.setMessage(R.string.logon_does_not_exist).setTitle(R.string.logon_does_not_exist_title);
+									// 3. Add a yes button and a no button
+									builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialog, int id) {
+											dialog.cancel();
+										}
+									});
+									// 4. Get the AlertDialog from create()
+									AlertDialog dialog = builder.create();
+									// 5. Show the dialog
+									dialog.show();
+								} else Toast.makeText(getApplicationContext(), loginResults[2], Toast.LENGTH_SHORT).show();
+							} else {
+								
+								if (loginResults[0] != null) {
+									// Store session variables
+									DatabaseManager db = new DatabaseManager(m);
+									db.sessionSet("token", loginResults[0]);
+									db.sessionSet("authorization", loginResults[1]);
+									db.sessionSet("attuid", name);
+									db.close();
 									
-									if (loginResults[2].equals("rcFailure")) {
-										// 1. Instantiate an AlertDialog.Builder
-										// with its constructor
-										AlertDialog.Builder builder = new AlertDialog.Builder(m);
-										// 2. Chain together various setter
-										// methods
-										// to set the dialog
-										// characteristics
-										builder.setMessage(R.string.logon_does_not_exist).setTitle(R.string.logon_does_not_exist_title);
-										// 3. Add a yes button and a no button
-										builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(DialogInterface dialog, int id) {
-												dialog.cancel();
-											}
-										});
-										// 4. Get the AlertDialog from create()
-										AlertDialog dialog = builder.create();
-										// 5. Show the dialog
-										dialog.show();
-									} else Toast.makeText(getApplicationContext(), loginResults[2], Toast.LENGTH_SHORT).show();
-								} else {
+									SectionAdder.start(loginResults[1]);
 									
-									if (loginResults[0] != null) {
-										// Store session variables
-										DatabaseManager db = new DatabaseManager(m);
-										db.sessionSet("token", loginResults[0]);
-										db.sessionSet("authorization", loginResults[1]);
-										db.sessionSet("attuid", name);
-										db.close();
-										
-										SectionAdder.start(loginResults[1]);
-										
-										Intent detailIntent;
-										detailIntent = new Intent(m, SectionListActivity.class);
-										startActivity(detailIntent);
+									querying = false;
+									try {
+										// Hide the progress bar
+										progress.setVisibility(View.INVISIBLE);
+									} catch (Exception e) {
+										e.printStackTrace();
 									}
+									attuidEditText.setEnabled(true);
+									passEditText.setEnabled(true);
+									goButton.setEnabled(true);
+									
+									Intent detailIntent;
+									detailIntent = new Intent(m, SectionListActivity.class);
+									startActivity(detailIntent);
 								}
+							}
+							
+							querying = false;
+							try {
+								// Hide the progress bar
+								progress.setVisibility(View.INVISIBLE);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
+							attuidEditText.setEnabled(true);
+							passEditText.setEnabled(true);
+							goButton.setEnabled(true);
 						}
 					}, 0);
 				}

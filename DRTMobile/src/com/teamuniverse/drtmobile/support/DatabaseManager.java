@@ -23,8 +23,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	/** The table to store data to be forgotten at the end of each session. */
 	public static final String		SESSION_VARIABLES_TABLE	= "session_variables";
 	/** All of the tables in a String[]. */
-	public static final String[]	TABLES					= { INFO_TABLE,
-			SETTINGS_TABLE, SESSION_VARIABLES_TABLE		};
+	public static final String[]	TABLES					= { INFO_TABLE, SETTINGS_TABLE, SESSION_VARIABLES_TABLE };
 	
 	/* All of our fields!! */
 	/** The first field. This one can often be non-unique among records. */
@@ -179,8 +178,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	}
 	
 	/**
-	 * Removes an info of the supplied type and contents. Only infos for whom
-	 * the information is known can be removed.
+	 * Removes an info of the supplied type and contents. If null is passed as
+	 * the contents, all info of that type will be removed.
 	 * 
 	 * @param type
 	 *            The type to remove.
