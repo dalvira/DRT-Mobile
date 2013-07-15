@@ -24,6 +24,122 @@ public class IncidentHelper extends Incident {
 	private IncidentHelper() {
 	}
 	
+	public static boolean[] isSetArray(Incident inc) {
+		return new boolean[] { !(inc.getAssessNotes() == null), !(inc.getBuildingAddress() == null), !(inc.getBuildingName() == null), !(inc.getBuildingStatus() == null), !(inc.getBuildingType() == null), !(inc.getCompltnDate() == null), !(inc.getComPowerIndicator() == null), !(inc.getContactPhone() == null), !(inc.getCreLead() == null), !(inc.getDamageIndicator() == null), !(inc.getElecIssueClsdIndicator() == null), !(inc.getElecIssueIndicator() == null), !(inc.getEnvIssueClsdIndicator() == null), !(inc.getEnvIssueIndicator() == null), !(inc.getEstCapCost() == 0), !(inc.getEstExpenseCost() == 0), !(inc.getEventName() == null), !(inc.getFenceGateIssueClsdIndicator() == null), !(inc.getFenceGateIssueIndicator() == null), !(inc.getGenIssueClsdIndicator() == null), !(inc.getGenIssueIndicator() == null), !(inc.getGeoLoc() == 0), !(inc.getGroundsIssueClsdIndicator() == null), !(inc.getGroundsIssueIndicator() == null), !(inc.getIncidentCompltnDate() == null), !(inc.getIncidentNotes() == null), !(inc.getIncidentStatus() == null), !(inc.getIncidentYear() == 0), !(inc.getInitialRptDate() == null), !(inc.getMechIssueClsdIndicator() == null), !(inc.getMechIssueIndicator() == null), !(inc.getMobCOIndicator() == null), !(inc.getOnGeneratorIndicator() == null), !(inc.getOtherIssueClsdIndicator() == null), !(inc.getOtherIssueIndicator() == null), !(inc.getPlumbIssueClsdIndicator() == null), !(inc.getPlumbIssueIndicator() == null), !(inc.getPMAttuid() == null), !(inc.getRecNumber() == 0), !(inc.getReqATTUID() == null), !(inc.getRoofsIssueClsdIndicator() == null), !(inc.getRoofsIssueIndicator() == null), !(inc.getSafetyIssueClsdIndicator() == null), !(inc.getSafetyIssueIndicator() == null), !(inc.getState() == null), !(inc.getStatusNotes() == null), !(inc.getStructIssueClsdIndicator() == null), !(inc.getStructIssueIndicator() == null), !(inc.getUnOccupiableIndicator() == null), !(inc.getWaterIssueClsdIndicator() == null), !(inc.getWaterIssueIndicator() == null), !(inc.getWorkReqNumber() == null) };
+	}
+	
+	public static IncidentInfo getSingleInfo(Incident inc, int which) {
+		final IncidentHelper me = new IncidentHelper();
+		switch (which) {
+			case 0:
+				return me.new IncidentInfo("00STR00Assess Notes", inc.getAssessNotes());
+			case 1:
+				return me.new IncidentInfo("01ADR00Building Address", inc.getBuildingAddress());
+			case 2:
+				return me.new IncidentInfo("02STR00Bulding Name", inc.getBuildingName());
+			case 3:
+				return me.new IncidentInfo("03OOC00Building Status", inc.getBuildingStatus());
+			case 4:
+				return me.new IncidentInfo("04STR00Building Type", inc.getBuildingType());
+			case 5:
+				return me.new IncidentInfo("05DAT00Completion Date", inc.getCompltnDate());
+			case 6:
+				return me.new IncidentInfo("06YON00Com Power Indicator", inc.getComPowerIndicator());
+			case 7:
+				return me.new IncidentInfo("07NUM10Contact Phone Number", inc.getContactPhone());
+			case 8:
+				return me.new IncidentInfo("08STR00CRE Lead", inc.getCreLead());
+			case 9:
+				return me.new IncidentInfo("09YON00Damage Indicator", inc.getDamageIndicator());
+			case 10:
+				return me.new IncidentInfo("10YON00Elec Issue Closed Indicator", inc.getElecIssueClsdIndicator());
+			case 11:
+				return me.new IncidentInfo("11YON00Elec Issue Indicator", inc.getElecIssueIndicator());
+			case 12:
+				return me.new IncidentInfo("12YON00Env Issue Closed Indicator", inc.getEnvIssueClsdIndicator());
+			case 13:
+				return me.new IncidentInfo("13YON00EnvIssue Indicator", inc.getEnvIssueIndicator());
+			case 14:
+				return me.new IncidentInfo("14NUM00Estimated Cap Cost", inc.getEstCapCost());
+			case 15:
+				return me.new IncidentInfo("15NUM00Estimated Expense Cost", inc.getEstExpenseCost());
+			case 16:
+				return me.new IncidentInfo("16STR00Event Name", inc.getEventName());
+			case 17:
+				return me.new IncidentInfo("17YON00Fence Gate Issue Closed Indicator", inc.getFenceGateIssueClsdIndicator());
+			case 18:
+				return me.new IncidentInfo("18YON00Fence Gate Issue Indicator", inc.getFenceGateIssueIndicator());
+			case 19:
+				return me.new IncidentInfo("19YON00General Issue Closed Indicator", inc.getGenIssueClsdIndicator());
+			case 20:
+				return me.new IncidentInfo("20YON00General Issue Indicator", inc.getGenIssueIndicator());
+			case 21:
+				return me.new IncidentInfo("21NUM05ZIP Code", inc.getGeoLoc());
+			case 22:
+				return me.new IncidentInfo("22YON00Grounds Issue Closed Indicator", inc.getGroundsIssueClsdIndicator());
+			case 23:
+				return me.new IncidentInfo("23YON00Grounds Issue Indicator", inc.getGroundsIssueIndicator());
+			case 24:
+				return me.new IncidentInfo("24DAT00Incident Completion Date", inc.getIncidentCompltnDate());
+			case 25:
+				return me.new IncidentInfo("25STR00Incident Notes", inc.getIncidentNotes());
+			case 26:
+				return me.new IncidentInfo("26OOC00Incident Status", inc.getIncidentStatus());
+			case 27:
+				return me.new IncidentInfo("27NUM04Incident Year", inc.getIncidentYear());
+			case 28:
+				return me.new IncidentInfo("28DAT00Initial Report Date", inc.getInitialRptDate());
+			case 29:
+				return me.new IncidentInfo("29YON00Mechanical Issue Closed Indicator", inc.getMechIssueClsdIndicator());
+			case 30:
+				return me.new IncidentInfo("30YON00Mechanical Issue Indicator", inc.getMechIssueIndicator());
+			case 31:
+				return me.new IncidentInfo("31YON00Mob CO Indicator", inc.getMobCOIndicator());
+			case 32:
+				return me.new IncidentInfo("32YON00On Generator Indicator", inc.getOnGeneratorIndicator());
+			case 33:
+				return me.new IncidentInfo("33YON00Other Issue Closed Indicator", inc.getOtherIssueClsdIndicator());
+			case 34:
+				return me.new IncidentInfo("34YON00Other Issue Indicator", inc.getOtherIssueIndicator());
+			case 35:
+				return me.new IncidentInfo("35YON00Plumb Issue Closed Indicator", inc.getPlumbIssueClsdIndicator());
+			case 36:
+				return me.new IncidentInfo("36YON00Plumb Issue Indicator", inc.getPlumbIssueIndicator());
+			case 37:
+				return me.new IncidentInfo("37STR06PM ATTUID", inc.getPMAttuid());
+			case 38:
+				return me.new IncidentInfo("38NUM04Record Number", inc.getRecNumber());
+			case 39:
+				return me.new IncidentInfo("39STR06Req ATTUID", inc.getReqATTUID());
+			case 40:
+				return me.new IncidentInfo("40YON00Roofs Issue Closed Indicator", inc.getRoofsIssueClsdIndicator());
+			case 41:
+				return me.new IncidentInfo("41YON00Roofs Issue Indicator", inc.getRoofsIssueIndicator());
+			case 42:
+				return me.new IncidentInfo("42YON00Safety Issue Closed Indicator", inc.getSafetyIssueClsdIndicator());
+			case 43:
+				return me.new IncidentInfo("43YON00Safety Issue Indicator", inc.getSafetyIssueIndicator());
+			case 44:
+				return me.new IncidentInfo("44STA02State", inc.getState());
+			case 45:
+				return me.new IncidentInfo("45STR00Status Notes", inc.getStatusNotes());
+			case 46:
+				return me.new IncidentInfo("46YON00Structural Issue Closed Indicator", inc.getStructIssueClsdIndicator());
+			case 47:
+				return me.new IncidentInfo("47YON00Structural Issue Indicator", inc.getStructIssueIndicator());
+			case 48:
+				return me.new IncidentInfo("48YON00Unoccupiable Indicator", inc.getUnOccupiableIndicator());
+			case 49:
+				return me.new IncidentInfo("49YON00Water Issue Closed Indicator", inc.getWaterIssueClsdIndicator());
+			case 50:
+				return me.new IncidentInfo("50YON00Water Issue Indicator", inc.getWaterIssueIndicator());
+			case 51:
+				return me.new IncidentInfo("51NUM16Work Req Number", inc.getWorkReqNumber());
+			default:
+				return me.new IncidentInfo(null, null);
+		}
+	}
+	
 	/**
 	 * The method that extracts all of the available infos from the incident
 	 * that calls it.
@@ -31,7 +147,7 @@ public class IncidentHelper extends Incident {
 	 * @return An IncidentInfo[] that has all of the informations.
 	 */
 	public static IncidentInfo[] getInfos(Incident inc) {
-		boolean[] whichs = new boolean[] { !(inc.getAssessNotes() == null), !(inc.getBuildingAddress() == null), !(inc.getBuildingName() == null), !(inc.getBuildingStatus() == null), !(inc.getBuildingType() == null), !(inc.getCompltnDate() == null), !(inc.getComPowerIndicator() == null), !(inc.getContactPhone() == null), !(inc.getCreLead() == null), !(inc.getDamageIndicator() == null), !(inc.getElecIssueClsdIndicator() == null), !(inc.getElecIssueIndicator() == null), !(inc.getEnvIssueClsdIndicator() == null), !(inc.getEnvIssueIndicator() == null), !(inc.getEstCapCost() == 0), !(inc.getEstExpenseCost() == 0), !(inc.getEventName() == null), !(inc.getFenceGateIssueClsdIndicator() == null), !(inc.getFenceGateIssueIndicator() == null), !(inc.getGenIssueClsdIndicator() == null), !(inc.getGenIssueIndicator() == null), !(inc.getGeoLoc() == 0), !(inc.getGroundsIssueClsdIndicator() == null), !(inc.getGroundsIssueIndicator() == null), !(inc.getIncidentCompltnDate() == null), !(inc.getIncidentNotes() == null), !(inc.getIncidentStatus() == null), !(inc.getIncidentYear() == 0), !(inc.getInitialRptDate() == null), !(inc.getMechIssueClsdIndicator() == null), !(inc.getMechIssueIndicator() == null), !(inc.getMobCOIndicator() == null), !(inc.getOnGeneratorIndicator() == null), !(inc.getOtherIssueClsdIndicator() == null), !(inc.getOtherIssueIndicator() == null), !(inc.getPlumbIssueClsdIndicator() == null), !(inc.getPlumbIssueIndicator() == null), !(inc.getPMAttuid() == null), !(inc.getRecNumber() == 0), !(inc.getReqATTUID() == null), !(inc.getRoofsIssueClsdIndicator() == null), !(inc.getRoofsIssueIndicator() == null), !(inc.getSafetyIssueClsdIndicator() == null), !(inc.getSafetyIssueIndicator() == null), !(inc.getState() == null), !(inc.getStatusNotes() == null), !(inc.getStructIssueClsdIndicator() == null), !(inc.getStructIssueIndicator() == null), !(inc.getUnOccupiableIndicator() == null), !(inc.getWaterIssueClsdIndicator() == null), !(inc.getWaterIssueIndicator() == null), !(inc.getWorkReqNumber() == null) };
+		boolean[] whichs = isSetArray(inc);
 		
 		int sizeCount = 0;
 		for (int i = 0; i < whichs.length; i++)
@@ -39,114 +155,9 @@ public class IncidentHelper extends Incident {
 		final int size = sizeCount;
 		
 		IncidentInfo[] info = new IncidentInfo[size];
-		int index = 0, stepper = 0;
 		
-		final IncidentHelper me = new IncidentHelper();
-		
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STR00Assess Notes", inc.getAssessNotes());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "ADR00Building Address", inc.getBuildingAddress());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STR00Bulding Name", inc.getBuildingName());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "OOC00Building Status", inc.getBuildingStatus());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STR00Building Type", inc.getBuildingType());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "DAT00Completion Date", inc.getCompltnDate());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Com Power Indicator", inc.getComPowerIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "NUM10Contact Phone Number", inc.getContactPhone());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STR00CRE Lead", inc.getCreLead());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Damage Indicator", inc.getDamageIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Elec Issue Closed Indicator", inc.getElecIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Elec Issue Indicator", inc.getElecIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Env Issue Closed Indicator", inc.getEnvIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00EnvIssue Indicator", inc.getEnvIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "NUM00Estimated Cap Cost", inc.getEstCapCost());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "NUM00Estimated Expense Cost", inc.getEstExpenseCost());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STR00Event Name", inc.getEventName());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Fence Gate Issue Closed Indicator", inc.getFenceGateIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Fence Gate Issue Indicator", inc.getFenceGateIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00General Issue Closed Indicator", inc.getGenIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00General Issue Indicator", inc.getGenIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "NUM05ZIP Code", inc.getGeoLoc());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Grounds Issue Closed Indicator", inc.getGroundsIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Grounds Issue Indicator", inc.getGroundsIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "DAT00Incident Completion Date", inc.getIncidentCompltnDate());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STR00Incident Notes", inc.getIncidentNotes());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "OOC00Incident Status", inc.getIncidentStatus());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "NUM04Incident Year", inc.getIncidentYear());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "DAT00Initial Report Date", inc.getInitialRptDate());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Mechanical Issue Closed Indicator", inc.getMechIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Mechanical Issue Indicator", inc.getMechIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Mob CO Indicator", inc.getMobCOIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00On Generator Indicator", inc.getOnGeneratorIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Other Issue Closed Indicator", inc.getOtherIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Other Issue Indicator", inc.getOtherIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Plumb Issue Closed Indicator", inc.getPlumbIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Plumb Issue Indicator", inc.getPlumbIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STR06PM ATTUID", inc.getPMAttuid());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "NUM04Record Number", inc.getRecNumber());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STR06Req ATTUID", inc.getReqATTUID());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Roofs Issue Closed Indicator", inc.getRoofsIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Roofs Issue Indicator", inc.getRoofsIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Safety Issue Closed Indicator", inc.getSafetyIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Safety Issue Indicator", inc.getSafetyIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STA02State", inc.getState());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "STR00Status Notes", inc.getStatusNotes());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Structural Issue Closed Indicator", inc.getStructIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Structural Issue Indicator", inc.getStructIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Unoccupiable Indicator", inc.getUnOccupiableIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Water Issue Closed Indicator", inc.getWaterIssueClsdIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "YON00Water Issue Indicator", inc.getWaterIssueIndicator());
-		if (whichs[stepper++]) info[index++] = me.new IncidentInfo((stepper > 10 ? (stepper - 1)
-																				: "0" + (stepper - 1)) + "NUM16Work Req Number", inc.getWorkReqNumber());
+		for (int i = 0, counter = 0; i < whichs.length; i++)
+			if (whichs[i]) info[counter++] = getSingleInfo(inc, i);
 		
 		return info;
 	}

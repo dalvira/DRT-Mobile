@@ -272,7 +272,6 @@ public class SetterUpper {
 			final String limit = specs.substring(5, 7);
 			boolean multiline = false;
 			if (type.equals("OOC") || type.equals("YON") || type.equals("STA")) {
-				newSpinnerData = oldContents;
 				ArrayAdapter<CharSequence> adapter;
 				if (type.equals("STA")) {
 					adapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_item);

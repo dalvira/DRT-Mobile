@@ -196,7 +196,6 @@ public class DamageGetFragment extends Fragment {
 														}
 													});
 											}
-											
 											container.addView(each);
 										}
 										
