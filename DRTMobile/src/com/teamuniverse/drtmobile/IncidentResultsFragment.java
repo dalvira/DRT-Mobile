@@ -87,7 +87,7 @@ public class IncidentResultsFragment extends Fragment {
 		return view;
 	}
 	
-	ArrayList<Incident>	results	= null;
+	ArrayList<Incident>	results	= new ArrayList<Incident>(0);
 	AlertDialog.Builder	builder	= null;
 	boolean				success	= true;
 	
