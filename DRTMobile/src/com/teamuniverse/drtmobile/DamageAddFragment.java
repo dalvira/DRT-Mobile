@@ -1,12 +1,29 @@
 package com.teamuniverse.drtmobile;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.att.intern.webservice.Incident;
+import com.att.intern.webservice.Webservice;
+import com.att.intern.webservice.Webservice.GeolocInvalidException;
+import com.att.intern.webservice.Webservice.TokenInvalidException;
+//import com.example.dreamteamdisasterrecovery.GLCSearchActivity;
+//import com.example.dreamteamdisasterrecovery.MainActivity;
+//import com.example.dreamteamdisasterrecovery.R;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.SetterUpper;
@@ -16,8 +33,12 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * either contained in a {@link SectionListActivity} in two-pane mode (on
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
+
+
 public class DamageAddFragment extends Fragment {
 	private Activity	m;
+	
+	
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -33,6 +54,8 @@ public class DamageAddFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		m = getActivity();
+		
+		
 	}
 	
 	/**
@@ -41,10 +64,12 @@ public class DamageAddFragment extends Fragment {
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_report_selection, container, false);
+		View view = inflater.inflate(R.layout.fragment_damage_add, container, false);
 		SetterUpper.setup(m, view);
 		return view;
+		
 	}
+	
 	
 	@Override
 	public void onStart() {
