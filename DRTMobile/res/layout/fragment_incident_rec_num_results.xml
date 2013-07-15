@@ -6,7 +6,7 @@
 	android:paddingLeft="@dimen/activity_left_margin"
 	android:paddingRight="@dimen/activity_right_margin"
 	android:paddingTop="@dimen/activity_top_margin"
-	tools:context=".DamageUpdateFragment" >
+	tools:context=".IncidentRecNumResultsFragment" >
 	<View
 		android:id="@+id/first_divider"
 		android:layout_width="fill_parent"
@@ -50,7 +50,7 @@
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
 		android:gravity="center_horizontal"
-		android:text="@string/damage_update_title"
+		android:text="@string/incident_rec_num_search_title"
 		android:textAppearance="?android:attr/textAppearanceMedium" />
 	<TextView
 		android:id="@+id/subtitle"
@@ -59,6 +59,24 @@
 		android:layout_below="@+id/title"
 		android:layout_centerHorizontal="true"
 		android:gravity="center_horizontal"
-		android:text="@string/new_information_damage_assessment_subtitle"
+		android:text="@string/result_subtitle"
 		android:textAppearance="?android:attr/textAppearanceSmall" />
+	<ProgressBar
+		android:id="@+id/progress"
+		style="?android:attr/progressBarStyleLarge"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/first_divider"
+		android:layout_centerHorizontal="true" />
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="fill_parent"
+		android:layout_above="@+id/back_button_container"
+		android:layout_below="@+id/first_divider" >
+		<LinearLayout
+			android:id="@+id/list_container"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" />
+	</ScrollView>
 </RelativeLayout>

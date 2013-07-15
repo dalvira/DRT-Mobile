@@ -14,8 +14,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
@@ -36,7 +34,6 @@ public class IncidentRecNumSearchFragment extends Fragment {
 	
 	private EditText		getRecordNumber;
 	private Button			button;
-	private TabHost			tabHost;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -53,33 +50,18 @@ public class IncidentRecNumSearchFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_damage_assessment, container, false);
+		View view = inflater.inflate(R.layout.fragment_incident_rec_num_search, container, false);
 		SetterUpper.setup(m, view);
 		getRecordNumber = (EditText) view.findViewById(R.id.damage_get_record_number);
 		
-		tabHost = (TabHost) view.findViewById(android.R.id.tabhost);
-		tabHost.setup();
-		// Get tab!
-		TabSpec tspec = tabHost.newTabSpec("Tab1");
-		tspec.setContent(R.id.damage_get);
-		tspec.setIndicator("Get");
-		tabHost.addTab(tspec);
-		// Add tab!
-		tspec = tabHost.newTabSpec("Tab2");
-		tspec.setContent(R.id.damage_add);
-		tspec.setIndicator("Add");
-		tabHost.addTab(tspec);
-		
 		db = new DatabaseManager(m);
-		String gotoAdd = db.sessionGet("goto_tab");
 		if (db.sessionGet("back").equals("true")) {
 			getRecordNumber.setText(db.sessionGet("record_number"));
 			db.sessionUnset("back");
 		}
 		db.close();
 		
-		if (gotoAdd.equals("add")) tabHost.setCurrentTab(1);
-		else getRecordNumber.requestFocus();
+		getRecordNumber.requestFocus();
 		
 		button = (Button) view.findViewById(R.id.go_button);
 		button.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +71,7 @@ public class IncidentRecNumSearchFragment extends Fragment {
 				InputMethodManager imm = (InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(m.getCurrentFocus().getWindowToken(), 0);
 				
-				if (tabHost.getCurrentTab() == 0) get();
-				else add();
+				get();
 			}
 		});
 		
@@ -140,15 +121,6 @@ public class IncidentRecNumSearchFragment extends Fragment {
 			// 4. Get the AlertDialog from create() and show it
 			builder.create().show();
 		}
-	}
-	
-	private void add() {
-		// TODO put all fields into session with DatabaseManager. Send to add
-		
-		// db = new DatabaseManager(m);
-		// if (!"field1".equals("")) db.sessionSet("field1name", "field1");
-		// db.close();
-		// SectionListActivity.m.putSection(SectionAdder.ADD_INCIDENT);
 	}
 	
 	@Override
