@@ -50,7 +50,7 @@
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
 		android:gravity="center_horizontal"
-		android:text="@string/incident_title"
+		android:text="@string/damage_get_title"
 		android:textAppearance="?android:attr/textAppearanceMedium" />
 	<TextView
 		android:id="@+id/subtitle"
@@ -77,9 +77,6 @@
 			android:id="@+id/list_container"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:paddingBottom="16dp" />
+			android:orientation="vertical" />
 	</ScrollView>
-	<TextView>
-	</TextView>
 </RelativeLayout>

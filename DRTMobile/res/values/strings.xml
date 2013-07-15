@@ -57,4 +57,5 @@
 	<color name="fake_tansparent">#fefefe</color>
 	<color name="selected">#33b5e5</color>
 	<color name="unselected_gray">#dcdcdc</color>
+	<string name="edit_in_place_error">Invalid Contents</string>
 </resources>

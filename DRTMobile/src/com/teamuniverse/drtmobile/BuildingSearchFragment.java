@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.SectionAdder;
 import com.teamuniverse.drtmobile.support.SetterUpper;
 
 /**
@@ -89,7 +88,8 @@ public class BuildingSearchFragment extends Fragment {
 			db.sessionSet("zip", zip);
 			db.close();
 			
-			SectionListActivity.m.putSection(SectionAdder.BUILDING_RESULTS);
+			// TODO if implemented, uncomment below
+			// SectionListActivity.m.putSection(SectionAdder.BUILDING_RESULTS);
 		} else {
 			// 1. Instantiate an AlertDialog.Builder with its
 			// constructor

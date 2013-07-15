@@ -19,8 +19,8 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/field_label"
 		android:layout_centerHorizontal="true"
-		android:ems="10"
-		android:hint="@string/contents" />
+		android:hint="@string/contents"
+		android:scrollHorizontally="false" />
 	<Spinner
 		android:id="@+id/new_toggle"
 		android:layout_width="wrap_content"

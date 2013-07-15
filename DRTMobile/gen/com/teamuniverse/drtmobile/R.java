@@ -133,6 +133,7 @@ public final class R {
         public static final int damage_update_title=0x7f05002a;
         public static final int default_color=0x7f050027;
         public static final int edit_in_place=0x7f05002d;
+        public static final int edit_in_place_error=0x7f05002e;
         public static final int get=0x7f05001d;
         public static final int global_password=0x7f05000e;
         public static final int go=0x7f05000c;

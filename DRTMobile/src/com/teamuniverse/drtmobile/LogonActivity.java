@@ -55,6 +55,10 @@ public class LogonActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logon);
 		
+		// // Reset data when corruption arises
+		// Webservice ws = new Webservice(this);
+		// ws.resetData();
+		
 		attuidEditText = (EditText) findViewById(R.id.attuid);
 		passEditText = (EditText) findViewById(R.id.password);
 		goButton = (Button) findViewById(R.id.go_button);

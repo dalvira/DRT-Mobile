@@ -14,6 +14,7 @@ import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -43,6 +44,9 @@ import com.teamuniverse.drtmobile.R;
  * 
  */
 public class SetterUpper {
+	private static final String[]	STATE_NAMES		= { "Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Federated States of Micronesia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Marshall Islands", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio", "Oklahoma", "Oregon", "Palau", "Panama Canal Zone", "Pennsylvania", "Philippine Islands", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Trust Territory of the Pacific Islands", "U.S. Armed Forces – Americas", "U.S. Armed Forces – Europe", "U.S. Armed Forces – Pacific", "Utah", "Vermont", "Virgin Islands", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming" };
+	private static final String[]	STATE_POSTALS	= { "AL", "AK", "AS", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FM", "FL", "GA", "GU", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MH", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "MP", "OH", "OK", "OR", "PW", "CZ", "PA", "PI", "PR", "RI", "SC", "SD", "TN", "TX", "TT", "AA", "AE", "AP", "UT", "VT", "VI", "VA", "WA", "WV", "WI", "WY" };
+	
 	private SetterUpper() {
 	}
 	
@@ -267,24 +271,45 @@ public class SetterUpper {
 			final String type = specs.substring(2, 5);
 			final String limit = specs.substring(5, 7);
 			boolean multiline = false;
-			if (type.equals("OOC") || type.equals("YON")) {
-				ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(m, type.equals("OOC")	? R.array.OOC
-																											: R.array.YON, android.R.layout.simple_spinner_item);
+			if (type.equals("OOC") || type.equals("YON") || type.equals("STA")) {
+				newSpinnerData = oldContents;
+				ArrayAdapter<CharSequence> adapter;
+				if (type.equals("STA")) {
+					adapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_item);
+					adapter.addAll(STATE_NAMES);
+				} else {
+					adapter = ArrayAdapter.createFromResource(m, type.equals("OOC")	? R.array.OOC
+																					: R.array.YON, android.R.layout.simple_spinner_item);
+				}
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				newSpin.setAdapter(adapter);
 				
 				// Set the default selected position!!!
-				if (oldContents.equals("Y") || oldContents.equals("Open") || oldContents.equals("OPEN")) {
-					newSpin.setSelection(0);
-				} else newSpin.setSelection(1);
+				if (type.equals("STA")) {
+					for (int i = 0; i < STATE_NAMES.length; i++) {
+						if (oldContents.equals(STATE_POSTALS[i])) {
+							newSpin.setSelection(i);
+							break;
+						}
+					}
+				} else {
+					if (oldContents.equals("Y") || oldContents.equals("Open") || oldContents.equals("OPEN")) {
+						newSpin.setSelection(0);
+					} else newSpin.setSelection(1);
+				}
 				
 				newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
 					@Override
 					public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
-						newSpinnerData = pos == 0	? type.equals("YON") ? "Y"
-																		: "Open"
-													: type.equals("YON") ? "N"
-																		: "Closed";
+						if (type.equals("STA")) {
+							newSpinnerData = STATE_POSTALS[pos];
+						} else {
+							newSpinnerData = pos == 0	? type.equals("YON") ? "Y"
+																			
+																			: "Open"
+														: type.equals("YON") ? "N"
+																			: "Closed";
+						}
 					}
 					
 					@Override
@@ -294,6 +319,7 @@ public class SetterUpper {
 				newText.setVisibility(View.GONE);
 				newDate.setVisibility(View.GONE);
 			} else if (type.equals("DAT")) {
+				newDateData = oldContents;
 				newText.setVisibility(View.GONE);
 				newSpin.setVisibility(View.GONE);
 				newDate.init((int) Long.parseLong(oldContents.substring(0, 4)), (int) Long.parseLong(oldContents.substring(5, 7)) - 1, (int) Long.parseLong(oldContents.substring(8)), new OnDateChangedListener() {
@@ -306,11 +332,10 @@ public class SetterUpper {
 			} else {
 				if (which == 0 || which == 25 || which == 45) {
 					multiline = true;
-					newText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+					newText.setMinLines(1);
 				} else {
 					if (type.equals("STR")) {
-						if (which == 44) newText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-						else newText.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+						newText.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
 					} else if (type.equals("NUM")) {
 						newText.setInputType(InputType.TYPE_CLASS_NUMBER);
 					}
@@ -327,30 +352,14 @@ public class SetterUpper {
 				}
 			}
 			
-			builder.setView(view);
-			builder.setTitle(R.string.edit_in_place);
-			// 3. Add an okay
-			builder.setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int id) {
-					editInPlaceFilling = false;
-				}
-			});
-			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int id) {
-					editInPlaceFilling = false;
-				}
-			});
-			final AlertDialog dialog = builder.create();
+			final AlertDialog dialog = builder.setView(view).setTitle(R.string.edit_in_place).setPositiveButton(R.string.go, null).setNegativeButton(R.string.cancel, null).create();
 			dialog.setCanceledOnTouchOutside(false);
 			dialog.show();
 			
 			if (!multiline) {
 				/*
 				 * This sets the editor listener for the EditText; it clicks the
-				 * go
-				 * button when enter is pressed
+				 * go button when enter is pressed
 				 */
 				newText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
@@ -363,9 +372,24 @@ public class SetterUpper {
 				});
 			}
 			
-			Button theButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 			SetterUpper me = new SetterUpper();
-			theButton.setOnClickListener(me.new EditInPlaceDialogListener(dialog, m, incident, which, progress, newText, type, theField, oldContents));
+			(dialog.getButton(DialogInterface.BUTTON_POSITIVE)).setOnClickListener(me.new EditInPlaceDialogListener(dialog, m, incident, which, progress, newText, type, theField, oldContents));
+			(dialog.getButton(DialogInterface.BUTTON_NEGATIVE)).setOnClickListener(new OnClickListener() {
+				private Dialog	dialog;
+				
+				public OnClickListener setDialog(Dialog dialog) {
+					this.dialog = dialog;
+					return this;
+				}
+				
+				@Override
+				public void onClick(View v) {
+					if (!editInPlaceQuerying) {
+						editInPlaceFilling = false;
+						dialog.dismiss();
+					}
+				}
+			}.setDialog(dialog));
 		}
 	}
 	
@@ -402,7 +426,7 @@ public class SetterUpper {
 			String maybeNewContents = newContentsBox.getText().toString();
 			String newContentsTempContainer;
 			if (type.equals("DAT")) newContentsTempContainer = newDateData;
-			else if (type.equals("OOC") || type.equals("YON")) newContentsTempContainer = newSpinnerData;
+			else if (type.equals("OOC") || type.equals("YON") || type.equals("STA")) newContentsTempContainer = newSpinnerData;
 			else newContentsTempContainer = which == 7 && maybeNewContents.length() == 10	? maybeNewContents.substring(0, 3) + "-" + maybeNewContents.substring(3, 6) + "-" + maybeNewContents.substring(6)
 																							: maybeNewContents;
 			if (!editInPlaceQuerying) {
@@ -414,53 +438,71 @@ public class SetterUpper {
 					InputMethodManager imm = (InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(newContentsBox.getWindowToken(), 0);
 				}
-				progress.setVisibility(View.VISIBLE);
-				new Thread(new Runnable() {
-					public void run() {
-						IncidentHelper.setFieldByLabel(incident, which, newContents);
-						
-						DatabaseManager db = new DatabaseManager(m);
-						String token = db.sessionGet("token");
-						db.close();
-						
-						Webservice ws = new Webservice(m.getApplicationContext());
-						try {
-							ws.updateIncidentbyRecnum(token, incident);
-							success = true;
-						} catch (TokenInvalidException e) {
-							IncidentHelper.setFieldByLabel(incident, which, oldContents);
-							timed = true;
-						} catch (Exception e) {
-							IncidentHelper.setFieldByLabel(incident, which, oldContents);
-							e.printStackTrace();
-						}
-						
-						// Use the handler to execute a Runnable on the
-						// m thread in order to have access to the
-						// UI elements.
-						handler.postDelayed(new Runnable() {
+				String message = IncidentHelper.isValidInfoForField(incident, which, newContents);
+				if (message.equals("")) {
+					
+					progress.setVisibility(View.VISIBLE);
+					new Thread(new Runnable() {
+						public void run() {
+							IncidentHelper.setFieldByLabel(incident, which, newContents);
 							
-							public void run() {
-								// Hide the progress bar
-								if (timed) timedOut(m);
-								try {
-									progress.setVisibility(View.INVISIBLE);
-									editInPlaceQuerying = false;
-									editInPlaceFilling = false;
-									if (success) {
-										theField.setText(newContents);
-										Toast.makeText(m, "Successfully updated!", Toast.LENGTH_SHORT).show();
-									} else {
-										Toast.makeText(m, "Failed to update!", Toast.LENGTH_SHORT).show();
-									}
-									dialog.dismiss();
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
+							DatabaseManager db = new DatabaseManager(m);
+							String token = db.sessionGet("token");
+							db.close();
+							
+							Webservice ws = new Webservice(m.getApplicationContext());
+							try {
+								ws.updateIncidentbyRecnum(token, incident);
+								success = true;
+							} catch (TokenInvalidException e) {
+								IncidentHelper.setFieldByLabel(incident, which, oldContents);
+								timed = true;
+							} catch (Exception e) {
+								IncidentHelper.setFieldByLabel(incident, which, oldContents);
+								e.printStackTrace();
 							}
-						}, 0);
-					}
-				}).start();
+							
+							// Use the handler to execute a Runnable on the
+							// m thread in order to have access to the
+							// UI elements.
+							handler.postDelayed(new Runnable() {
+								
+								public void run() {
+									// Hide the progress bar
+									if (timed) timedOut(m);
+									try {
+										progress.setVisibility(View.INVISIBLE);
+										editInPlaceQuerying = false;
+										editInPlaceFilling = false;
+										if (success) {
+											theField.setText(newContents);
+											Toast.makeText(m, "Successfully updated!", Toast.LENGTH_SHORT).show();
+										} else {
+											Toast.makeText(m, "Failed to update!", Toast.LENGTH_SHORT).show();
+										}
+										dialog.dismiss();
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							}, 0);
+						}
+					}).start();
+				} else {
+					editInPlaceQuerying = false;
+					editInPlaceFilling = false;
+					// 1. Instantiate an AlertDialog.Builder with constructor
+					AlertDialog.Builder builder = new AlertDialog.Builder(m);
+					// 2. Chain together methods to set dialog characteristics
+					builder.setTitle(R.string.edit_in_place_error).setMessage(message);
+					// 3. Add an okay
+					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int id) {
+						}
+					});
+					builder.create().show();
+				}
 			}
 		}
 	}

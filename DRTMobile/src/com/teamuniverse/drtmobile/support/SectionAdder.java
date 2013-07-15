@@ -7,8 +7,6 @@ import java.util.Map;
 
 import android.support.v4.app.Fragment;
 
-import com.teamuniverse.drtmobile.BuildingResultsFragment;
-import com.teamuniverse.drtmobile.BuildingSearchFragment;
 import com.teamuniverse.drtmobile.DamageAddFragment;
 import com.teamuniverse.drtmobile.DamageAssessmentFragment;
 import com.teamuniverse.drtmobile.DamageGetFragment;
@@ -37,21 +35,20 @@ import com.teamuniverse.drtmobile.ReportSelectionFragment;
  */
 public class SectionAdder {
 	public static final int			INCIDENT_SEARCH		= 0;
-	public static final int			BUILDING_SEARCH		= 1;
-	public static final int			DAMAGE_ASSESSMENT	= 2;
-	public static final int			REPORT_SELECTION	= 3;
-	public static final int			INCIDENT_RESULTS	= 4;
-	public static final int			BUILDING_RESULTS	= 5;
-	public static final int			DAMAGE_GET			= 6;
-	public static final int			DAMAGE_ADD			= 7;
-	public static final int			DAMAGE_UPDATE		= 8;
+	public static final int			DAMAGE_ASSESSMENT	= 1;
+	public static final int			REPORT_SELECTION	= 2;
+	public static final int			INCIDENT_RESULTS	= 3;
+	public static final int			DAMAGE_GET			= 4;
+	public static final int			DAMAGE_ADD			= 5;
+	public static final int			DAMAGE_UPDATE		= 6;
+	
 	/** All of the sections that can be shown in the section list */
-	public static final String[][]	SECTIONS_IN_LIST	= { { "Incident Search", INCIDENT_SEARCH + "" }, { "Building Search", BUILDING_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
-	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 3, 0, 1, 2, 2, 2 };
-	public static final int[]		PARENTS_RPT_FIXER	= { 9, 9, 9, 0, 9, 9, 9, 9, 9 };
+	public static final String[][]	SECTIONS_IN_LIST	= { { "Incident Search", INCIDENT_SEARCH + "" }, { "Damage Assessment", DAMAGE_ASSESSMENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
+	public static final int[]		SECTION_PARENTS		= { 0, 1, 2, 0, 1, 2, 2, 2 };
+	public static final int[]		PARENTS_RPT_FIXER	= { 9, 9, 0, 9, 9, 9, 9, 9 };
 	
 	public static final String[]	AUTHORIZATION_NAMES	= { "ADM", "RPT" };
-	public static final int[][]		AUTHORIZATION_PAGES	= { { INCIDENT_SEARCH, BUILDING_SEARCH, DAMAGE_ASSESSMENT, REPORT_SELECTION }, { REPORT_SELECTION } };
+	public static final int[][]		AUTHORIZATION_PAGES	= { { INCIDENT_SEARCH, DAMAGE_ASSESSMENT, REPORT_SELECTION }, { REPORT_SELECTION } };
 	
 	/**
 	 * This method facilitates dynamic fragment changing based on user input by
@@ -67,16 +64,12 @@ public class SectionAdder {
 		switch (id) {
 			case INCIDENT_SEARCH:
 				return new IncidentSearchFragment();
-			case BUILDING_SEARCH:
-				return new BuildingSearchFragment();
 			case DAMAGE_ASSESSMENT:
 				return new DamageAssessmentFragment();
 			case REPORT_SELECTION:
 				return new ReportSelectionFragment();
 			case INCIDENT_RESULTS:
 				return new IncidentResultsFragment();
-			case BUILDING_RESULTS:
-				return new BuildingResultsFragment();
 			case DAMAGE_GET:
 				return new DamageGetFragment();
 			case DAMAGE_ADD:
@@ -111,6 +104,7 @@ public class SectionAdder {
 		ITEMS = new ArrayList<Section>();
 		ITEM_MAP = new HashMap<String, Section>();
 		
+		// TODO fix array layout
 		for (int i = 0; i < AUTHORIZATION_NAMES.length; i++) {
 			if (currentAuthorization.equals(AUTHORIZATION_NAMES[i])) {
 				for (int j = 0; j < AUTHORIZATION_PAGES[i].length; j++) {
