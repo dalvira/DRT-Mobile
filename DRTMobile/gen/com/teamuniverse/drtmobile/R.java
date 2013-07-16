@@ -55,7 +55,7 @@ public final class R {
     public static final class id {
         public static final int CurrentDate=0x7f0a0018;
         public static final int InitialReport=0x7f0a0017;
-        public static final int action_settings=0x7f0a0070;
+        public static final int action_settings=0x7f0a006f;
         public static final int add_sample=0x7f0a006b;
         public static final int assessment=0x7f0a005a;
         public static final int assessment_text=0x7f0a005b;
@@ -149,9 +149,8 @@ public final class R {
         public static final int report_O_C=0x7f0a005e;
         public static final int roofs=0x7f0a0051;
         public static final int safety=0x7f0a0054;
-        public static final int section_detail=0x7f0a006f;
-        public static final int section_detail_container=0x7f0a006d;
-        public static final int section_list=0x7f0a006e;
+        public static final int section_detail_container=0x7f0a006e;
+        public static final int section_list=0x7f0a006d;
         public static final int status=0x7f0a005c;
         public static final int status_text=0x7f0a005d;
         public static final int structural=0x7f0a0057;
@@ -178,7 +177,6 @@ public final class R {
         public static final int fragment_incident_results=0x7f030007;
         public static final int fragment_incident_search=0x7f030008;
         public static final int fragment_report_selection=0x7f030009;
-        public static final int setup_activity_section_detail=0x7f03000a;
         /** 
     Layout alias to replace the single-pane version of the layout with a
     two-pane version on Large screens.
@@ -194,10 +192,9 @@ public final class R {
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
 	
          */
-        public static final int setup_activity_section_list=0x7f03000b;
-        public static final int setup_activity_section_twopane=0x7f03000c;
-        public static final int setup_fragment_section_detail=0x7f03000d;
-        public static final int setup_section_detail_catalyst=0x7f03000e;
+        public static final int setup_activity_section_list=0x7f03000a;
+        public static final int setup_activity_section_twopane=0x7f03000b;
+        public static final int setup_section_detail_catalyst=0x7f03000c;
     }
     public static final class menu {
         public static final int logon=0x7f090000;
