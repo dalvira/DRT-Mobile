@@ -131,68 +131,43 @@ public class LogonActivity extends Activity {
 					// UI elements.
 					handler.postDelayed(new Runnable() {
 						public void run() {
-							if (loginResults[0] == null) {
-								
-								if (loginResults[2].equals("rcFailure")) {
-									// 1. Instantiate an AlertDialog.Builder
-									// with its constructor
-									AlertDialog.Builder builder = new AlertDialog.Builder(m);
-									// 2. Chain together various setter
-									// methods
-									// to set the dialog
-									// characteristics
-									builder.setMessage(R.string.logon_does_not_exist).setTitle(R.string.logon_does_not_exist_title);
-									// 3. Add a yes button and a no button
-									builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int id) {
-											dialog.cancel();
-										}
-									});
-									// 4. Get the AlertDialog from create()
-									AlertDialog dialog = builder.create();
-									// 5. Show the dialog
-									dialog.show();
-								} else Toast.makeText(getApplicationContext(), loginResults[2], Toast.LENGTH_SHORT).show();
-							} else {
-								
-								if (loginResults[0] != null) {
-									// Store session variables
-									DatabaseManager db = new DatabaseManager(m);
-									db.sessionSet("token", loginResults[0]);
-									db.sessionSet("authorization", loginResults[1]);
-									db.sessionSet("attuid", name);
-									db.close();
-									
-									SectionAdder.start(loginResults[1]);
-									
-									querying = false;
-									try {
-										// Hide the progress bar
-										progress.setVisibility(View.INVISIBLE);
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-									attuidEditText.setEnabled(true);
-									passEditText.setEnabled(true);
-									goButton.setEnabled(true);
-									
-									Intent detailIntent;
-									detailIntent = new Intent(m, SectionListActivity.class);
-									startActivity(detailIntent);
-								}
-							}
-							
 							querying = false;
 							try {
 								// Hide the progress bar
 								progress.setVisibility(View.INVISIBLE);
+								attuidEditText.setEnabled(true);
+								passEditText.setEnabled(true);
+								goButton.setEnabled(true);
+								
+								if (loginResults[0] == null) {
+									
+									if (loginResults[2].equals("rcFailure")) {
+										(new AlertDialog.Builder(m)).setMessage(R.string.logon_does_not_exist).setTitle(R.string.logon_does_not_exist_title).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+											}
+										}).create().show();
+									} else Toast.makeText(getApplicationContext(), loginResults[2], Toast.LENGTH_SHORT).show();
+								} else {
+									
+									if (loginResults[0] != null) {
+										// Store session variables
+										DatabaseManager db = new DatabaseManager(m);
+										db.sessionSet("token", loginResults[0]);
+										db.sessionSet("authorization", loginResults[1]);
+										db.sessionSet("attuid", name);
+										db.close();
+										
+										SectionAdder.start(loginResults[1]);
+										
+										Intent detailIntent;
+										detailIntent = new Intent(m, SectionListActivity.class);
+										startActivity(detailIntent);
+									}
+								}
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
-							attuidEditText.setEnabled(true);
-							passEditText.setEnabled(true);
-							goButton.setEnabled(true);
 						}
 					}, 0);
 				}

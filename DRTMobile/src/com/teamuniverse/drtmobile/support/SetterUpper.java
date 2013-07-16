@@ -53,11 +53,6 @@ public class SetterUpper {
 		db.close();
 	}
 	
-	/** A boolean that will stop many clicks from starting a bunch of threads */
-	private static boolean	timedOutQuerying;
-	/** The String[] that will hold the results of the call to Webservice */
-	private static String[]	loginResults;
-	
 	public static void setSelected(Activity m, View v) {
 		v.setBackgroundColor(m.getResources().getColor(R.color.selected));
 	}
@@ -68,6 +63,11 @@ public class SetterUpper {
 			else v.setBackgroundColor(Color.TRANSPARENT);
 		} else v.setBackgroundColor(m.getResources().getColor(R.color.unselected_gray));
 	}
+	
+	/** A boolean that will stop many clicks from starting a bunch of threads */
+	private static boolean	timedOutQuerying;
+	/** The String[] that will hold the results of the call to Webservice */
+	private static String[]	loginResults;
 	
 	/**
 	 * Call this method in the InvalidTokenException catch clause of the
@@ -110,7 +110,9 @@ public class SetterUpper {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				Intent intent = new Intent(m.getApplicationContext(), LogonActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				m.startActivity(intent);
 			}
 		});
@@ -118,7 +120,7 @@ public class SetterUpper {
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
 		
-		/*
+		/**
 		 * This sets the editor listener for passEditText, which clicks the go
 		 * button when enter is pressed
 		 */
@@ -132,9 +134,8 @@ public class SetterUpper {
 			}
 		});
 		
-		Button theButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 		SetterUpper me = new SetterUpper();
-		theButton.setOnClickListener(me.new TimedOutDialogListener(dialog, m, progress, attuidEditText, passEditText));
+		(dialog.getButton(DialogInterface.BUTTON_POSITIVE)).setOnClickListener(me.new TimedOutDialogListener(dialog, m, progress, attuidEditText, passEditText, (Button) dialog.getButton(DialogInterface.BUTTON_NEGATIVE)));
 	}
 	
 	class TimedOutDialogListener implements View.OnClickListener {
@@ -144,26 +145,30 @@ public class SetterUpper {
 		private final EditText		attuidEditText;
 		private final EditText		passEditText;
 		private final Handler		handler;
+		private final Button		negButton;
 		
-		public TimedOutDialogListener(Dialog dialog, Activity m, ProgressBar progress, EditText attuidEditText, EditText passEditText) {
+		public TimedOutDialogListener(Dialog dialog, Activity m, ProgressBar progress, EditText attuidEditText, EditText passEditText, Button negButton) {
 			this.dialog = dialog;
 			this.m = m;
 			this.progress = progress;
 			this.attuidEditText = attuidEditText;
 			this.passEditText = passEditText;
 			this.handler = new Handler();
+			this.negButton = negButton;
 		}
 		
 		@Override
-		public void onClick(View v) {
-			
+		public void onClick(final View v) {
 			if (!timedOutQuerying) {
 				// Hide virtual keyboard
-				InputMethodManager imm = (InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(passEditText.getWindowToken(), 0);
-				imm.hideSoftInputFromWindow(attuidEditText.getWindowToken(), 0);
+				((InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(m.getCurrentFocus().getWindowToken(), 0);
+				
 				timedOutQuerying = true;
 				progress.setVisibility(View.VISIBLE);
+				passEditText.setEnabled(false);
+				negButton.setEnabled(false);
+				v.setEnabled(false);
+				
 				new Thread(new Runnable() {
 					public void run() {
 						String name = attuidEditText.getText().toString();
@@ -171,41 +176,23 @@ public class SetterUpper {
 						
 						Webservice ws = new Webservice(m.getApplicationContext());
 						loginResults = ws.login(name, pass);
-						// Use the handler to execute a Runnable on the
-						// m thread in order to have access to the
-						// UI elements.
 						handler.postDelayed(new Runnable() {
 							public void run() {
-								// Hide the progress bar
+								timedOutQuerying = false;
 								try {
+									// Hide the progress bar
 									progress.setVisibility(View.INVISIBLE);
-									timedOutQuerying = false;
+									passEditText.setEnabled(true);
+									negButton.setEnabled(true);
+									v.setEnabled(true);
 									
 									if (loginResults[0] == null) {
 										if (loginResults[2].equals("rcFailure")) {
-											// 1. Instantiate an
-											// AlertDialog.Builder
-											// with its constructor
-											AlertDialog.Builder builder = new AlertDialog.Builder(m);
-											// 2. Chain together various
-											// setter
-											// methods
-											// to set the dialog
-											// characteristics
-											builder.setMessage(R.string.logon_does_not_exist).setTitle(R.string.logon_does_not_exist_title);
-											// 3. Add a yes button and a no
-											// button
-											builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+											(new AlertDialog.Builder(m)).setMessage(R.string.logon_does_not_exist).setTitle(R.string.logon_does_not_exist_title).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 												@Override
 												public void onClick(DialogInterface dialog, int id) {
-													dialog.cancel();
 												}
-											});
-											// 4. Get the AlertDialog from
-											// create()
-											AlertDialog dialog = builder.create();
-											// 5. Show the dialog
-											dialog.show();
+											}).create().show();
 										} else Toast.makeText(m.getApplicationContext(), loginResults[2], Toast.LENGTH_SHORT).show();
 									} else {
 										DatabaseManager db = new DatabaseManager(m);

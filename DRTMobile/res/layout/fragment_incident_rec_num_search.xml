@@ -69,6 +69,7 @@
 		android:layout_centerHorizontal="true"
 		android:ems="10"
 		android:hint="@string/record_number"
+		android:imeActionLabel="@string/go"
 		android:imeOptions="actionGo"
 		android:inputType="number"
 		android:maxLength="4" >

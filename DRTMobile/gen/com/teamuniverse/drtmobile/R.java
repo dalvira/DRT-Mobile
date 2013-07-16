@@ -35,12 +35,6 @@ public final class R {
     }
     public static final class dimen {
         public static final int activity_bottom_margin=0x7f040003;
-        /** 
-         Customize dimensions originally defined in res/values/dimens.xml (such as
-         screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
-	
-         */
-        public static final int activity_horizontal_margin=0x7f040004;
         /**  Default screen margins, per the Android Design guidelines. 
          */
         public static final int activity_left_margin=0x7f040000;
@@ -174,8 +168,8 @@ public final class R {
         public static final int fragment_add_incident=0x7f030004;
         public static final int fragment_incident_rec_num_results=0x7f030005;
         public static final int fragment_incident_rec_num_search=0x7f030006;
-        public static final int fragment_incident_results=0x7f030007;
-        public static final int fragment_incident_search=0x7f030008;
+        public static final int fragment_incident_zip_results=0x7f030007;
+        public static final int fragment_incident_zip_search=0x7f030008;
         public static final int fragment_report_selection=0x7f030009;
         /** 
     Layout alias to replace the single-pane version of the layout with a
@@ -256,6 +250,7 @@ public final class R {
          */
         public static final int menu_settings=0x7f050023;
         public static final int nco=0x7f05003c;
+        public static final int next=0x7f05005b;
         public static final int no=0x7f05003e;
         public static final int no_record=0x7f050017;
         public static final int no_results=0x7f050018;

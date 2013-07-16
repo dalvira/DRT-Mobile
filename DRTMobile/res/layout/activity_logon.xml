@@ -45,6 +45,8 @@
 				android:layout_centerHorizontal="true"
 				android:ems="10"
 				android:hint="@string/attuid"
+				android:imeActionLabel="@string/next"
+				android:imeOptions="actionNext"
 				android:inputType="textEmailAddress" >
 				<requestFocus />
 			</EditText>
@@ -56,6 +58,8 @@
 				android:layout_below="@+id/attuid"
 				android:ems="10"
 				android:hint="@string/global_password"
+				android:imeActionLabel="@string/go"
+				android:imeOptions="actionGo"
 				android:inputType="textPassword" />
 			<CheckBox
 				android:id="@+id/remember_me"

@@ -69,6 +69,8 @@
 		android:layout_centerHorizontal="true"
 		android:ems="10"
 		android:hint="@string/zip"
+		android:imeActionLabel="@string/go"
+		android:imeOptions="actionGo"
 		android:inputType="number"
 		android:maxLength="5" >
 		<requestFocus />
@@ -95,6 +97,6 @@
 		android:layout_height="wrap_content"
 		android:layout_alignBottom="@+id/add_sample"
 		android:layout_alignParentRight="true"
-		android:text="Time Out"
+		android:text="Simulate Time Out"
 		tools:ignore="HardcodedText" />
 </RelativeLayout>

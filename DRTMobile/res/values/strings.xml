@@ -46,6 +46,8 @@
 	<color name="selected">#33b5e5</color>
 	<color name="unselected_gray">#dcdcdc</color>
 	<string name="edit_in_place_error">Invalid Contents</string>
+	<string name="incident_rec_num_search_subtitle">Enter Record Number to Search</string>
+	<string name="next">Next</string>
 	<!-- new strings -->
 	<string name="menu_settings">Settings</string>
 	<string name="title_activity_main">MainActivity</string>
@@ -239,5 +241,4 @@
 	<string name="ongenColon">On Generator:</string>
 	<string name="unOccupy">Un-Occupyable:</string>
 	<string name="title_activity_crebuilding">CRE Building Activity</string>
-	<string name="incident_rec_num_search_subtitle">Enter Record Number to Search</string>
 </resources>

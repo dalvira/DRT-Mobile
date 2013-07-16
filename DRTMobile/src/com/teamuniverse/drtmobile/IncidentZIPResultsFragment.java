@@ -63,7 +63,7 @@ public class IncidentZIPResultsFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_incident_results, container, false);
+		View view = inflater.inflate(R.layout.fragment_incident_zip_results, container, false);
 		SetterUpper.setup(m, view);
 		
 		db = new DatabaseManager(m);
