@@ -25,6 +25,8 @@
 		android:layout_below="@+id/attuid"
 		android:ems="10"
 		android:hint="@string/global_password"
+		android:imeActionLabel="@string/go"
+		android:imeOptions="actionGo"
 		android:inputType="textPassword" />
 	<ProgressBar
 		android:id="@+id/progress"
