@@ -35,7 +35,7 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  */
 
 
-public class DamageAddFragment extends Fragment {
+public class AddIncidentFragment extends Fragment {
 	private Activity	m;
 	
 	
@@ -44,7 +44,7 @@ public class DamageAddFragment extends Fragment {
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public DamageAddFragment() {
+	public AddIncidentFragment() {
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class DamageAddFragment extends Fragment {
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_damage_add, container, false);
+		View view = inflater.inflate(R.layout.fragment_add_incident, container, false);
 		SetterUpper.setup(m, view);
 		return view;
 		

@@ -4,12 +4,6 @@
 	<string name="action_settings">Settings</string>
 	<string name="title_section_list">Sections</string>
 	<string name="title_section_detail">Section Details</string>
-	<string name="title_fragment_report_selection">Report Selection</string>
-	<string name="title_fragment_damage_assessment">Damage Assessment</string>
-	<string name="title_fragment_zip_search">ZIP Search</string>
-	<string name="title_fragment_building_search_results">Building Search Results</string>
-	<string name="title_fragment_zipsearch_results">ZIP Search Results</string>
-	<string name="title_fragment_damage_add">Add Damage Assessment</string>
 	<string name="go">Go</string>
 	<string name="attuid">ATTUID</string>
 	<string name="global_password">Global Password</string>
@@ -25,22 +19,18 @@
 	<string name="incident_rec_num_search_title">Find Incident by Record Number</string>
 	<string name="zip_subtitle">Enter ZIP Code to Search</string>
 	<string name="incident_title">List Incidents by ZIP Code</string>
-	<string name="building_title">Buildings w/ Incidents by ZIP Code</string>
 	<string name="report_selection_title">Report Selection by Type</string>
-	<string name="get">Get</string>
 	<string name="add">Add</string>
-	<string name="title_activity_damage_get_fragment">Get Damage Assessment Reports</string>
+	<string name="add_picture">Add Picture</string>
 	<string name="record_number">Record Number</string>
 	<string name="no_record">No report by that record number was found!</string>
 	<string name="no_results">No results to show!</string>
 	<string name="back">Back</string>
-	<string name="damage_get_title">Report by Record Number</string>
 	<string name="record_number_invalid">Please supply a valid record number!</string>
 	<string name="record_number_invalid_title">Invalid Record Number</string>
 	<string name="default_color">Default Color</string>
-	<string name="damage_add_title">Add Damage Assessment</string>
-	<string name="new_information_damage_assessment_subtitle">New Information for Damage Assessment</string>
-	<string name="damage_update_title">Update Damage Assessment</string>
+	<string name="add_incident_title">Add New Incident</string>
+	<string name="add_incident_subtitle">Info for Incident</string>
 	<string name="cancel">Cancel</string>
 	<string name="contents">New Contents</string>
 	<string name="edit_in_place">Edit Field</string>
@@ -56,229 +46,198 @@
 	<color name="selected">#33b5e5</color>
 	<color name="unselected_gray">#dcdcdc</color>
 	<string name="edit_in_place_error">Invalid Contents</string>
-<<<<<<< HEAD
-	
-	
-	
-	
-	
-	
 	<!-- new strings -->
-	
-	 <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="valid">Valid</string>
-    <string name="invalid">Invalid</string>
-    <string name="geo">GeoLoc Search</string>
-    <string name="SIA">Signed in as</string>
-    <string name="instruction">Enter GLC Information</string>
-    <string name="DAS">Damage Assesment Reporting</string>
-    <string name="searchglc">Search GLC</string>
-    <string name="addTrans">Add Transaction</string>
-    <string name="SearchResult">Search Result</string>
-    <string name="action">&quot;Action: &quot;</string>
-    <string name="rec">&quot;Rec Number: &quot;</string>
-    <string name="glc">&quot;GLC: &quot;</string>
-    <string name="building">"Building: "</string>
-    <string name="eventname">&quot;Event Name: &quot;</string>
-    <string name="status">&quot;Status: &quot;</string>
-    <string name="wr">"WR: "</string>
-    <string name="updatetitle">Update Incident</string>
-    <string name="assessment">Assessment</string>
-    <string name="openclosed">Open/Closed</string>
-    <string name="open">Open</string>
-    <string name="closed">Closed</string>
-    <string name="notes">Notes</string>
-    <string name="geninfo"><u>General Information</u></string>
-    <string name="nco"><u>Non-CO Facilities ONLY</u></string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="ongenerator">On Generator</string>
-    <string name="anyfac"><u>Any Facility</u></string>
-
-    <string-array name="building_status_array">
-        <item>OPEN</item>
-        <item>CLOSED</item>
-        <item>DELAYED OPENING</item>
-        <item>RE-OPENING</item>
-    </string-array>
-
-    <string name="estcost"><u>Estimated Cost</u></string>
-    <string name="capital">Capital ($)</string>
-    <string name="expense">Expense ($)</string>
-    <string name="categories">Categories</string>
-    <string name="choose">Choose One</string>
-    <string name="update">Update</string>
-
-    <!-- putting here -->
-
-
-    <!-- string array that will build lists of items in the drop down boxes -->
-    <string-array name="property_type">
-        <item>ADM</item>
-        <item>CEV</item>
-        <item>CO</item>
-        <item>DAT</item>
-        <item>HUT</item>
-        <item>LAB</item>
-        <item>LAND</item>
-        <item>OTHER</item>
-        <item>RET</item>
-        <item>STO</item>
-        <item>TWR</item>
-        <item>WAR</item>
-        <item>WCR</item>
-    </string-array>
-    <string-array name="eventYear">
-        <item>2012</item>
-        <item>2011</item>
-        <item>2010</item>
-    </string-array>
-    <string-array name="yes_no">
-        <item>Y</item>
-        <item>N</item>
-    </string-array>
-    <string-array name="no_yes">
-        <item>N</item>
-        <item>Y</item>
-    </string-array>
-    <string-array name="open_closed">
-        <item>Open</item>
-        <item>Closed</item>
-    </string-array>
-    <string-array name="building_status">
-        <item>Open</item>
-        <item>Closed</item>
-        <item>Delayed</item>
-        <item>Opening</item>
-        <item>Re-Opened</item>
-    </string-array>
-    <string-array name="cre_lead">
-        <item>PM</item>
-        <item>D&amp;C</item>
-    </string-array>
-    <string-array name="event">
-        <item>Hurricane</item>
-        <item>Earthquake</item>
-        <item>Flood</item>
-        <item>Ice Storm</item>
-        <item>Snow Storm</item>
-        <item>Tornado</item>
-        <item>Wildfire</item>
-    </string-array>
-
-    <!-- Darius -->
-
-    <string name="searchresult">Search Result</string>
-    <string name="adminCondCan">Admin Condition Canned Report</string>
-    <string name="crebldgcl">CRE Building Closure/Delayed Open Canned Report</string>
-    <string name="eventYear">Event Year:</string>
-    <string name="eventName">Event Name:</string>
-    <string name="eventtype">Event Type:</string>
-
-    <string-array name="year_array">
-        <item>2012</item>
-        <item>2011</item>
-        <item>2010</item>
-    </string-array>
-    <string-array name="names_array">
-        <item>Alex</item>
-        <item>Bonnie</item>
-        <item>Colin</item>
-        <item>Danielle</item>
-        <item>Earl</item>
-        <item>Fiona</item>
-        <item>Gaston</item>
-        <item>Hermine</item>
-        <item>Shary</item>
-        <item>Igor</item>
-        <item>Julia</item>
-        <item>Karl</item>
-        <item>Lisa</item>
-        <item>Matthew</item>
-        <item>Nicole</item>
-        <item>Otto</item>
-        <item>Paula</item>
-        <item>Richard</item>
-        <item>Shary</item>
-        <item>Thomas</item>
-        <item>Virginie</item>
-        <item>Walter</item>
-        <item>EARTHQUAKE</item>
-        <item>FLOOD</item>
-        <item>ICE STORM</item>
-        <item>SNOW STORM</item>
-        <item>TORNADO</item>
-        <item>WILDFIRE</item>
-        <item>Arlene</item>
-        <item>Bret</item>
-        <item>Cindy</item>
-        <item>Don</item>
-        <item>Emily</item>
-        <item>Franklin</item>
-        <item>Gert</item>
-        <item>Harvey</item>
-        <item>Irene</item>
-        <item>Jose</item>
-        <item>Katia</item>
-        <item>Lee</item>
-        <item>Maria</item>
-        <item>Nate</item>
-        <item>Ophelia</item>
-        <item>Philippe</item>
-        <item>Rina</item>
-        <item>Sean</item>
-        <item>Tammy</item>
-        <item>Vince</item>
-        <item>Whitney</item>
-        <item>EARTHQUAKE</item>
-        <item>FLOOD</item>
-        <item>ICE STORM</item>
-        <item>SNOW STORM</item>
-        <item>TORNADO</item>
-        <item>WILDFIRE</item>
-        <item>Alberto</item>
-        <item>Beryl</item>
-        <item>Chris</item>
-        <item>Debby</item>
-        <item>Ernesto</item>
-        <item>Florence</item>
-        <item>Gordon</item>
-        <item>Helene</item>
-        <item>Isaac</item>
-        <item>Joyce</item>
-        <item>Kirk</item>
-        <item>Leslie</item>
-        <item>Michael</item>
-        <item>Nadine</item>
-        <item>Oscar</item>
-        <item>Patty</item>
-        <item>Rafael</item>
-        <item>Sandy</item>
-        <item>Tony</item>
-        <item>Valerie</item>
-        <item>EARTHQUAKE</item>
-        <item>FLOOD</item>
-        <item>ICE STORM</item>
-        <item>SNOW STORM</item>
-        <item>TORNADO</item>
-        <item>WILDFIRE</item>
-    </string-array>
-
-    <string name="admincanrep">Admin Condition Canned Report</string>
-    <string name="damageReslts">Damage Report Results</string>
-    <string name="event">Event:</string>
-    <string name="address">Address:</string>
-    <string name="state">STATE:</string>
-    <string name="type">Type:</string>
-    <string name="pm">PM:</string>
-    <string name="assessmentColon">Assessment:</string>
-    <string name="damaged">Damaged:</string>
-    <string name="comPower">Commercial Power:</string>
-    <string name="ongenColon">On Generator:</string>
-    <string name="unOccupy">Un-Occupyable:</string>
-    <string name="title_activity_crebuilding">CREBuildingActivity</string>
-=======
+	<string name="menu_settings">Settings</string>
+	<string name="title_activity_main">MainActivity</string>
+	<string name="valid">Valid</string>
+	<string name="invalid">Invalid</string>
+	<string name="geo">GeoLoc Search</string>
+	<string name="SIA">Signed in as</string>
+	<string name="instruction">Enter GLC Information</string>
+	<string name="DAS">Damage Assesment Reporting</string>
+	<string name="searchglc">Search GLC</string>
+	<string name="addTrans">Add Transaction</string>
+	<string name="SearchResult">Search Result</string>
+	<string name="action">&quot;Action: &quot;</string>
+	<string name="rec">&quot;Rec Number: &quot;</string>
+	<string name="glc">&quot;GLC: &quot;</string>
+	<string name="building">"Building: "</string>
+	<string name="eventname">&quot;Event Name: &quot;</string>
+	<string name="status">&quot;Status: &quot;</string>
+	<string name="wr">"WR: "</string>
+	<string name="updatetitle">Update Incident</string>
+	<string name="assessment">Assessment</string>
+	<string name="openclosed">Open/Closed</string>
+	<string name="open">Open</string>
+	<string name="closed">Closed</string>
+	<string name="notes">Notes</string>
+	<string name="geninfo"><u>General Information</u></string>
+	<string name="nco"><u>Non-CO Facilities ONLY</u></string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="ongenerator">On Generator</string>
+	<string name="anyfac"><u>Any Facility</u></string>
+	<string-array name="building_status_array">
+		<item>Open</item>
+		<item>Closed</item>
+		<item>Delayed Opening</item>
+		<item>Re-Opening</item>
+	</string-array>
+	<string name="estcost"><u>Estimated Cost</u></string>
+	<string name="capital">Capital ($)</string>
+	<string name="expense">Expense ($)</string>
+	<string name="categories">Categories</string>
+	<string name="choose">Choose One</string>
+	<string name="update">Update</string>
+	<!-- putting here -->
+	<!-- string array that will build lists of items in the drop down boxes -->
+	<string-array name="property_type">
+		<item>ADM</item>
+		<item>CEV</item>
+		<item>CO</item>
+		<item>DAT</item>
+		<item>HUT</item>
+		<item>LAB</item>
+		<item>LAND</item>
+		<item>OTHER</item>
+		<item>RET</item>
+		<item>STO</item>
+		<item>TWR</item>
+		<item>WAR</item>
+		<item>WCR</item>
+	</string-array>
+	<string-array name="eventYear">
+		<item>2012</item>
+		<item>2011</item>
+		<item>2010</item>
+	</string-array>
+	<string-array name="yes_no">
+		<item>Y</item>
+		<item>N</item>
+	</string-array>
+	<string-array name="no_yes">
+		<item>N</item>
+		<item>Y</item>
+	</string-array>
+	<string-array name="open_closed">
+		<item>Open</item>
+		<item>Closed</item>
+	</string-array>
+	<string-array name="building_status">
+		<item>Open</item>
+		<item>Closed</item>
+		<item>Delayed</item>
+		<item>Opening</item>
+		<item>Re-Opened</item>
+	</string-array>
+	<string-array name="cre_lead">
+		<item>PM</item>
+		<item>D&amp;C</item>
+	</string-array>
+	<string-array name="event">
+		<item>Hurricane</item>
+		<item>Earthquake</item>
+		<item>Flood</item>
+		<item>Ice Storm</item>
+		<item>Snow Storm</item>
+		<item>Tornado</item>
+		<item>Wildfire</item>
+	</string-array>
+	<!-- Darius -->
+	<string name="searchresult">Search Result</string>
+	<string name="adminCondCan">Admin Condition Canned Report</string>
+	<string name="crebldgcl">CRE Building Closure/Delayed Open Canned Report</string>
+	<string name="eventYear">Event Year:</string>
+	<string name="eventName">Event Name:</string>
+	<string name="eventtype">Event Type:</string>
+	<string-array name="year_array">
+		<item>2012</item>
+		<item>2011</item>
+		<item>2010</item>
+	</string-array>
+	<string-array name="names_array">
+		<item>Earthquake</item>
+		<item>Flood</item>
+		<item>Ice Storm</item>
+		<item>Snow Storm</item>
+		<item>Tornado</item>
+		<item>Wildfire</item>
+		<item>Alex</item>
+		<item>Bonnie</item>
+		<item>Colin</item>
+		<item>Danielle</item>
+		<item>Earl</item>
+		<item>Fiona</item>
+		<item>Gaston</item>
+		<item>Hermine</item>
+		<item>Shary</item>
+		<item>Igor</item>
+		<item>Julia</item>
+		<item>Karl</item>
+		<item>Lisa</item>
+		<item>Matthew</item>
+		<item>Nicole</item>
+		<item>Otto</item>
+		<item>Paula</item>
+		<item>Richard</item>
+		<item>Shary</item>
+		<item>Thomas</item>
+		<item>Virginie</item>
+		<item>Walter</item>
+		<item>Arlene</item>
+		<item>Bret</item>
+		<item>Cindy</item>
+		<item>Don</item>
+		<item>Emily</item>
+		<item>Franklin</item>
+		<item>Gert</item>
+		<item>Harvey</item>
+		<item>Irene</item>
+		<item>Jose</item>
+		<item>Katia</item>
+		<item>Lee</item>
+		<item>Maria</item>
+		<item>Nate</item>
+		<item>Ophelia</item>
+		<item>Philippe</item>
+		<item>Rina</item>
+		<item>Sean</item>
+		<item>Tammy</item>
+		<item>Vince</item>
+		<item>Whitney</item>
+		<item>Alberto</item>
+		<item>Beryl</item>
+		<item>Chris</item>
+		<item>Debby</item>
+		<item>Ernesto</item>
+		<item>Florence</item>
+		<item>Gordon</item>
+		<item>Helene</item>
+		<item>Isaac</item>
+		<item>Joyce</item>
+		<item>Kirk</item>
+		<item>Leslie</item>
+		<item>Michael</item>
+		<item>Nadine</item>
+		<item>Oscar</item>
+		<item>Patty</item>
+		<item>Rafael</item>
+		<item>Sandy</item>
+		<item>Tony</item>
+		<item>Valerie</item>
+	</string-array>
+	<string name="admincanrep">Admin Condition Canned Report</string>
+	<string name="damageReslts">Damage Report Results</string>
+	<string name="event">Event:</string>
+	<string name="address">Address:</string>
+	<string name="state">State:</string>
+	<string name="type">Type:</string>
+	<string name="pm">PM:</string>
+	<string name="assessmentColon">Assessment:</string>
+	<string name="damaged">Damaged:</string>
+	<string name="comPower">Commercial Power:</string>
+	<string name="ongenColon">On Generator:</string>
+	<string name="unOccupy">Un-Occupyable:</string>
+	<string name="title_activity_crebuilding">CRE Building Activity</string>
 	<string name="incident_rec_num_search_subtitle">Enter Record Number to Search</string>
->>>>>>> 8d2f5857fc8eeb57fb306bd7c6d98a1b30754884
 </resources>

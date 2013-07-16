@@ -7,7 +7,7 @@ import java.util.Map;
 
 import android.support.v4.app.Fragment;
 
-import com.teamuniverse.drtmobile.DamageAddFragment;
+import com.teamuniverse.drtmobile.AddIncidentFragment;
 import com.teamuniverse.drtmobile.IncidentRecNumResultsFragment;
 import com.teamuniverse.drtmobile.IncidentRecNumSearchFragment;
 import com.teamuniverse.drtmobile.IncidentZIPResultsFragment;
@@ -66,14 +66,14 @@ public class SectionAdder {
 				return new IncidentZIPSearchFragment();
 			case INCIDENT_REC_NUM_SEARCH:
 				return new IncidentRecNumSearchFragment();
+			case ADD_INCIDENT:
+				return new AddIncidentFragment();
 			case REPORT_SELECTION:
 				return new ReportSelectionFragment();
 			case INCIDENT_ZIP_RESULTS:
 				return new IncidentZIPResultsFragment();
 			case INCIDENT_REC_NUM_RESULTS:
 				return new IncidentRecNumResultsFragment();
-			case ADD_INCIDENT:
-				return new DamageAddFragment();
 			default:
 				return new IncidentZIPSearchFragment();
 		}
