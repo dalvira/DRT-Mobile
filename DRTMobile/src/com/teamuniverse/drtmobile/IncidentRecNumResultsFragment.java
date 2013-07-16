@@ -346,6 +346,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 					multiline = true;
 					newText.setMinLines(1);
 				} else {
+					newText.setImeActionLabel(m.getString(R.string.go), EditorInfo.IME_ACTION_GO);
 					if (type.equals("STR")) {
 						newText.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
 					} else if (type.equals("NUM")) {
