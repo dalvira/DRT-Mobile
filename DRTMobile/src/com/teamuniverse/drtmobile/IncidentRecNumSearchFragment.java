@@ -2,7 +2,6 @@ package com.teamuniverse.drtmobile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -68,8 +66,7 @@ public class IncidentRecNumSearchFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// Hide virtual keyboard
-				InputMethodManager imm = (InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(m.getCurrentFocus().getWindowToken(), 0);
+				SetterUpper.hideKeys(m);
 				
 				get();
 			}

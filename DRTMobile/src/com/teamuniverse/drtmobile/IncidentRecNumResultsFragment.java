@@ -1,9 +1,10 @@
 package com.teamuniverse.drtmobile;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -43,7 +43,7 @@ import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.IncidentHelper;
-import com.teamuniverse.drtmobile.support.IncidentHelper.IncidentInfo;
+import com.teamuniverse.drtmobile.support.IncidentInfo;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 import com.teamuniverse.drtmobile.support.SetterUpper;
 
@@ -167,7 +167,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 												temp = new TextView(m);
 												temp.setGravity(Gravity.CENTER);
 												temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
-												if (j == 0) temp.setText(infos[i].getKey().substring(7));
+												if (j == 0) temp.setText(infos[i].getDescriptor());
 												else if (j == 1) {
 													try {
 														temp.setText((String) infos[i].getValue());
@@ -179,19 +179,19 @@ public class IncidentRecNumResultsFragment extends Fragment {
 												each.addView(temp);
 											}
 											
-											int which = Integer.parseInt(infos[i].getKey().substring(0, 2));
+											if (i % 2 == 1) {
+												each.setBackgroundColor(Color.rgb(220, 220, 220));
+												each.setTag(R.string.default_color, "color");
+											} else each.setTag(R.string.default_color, "none");
+											
+											int which = infos[i].getId();
 											switch (which) {
-												case 38:
+												case IncidentInfo.RECORD_NUMBER:
 													break;
 												default:
 													each.setClickable(true);
 													
-													each.setTag(R.string.edit_in_place, infos[i].getKey());
-													
-													if (i % 2 == 1) {
-														each.setBackgroundColor(Color.rgb(220, 220, 220));
-														each.setTag(R.string.default_color, "color");
-													} else each.setTag(R.string.default_color, "none");
+													each.setTag(R.string.edit_in_place, infos[i]);
 													
 													each.setOnTouchListener(new OnTouchListener() {
 														@Override
@@ -210,7 +210,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 																case MotionEvent.ACTION_UP:
 																	if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
 																	else SetterUpper.setUnSelected(m, v, true);
-																	editInPlace(m, result, (String) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
+																	editInPlace(m, result, (IncidentInfo) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
 																	break;
 															}
 															return true;
@@ -254,11 +254,11 @@ public class IncidentRecNumResultsFragment extends Fragment {
 	private static String	newDateData			= "";
 	private static String	newSpinnerData		= "";
 	
-	public static void editInPlace(Activity activity, Incident incident, String specs, TextView theField) {
+	public static void editInPlace(Activity activity, Incident incident, IncidentInfo current, TextView infoFieldInList) {
 		final Activity m = activity;
 		String oldContents;
 		if (!editInPlaceFilling) {
-			oldContents = theField.getText().toString();
+			oldContents = infoFieldInList.getText().toString();
 			editInPlaceFilling = true;
 			// 1. Instantiate an AlertDialog.Builder with its constructor
 			AlertDialog.Builder builder = new AlertDialog.Builder(m);
@@ -272,20 +272,26 @@ public class IncidentRecNumResultsFragment extends Fragment {
 			Spinner newSpin = (Spinner) view.findViewById(R.id.new_toggle);
 			DatePicker newDate = (DatePicker) view.findViewById(R.id.new_date);
 			
-			((TextView) view.findViewById(R.id.field_label)).setText(specs.substring(7));
+			((TextView) view.findViewById(R.id.field_label)).setText(current.getDescriptor());
 			
-			int which = (int) Long.parseLong(specs.substring(0, 2));
-			final String type = specs.substring(2, 5);
-			final String limit = specs.substring(5, 7);
+			int which = current.getId();
+			final String type = current.getType();
+			final int limit = current.getMaxLength();
 			boolean multiline = false;
-			if (type.equals("OOC") || type.equals("YON") || type.equals("STA")) {
+			if (type.equals("OOC") || type.equals("YON") || type.equals("STA") || type.equals("OCD") || type.equals("BDG")) {
 				ArrayAdapter<CharSequence> adapter;
 				if (type.equals("STA")) {
 					adapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_item);
 					adapter.addAll(STATE_NAMES);
-				} else {
+				} else if (type.equals("YON") || type.equals("OOC")) {
 					adapter = ArrayAdapter.createFromResource(m, type.equals("OOC")	? R.array.OOC
 																					: R.array.YON, android.R.layout.simple_spinner_item);
+				} else if (type.equals("OCD")) {
+					adapter = ArrayAdapter.createFromResource(m, R.array.building_status_array, android.R.layout.simple_spinner_item);
+					
+				} else {
+					adapter = ArrayAdapter.createFromResource(m, R.array.property_type, android.R.layout.simple_spinner_item);
+					
 				}
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				newSpin.setAdapter(adapter);
@@ -299,7 +305,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 						}
 					}
 				} else {
-					if (oldContents.equals("Y") || oldContents.equals("Open") || oldContents.equals("OPEN")) {
+					if (oldContents.equals("Y") || oldContents.toLowerCase(Locale.getDefault()).equals("open")) {
 						newSpin.setSelection(0);
 					} else newSpin.setSelection(1);
 				}
@@ -350,11 +356,10 @@ public class IncidentRecNumResultsFragment extends Fragment {
 				newDate.setVisibility(View.GONE);
 				if (which == 7) newText.setText(oldContents.replaceAll("-", ""));
 				else newText.setText(oldContents);
-				if (!limit.equals("00")) {
+				if (limit != 0) {
 					InputFilter[] filters = new InputFilter[1];
-					filters[0] = new InputFilter.LengthFilter((int) Long.parseLong(limit));
+					filters[0] = new InputFilter.LengthFilter(limit);
 					newText.setFilters(filters);
-					newText.setTag("MIN" + limit);
 				}
 			}
 			
@@ -378,7 +383,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 				});
 			}
 			
-			(dialog.getButton(DialogInterface.BUTTON_POSITIVE)).setOnClickListener((new IncidentRecNumResultsFragment()).new EditInPlaceDialogListener(dialog, m, incident, which, progress, newText, type, theField, oldContents));
+			(dialog.getButton(DialogInterface.BUTTON_POSITIVE)).setOnClickListener((new IncidentRecNumResultsFragment()).new EditInPlaceDialogListener(dialog, dialog.getButton(DialogInterface.BUTTON_NEGATIVE), m, incident, current, progress, newText, newSpin, newDate, infoFieldInList));
 			(dialog.getButton(DialogInterface.BUTTON_NEGATIVE)).setOnClickListener(new OnClickListener() {
 				private Dialog	dialog;
 				
@@ -404,23 +409,25 @@ public class IncidentRecNumResultsFragment extends Fragment {
 		private final Incident		incident;
 		private final int			which;
 		private final ProgressBar	progress;
-		private final EditText		newContentsBox;
+		private final EditText		newInfoField;
 		private final Handler		handler;
 		private final String		type;
-		private final TextView		theField;
+		private final TextView		infoFieldInList;
 		private final String		oldContents;
+		private View[]				toDisable;
 		
-		public EditInPlaceDialogListener(Dialog dialog, Activity m, Incident incident, int which, ProgressBar progress, EditText newContentsBox, String type, TextView theField, String oldContents) {
+		public EditInPlaceDialogListener(Dialog dialog, Button negButton, Activity m, Incident incident, IncidentInfo current, ProgressBar progress, EditText newInfoField, Spinner newInfoSpinner, DatePicker newInfoDatePicker, TextView infoFieldInList) {
 			this.dialog = dialog;
 			this.m = m;
 			this.incident = incident;
-			this.which = which;
+			this.which = current.getId();
+			this.type = current.getType();
 			this.progress = progress;
-			this.newContentsBox = newContentsBox;
+			this.newInfoField = newInfoField;
 			this.handler = new Handler();
-			this.type = type;
-			this.theField = theField;
-			this.oldContents = oldContents;
+			this.infoFieldInList = infoFieldInList;
+			this.oldContents = infoFieldInList.getText().toString();
+			this.toDisable = new View[] { negButton, newInfoField, newInfoSpinner, newInfoDatePicker, null };
 		}
 		
 		private boolean	success	= false;
@@ -428,25 +435,26 @@ public class IncidentRecNumResultsFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			String maybeNewContents = newContentsBox.getText().toString();
+			toDisable[4] = v;
+			SetterUpper.hideKeys(m);
+			String maybeNewContents = newInfoField.getText().toString();
 			String newContentsTempContainer;
 			if (type.equals("DAT")) newContentsTempContainer = newDateData;
-			else if (type.equals("OOC") || type.equals("YON") || type.equals("STA")) newContentsTempContainer = newSpinnerData;
-			else newContentsTempContainer = which == 7 && maybeNewContents.length() == 10	? maybeNewContents.substring(0, 3) + "-" + maybeNewContents.substring(3, 6) + "-" + maybeNewContents.substring(6)
-																							: maybeNewContents;
+			else if (type.equals("OOC") || type.equals("YON") || type.equals("STA") || type.equals("OCD") || type.equals("BDG")) newContentsTempContainer = newSpinnerData;
+			else {
+				newContentsTempContainer = maybeNewContents;
+				if (which == IncidentInfo.CONTACT_PHONE_NUMBER && newContentsTempContainer.length() == 10) newContentsTempContainer = newContentsTempContainer.substring(0, 3) + "-" + newContentsTempContainer.substring(3, 6) + "-" + newContentsTempContainer.substring(6);
+			}
 			if (!editInPlaceQuerying) {
 				editInPlaceQuerying = true;
 				
 				final String newContents = newContentsTempContainer;
-				if (newContentsBox != null) {
-					// Hide virtual keyboard
-					InputMethodManager imm = (InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(newContentsBox.getWindowToken(), 0);
-				}
 				String message = IncidentHelper.isValidInfoForField(incident, which, newContents);
 				if (message.equals("")) {
-					
+					for (int i = 0; i < toDisable.length; i++)
+						toDisable[i].setEnabled(false);
 					progress.setVisibility(View.VISIBLE);
+					
 					new Thread(new Runnable() {
 						public void run() {
 							IncidentHelper.setFieldByLabel(incident, which, newContents);
@@ -479,8 +487,10 @@ public class IncidentRecNumResultsFragment extends Fragment {
 										progress.setVisibility(View.INVISIBLE);
 										editInPlaceQuerying = false;
 										editInPlaceFilling = false;
+										for (int i = 0; i < toDisable.length; i++)
+											toDisable[i].setEnabled(true);
 										if (success) {
-											theField.setText(newContents);
+											infoFieldInList.setText(newContents);
 											Toast.makeText(m, "Successfully updated!", Toast.LENGTH_SHORT).show();
 										} else {
 											Toast.makeText(m, "Failed to update!", Toast.LENGTH_SHORT).show();
@@ -496,17 +506,12 @@ public class IncidentRecNumResultsFragment extends Fragment {
 				} else {
 					editInPlaceQuerying = false;
 					editInPlaceFilling = false;
-					// 1. Instantiate an AlertDialog.Builder with constructor
-					AlertDialog.Builder builder = new AlertDialog.Builder(m);
-					// 2. Chain together methods to set dialog characteristics
-					builder.setTitle(R.string.edit_in_place_error).setMessage(message);
-					// 3. Add an okay
-					builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+					
+					new AlertDialog.Builder(m).setTitle(R.string.edit_in_place_error).setMessage(message).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
 						}
-					});
-					builder.create().show();
+					}).create().show();
 				}
 			}
 		}

@@ -53,6 +53,12 @@ public class SetterUpper {
 		db.close();
 	}
 	
+	public static void hideKeys(Activity m) {
+		if (m.getCurrentFocus() != null) {
+			((InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(m.getCurrentFocus().getWindowToken(), 0);
+		}
+	}
+	
 	public static void setSelected(Activity m, View v) {
 		v.setBackgroundColor(m.getResources().getColor(R.color.selected));
 	}
@@ -161,7 +167,7 @@ public class SetterUpper {
 		public void onClick(final View v) {
 			if (!timedOutQuerying) {
 				// Hide virtual keyboard
-				((InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(m.getCurrentFocus().getWindowToken(), 0);
+				hideKeys(m);
 				
 				timedOutQuerying = true;
 				progress.setVisibility(View.VISIBLE);

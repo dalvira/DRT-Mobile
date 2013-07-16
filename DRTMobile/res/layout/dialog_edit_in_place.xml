@@ -38,7 +38,7 @@
 		android:id="@+id/progress"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignTop="@+id/field_label"
-		android:layout_toLeftOf="@+id/field_label"
+		android:layout_alignLeft="@+id/field_label"
+		android:layout_below="@+id/field_label"
 		android:visibility="invisible" />
 </RelativeLayout>

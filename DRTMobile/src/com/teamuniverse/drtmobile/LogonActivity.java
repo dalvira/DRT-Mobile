@@ -2,7 +2,6 @@ package com.teamuniverse.drtmobile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -23,6 +21,7 @@ import com.att.intern.webservice.Webservice;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.SectionAdder;
+import com.teamuniverse.drtmobile.support.SetterUpper;
 
 public class LogonActivity extends Activity {
 	/** The shortcut to the current activity */
@@ -111,9 +110,7 @@ public class LogonActivity extends Activity {
 		// Get contents of the EditTexts
 		if (!querying) {
 			// Hide virtual keyboard
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(passEditText.getWindowToken(), 0);
-			imm.hideSoftInputFromWindow(attuidEditText.getWindowToken(), 0);
+			SetterUpper.hideKeys(m);
 			querying = true;
 			progress.setVisibility(View.VISIBLE);
 			attuidEditText.setEnabled(false);
