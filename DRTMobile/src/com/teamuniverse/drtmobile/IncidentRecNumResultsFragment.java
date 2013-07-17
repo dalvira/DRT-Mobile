@@ -1,5 +1,6 @@
 package com.teamuniverse.drtmobile;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -137,72 +138,127 @@ public class IncidentRecNumResultsFragment extends Fragment {
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else {
-									IncidentInfo[] infos = IncidentHelper.getInfos(result);
+									IncidentInfo[] infos = IncidentHelper.getInfos(result, IncidentHelper.UPDATE_ORDER);
+									int colorCoordinator = 0;
 									for (int i = 0; i < infos.length; i++) {
-										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
-										
-										each = new LinearLayout(m);
-										each.setPadding(0, 6, 0, 6);
-										each.setOrientation(LinearLayout.HORIZONTAL);
-										each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-										
-										for (int j = 0; j < COLUMNS; j++) {
-											temp = new TextView(m);
-											temp.setGravity(Gravity.CENTER);
-											temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
-											if (j == 0) temp.setText(infos[i].getDescriptor());
-											else if (j == 1) {
-												try {
-													temp.setText((String) infos[i].getValue());
-												} catch (ClassCastException e) {
-													temp.setText((Integer) infos[i].getValue() + "");
-												}
-												each.setTag(R.id.field_label, temp);
-											}
-											each.addView(temp);
-										}
-										
-										if (i % 2 == 1) {
-											each.setBackgroundColor(Color.rgb(220, 220, 220));
-											each.setTag(R.string.default_color, "color");
-										} else each.setTag(R.string.default_color, "none");
-										
 										int which = infos[i].getId();
+										boolean addIt;
+										
 										switch (which) {
-											case IncidentInfo.RECORD_NUMBER:
+											case IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR:
+											case IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR:
+												addIt = infos[i - 25].getValue().equals("Y");
 												break;
 											default:
-												each.setClickable(true);
-												
-												each.setTag(R.string.edit_in_place, infos[i]);
-												
-												each.setOnTouchListener(new OnTouchListener() {
-													@Override
-													public boolean onTouch(View v, MotionEvent event) {
-														switch (event.getAction()) {
-															case MotionEvent.ACTION_DOWN:
-																SetterUpper.setSelected(m, v);
-																break;
-															case MotionEvent.ACTION_MOVE:
-																SetterUpper.setSelected(m, v);
-																break;
-															case MotionEvent.ACTION_CANCEL:
-																if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
-																else SetterUpper.setUnSelected(m, v, true);
-																break;
-															case MotionEvent.ACTION_UP:
-																if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
-																else SetterUpper.setUnSelected(m, v, true);
-																editInPlace(m, result, (IncidentInfo) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
-																break;
-														}
-														return true;
-													}
-												});
+												addIt = true;
+												break;
 										}
-										container.addView(each);
+										
+										if (addIt) {
+											if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
+											
+											each = new LinearLayout(m);
+											each.setPadding(0, 6, 0, 6);
+											each.setOrientation(LinearLayout.HORIZONTAL);
+											each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+											
+											TextView toShowUneditabled = null;
+											
+											for (int j = 0; j < COLUMNS; j++) {
+												temp = new TextView(m);
+												temp.setGravity(Gravity.CENTER);
+												temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
+												if (j == 0) temp.setText(infos[i].getDescriptor());
+												else if (j == 1) {
+													toShowUneditabled = temp;
+													try {
+														temp.setText((String) infos[i].getValue());
+													} catch (ClassCastException e) {
+														temp.setText((Integer) infos[i].getValue() + "");
+													}
+													each.setTag(R.id.field_label, temp);
+												}
+												each.addView(temp);
+											}
+											
+											if (colorCoordinator++ % 2 == 1) {
+												each.setBackgroundColor(Color.rgb(220, 220, 220));
+												each.setTag(R.string.default_color, "color");
+											} else each.setTag(R.string.default_color, "none");
+											
+											switch (which) {
+												case IncidentInfo.RECORD_NUMBER:
+												case IncidentInfo.CRE_LEAD:
+												case IncidentInfo.EVENT_NAME:
+												case IncidentInfo.INCIDENT_YEAR:
+												case IncidentInfo.STATE:
+												case IncidentInfo.PM_ATTUID:
+												case IncidentInfo.ZIP_CODE:
+												case IncidentInfo.BUILDING_TYPE:
+												case IncidentInfo.BUILDING_NAME:
+												case IncidentInfo.BUILDING_ADDRESS:
+												case IncidentInfo.REQUESTOR_ATTUID:
+												case IncidentInfo.CONTACT_PHONE_NUMBER:
+												case IncidentInfo.INITIAL_REPORT_DATE:
+												case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
+												case IncidentInfo.GROUNDS_ISSUE_INDICATOR:
+												case IncidentInfo.PLUMB_ISSUE_INDICATOR:
+												case IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR:
+												case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
+												case IncidentInfo.ROOFS_ISSUE_INDICATOR:
+												case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
+												case IncidentInfo.OTHER_ISSUE_INDICATOR:
+												case IncidentInfo.SAFETY_ISSUE_INDICATOR:
+												case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
+												case IncidentInfo.STRUCTURAL_ISSUE_INDICATOR:
+												case IncidentInfo.WATER_ISSUE_INDICATOR:
+												case IncidentInfo.WORK_REQUEST_NUMBER:
+													if (toShowUneditabled != null) {
+														toShowUneditabled.setEnabled(false);
+													}
+													break;
+												default:
+													each.setClickable(true);
+													
+													each.setTag(R.string.edit_in_place, infos[i]);
+													
+													each.setOnTouchListener(new OnTouchListener() {
+														@Override
+														public boolean onTouch(View v, MotionEvent event) {
+															switch (event.getAction()) {
+																case MotionEvent.ACTION_DOWN:
+																	SetterUpper.setSelected(m, v);
+																	break;
+																case MotionEvent.ACTION_MOVE:
+																	SetterUpper.setSelected(m, v);
+																	break;
+																case MotionEvent.ACTION_CANCEL:
+																	if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
+																	else SetterUpper.setUnSelected(m, v, true);
+																	break;
+																case MotionEvent.ACTION_UP:
+																	if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
+																	else SetterUpper.setUnSelected(m, v, true);
+																	editInPlace(m, result, (IncidentInfo) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
+																	break;
+															}
+															return true;
+														}
+													});
+											}
+											container.addView(each);
+										}
 									}
-									
 								}
 							} else if (timedOutDuringSearch) {
 								SetterUpper.timedOut(m);
@@ -366,21 +422,21 @@ public class IncidentRecNumResultsFragment extends Fragment {
 						}
 					});
 					break;
-				case IncidentInfo.COMMUNICATIONS_POWER_INDICATOR:
+				case IncidentInfo.COMMERCIAL_POWER_INDICATOR:
 				case IncidentInfo.DAMAGE_INDICATOR:
-				case IncidentInfo.ELECETRICAL_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR:
 				case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
 				case IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR:
 				case IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR:
 				case IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR:
 				case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
-				case IncidentInfo.GENERAL_ISSUE_CLOSED_INDICATOR:
-				case IncidentInfo.GENERAL_ISSUE_INDICATOR:
+				case IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
 				case IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR:
 				case IncidentInfo.GROUNDS_ISSUE_INDICATOR:
 				case IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR:
 				case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
-				case IncidentInfo.MOB_CO_INDICATOR:
+				case IncidentInfo.MOBILITY_CO_INDICATOR:
 				case IncidentInfo.ON_GENERATOR_INDICATOR:
 				case IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR:
 				case IncidentInfo.OTHER_ISSUE_INDICATOR:
@@ -418,13 +474,25 @@ public class IncidentRecNumResultsFragment extends Fragment {
 					newDate.setVisibility(View.VISIBLE);
 					newDateData = oldContents;
 					newDate.setVisibility(View.VISIBLE);
-					newDate.init((int) Long.parseLong(oldContents.substring(0, 4)), (int) Long.parseLong(oldContents.substring(5, 7)) - 1, (int) Long.parseLong(oldContents.substring(8)), new OnDateChangedListener() {
-						@Override
-						public void onDateChanged(DatePicker arg0, int y, int m, int d) {
-							newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0"
-																								: "") + d;
-						}
-					});
+					if (oldContents.length() == 10) {
+						newDate.init((int) Long.parseLong(oldContents.substring(0, 4)), (int) Long.parseLong(oldContents.substring(5, 7)) - 1, (int) Long.parseLong(oldContents.substring(8)), new OnDateChangedListener() {
+							@Override
+							public void onDateChanged(DatePicker arg0, int y, int m, int d) {
+								newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0"
+																									: "") + d;
+							}
+						});
+					} else {
+						newDateData = Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+						newDate.init(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), new OnDateChangedListener() {
+							@Override
+							public void onDateChanged(DatePicker arg0, int y, int m, int d) {
+								newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0"
+																									: "") + d;
+							}
+						});
+						
+					}
 					break;
 				case IncidentInfo.ASSESSMENT_NOTES:
 				case IncidentInfo.INCIDENT_NOTES:

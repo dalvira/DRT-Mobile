@@ -163,7 +163,7 @@ public class IncidentZIPSearchFragment extends Fragment {
 						db.close();
 						
 						Incident incident = IncidentHelper.init(m, theZip);
-						incident.setIncidentStatus("Open");
+						incident.setEventName("Sample!");
 						incident.setIncidentNotes("Sample number " + num);
 						
 						Webservice ws = new Webservice(m);

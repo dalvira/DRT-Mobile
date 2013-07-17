@@ -18,14 +18,32 @@ import com.att.intern.webservice.Webservice;
  * 
  */
 public class IncidentHelper extends Incident {
+	public static final int[]	ADD_ORDER			= { IncidentInfo.ZIP_CODE, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.BUILDING_NAME, IncidentInfo.BUILDING_ADDRESS, IncidentInfo.INCIDENT_YEAR, IncidentInfo.REQUESTOR_ATTUID, IncidentInfo.CONTACT_PHONE_NUMBER, IncidentInfo.INITIAL_REPORT_DATE, IncidentInfo.EVENT_NAME, IncidentInfo.BUILDING_TYPE, IncidentInfo.WORK_REQUEST_NUMBER, IncidentInfo.COMMERCIAL_POWER_INDICATOR, IncidentInfo.ON_GENERATOR_INDICATOR, IncidentInfo.DAMAGE_INDICATOR, IncidentInfo.MOBILITY_CO_INDICATOR, IncidentInfo.UNOCCUPIABLE_INDICATOR, IncidentInfo.BUILDING_STATUS, IncidentInfo.CRE_LEAD, IncidentInfo.ESTIMATED_CAP_COST, IncidentInfo.ESTIMATED_EXPENSE_COST, IncidentInfo.ELECTRICAL_ISSUE_INDICATOR, IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR, IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.FENCE_GATE_ISSUE_INDICATOR, IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR, IncidentInfo.GENERATOR_ISSUE_INDICATOR, IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR, IncidentInfo.WATER_ISSUE_INDICATOR, IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR, IncidentInfo.GROUNDS_ISSUE_INDICATOR, IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR, IncidentInfo.MECHANICAL_ISSUE_INDICATOR, IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.OTHER_ISSUE_INDICATOR, IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR, IncidentInfo.PLUMB_ISSUE_INDICATOR, IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR, IncidentInfo.ROOFS_ISSUE_INDICATOR, IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR, IncidentInfo.SAFETY_ISSUE_INDICATOR, IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR, IncidentInfo.STRUCTURAL_ISSUE_INDICATOR, IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.ASSESSMENT_NOTES, IncidentInfo.STATUS_NOTES, IncidentInfo.INCIDENT_STATUS, IncidentInfo.COMPLETION_DATE, IncidentInfo.INCIDENT_NOTES };
+	public static final int[]	UPDATE_ORDER		= { IncidentInfo.RECORD_NUMBER, IncidentInfo.CRE_LEAD, IncidentInfo.EVENT_NAME, IncidentInfo.INCIDENT_YEAR, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.ZIP_CODE, IncidentInfo.BUILDING_TYPE, IncidentInfo.BUILDING_NAME, IncidentInfo.BUILDING_ADDRESS, IncidentInfo.REQUESTOR_ATTUID, IncidentInfo.CONTACT_PHONE_NUMBER, IncidentInfo.INITIAL_REPORT_DATE, IncidentInfo.ELECTRICAL_ISSUE_INDICATOR, IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR, IncidentInfo.FENCE_GATE_ISSUE_INDICATOR, IncidentInfo.GENERATOR_ISSUE_INDICATOR, IncidentInfo.GROUNDS_ISSUE_INDICATOR, IncidentInfo.MECHANICAL_ISSUE_INDICATOR, IncidentInfo.PLUMB_ISSUE_INDICATOR, IncidentInfo.ROOFS_ISSUE_INDICATOR, IncidentInfo.SAFETY_ISSUE_INDICATOR, IncidentInfo.STRUCTURAL_ISSUE_INDICATOR, IncidentInfo.WATER_ISSUE_INDICATOR, IncidentInfo.OTHER_ISSUE_INDICATOR, IncidentInfo.WORK_REQUEST_NUMBER, IncidentInfo.ASSESSMENT_NOTES, IncidentInfo.STATUS_NOTES, IncidentInfo.COMPLETION_DATE, IncidentInfo.INCIDENT_STATUS, IncidentInfo.COMMERCIAL_POWER_INDICATOR, IncidentInfo.ON_GENERATOR_INDICATOR, IncidentInfo.DAMAGE_INDICATOR, IncidentInfo.MOBILITY_CO_INDICATOR, IncidentInfo.UNOCCUPIABLE_INDICATOR, IncidentInfo.BUILDING_STATUS, IncidentInfo.ESTIMATED_CAP_COST, IncidentInfo.ESTIMATED_EXPENSE_COST, IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR, IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR, IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR, IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR, IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR, IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR, IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR, IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR };
 	
 	/**
 	 * A generated serialVersionUID
 	 */
 	private static final long	serialVersionUID	= -4119664774967242074L;
 	
-	public static boolean[] isSet(Incident inc) {
-		return new boolean[] { !(inc.getAssessNotes() == null), !(inc.getBuildingAddress() == null), !(inc.getBuildingName() == null), !(inc.getBuildingStatus() == null), !(inc.getBuildingType() == null), !(inc.getCompltnDate() == null), !(inc.getComPowerIndicator() == null), !(inc.getContactPhone() == null), !(inc.getCreLead() == null), !(inc.getDamageIndicator() == null), !(inc.getElecIssueClsdIndicator() == null), !(inc.getElecIssueIndicator() == null), !(inc.getEnvIssueClsdIndicator() == null), !(inc.getEnvIssueIndicator() == null), !(inc.getEstCapCost() == 0), !(inc.getEstExpenseCost() == 0), !(inc.getEventName() == null), !(inc.getFenceGateIssueClsdIndicator() == null), !(inc.getFenceGateIssueIndicator() == null), !(inc.getGenIssueClsdIndicator() == null), !(inc.getGenIssueIndicator() == null), !(inc.getGroundsIssueClsdIndicator() == null), !(inc.getGroundsIssueIndicator() == null), !(inc.getIncidentCompltnDate() == null), !(inc.getIncidentNotes() == null), !(inc.getIncidentStatus() == null), !(inc.getIncidentYear() == 0), !(inc.getInitialRptDate() == null), !(inc.getMechIssueClsdIndicator() == null), !(inc.getMechIssueIndicator() == null), !(inc.getMobCOIndicator() == null), !(inc.getOnGeneratorIndicator() == null), !(inc.getOtherIssueClsdIndicator() == null), !(inc.getOtherIssueIndicator() == null), !(inc.getPlumbIssueClsdIndicator() == null), !(inc.getPlumbIssueIndicator() == null), !(inc.getPMAttuid() == null), !(inc.getRecNumber() == 0), !(inc.getReqATTUID() == null), !(inc.getRoofsIssueClsdIndicator() == null), !(inc.getRoofsIssueIndicator() == null), !(inc.getSafetyIssueClsdIndicator() == null), !(inc.getSafetyIssueIndicator() == null), !(inc.getState() == null), !(inc.getStatusNotes() == null), !(inc.getStructIssueClsdIndicator() == null), !(inc.getStructIssueIndicator() == null), !(inc.getUnOccupiableIndicator() == null), !(inc.getWaterIssueClsdIndicator() == null), !(inc.getWaterIssueIndicator() == null), !(inc.getWorkReqNumber() == null), !(inc.getGeoLoc() == 0) };
+	public static boolean[] isSet(Incident inc, int[] order) {
+		boolean[] whichs = new boolean[52];
+		for (int i = 0; i < order.length; i++)
+			whichs[i] = isSet(inc, order[i]);
+		return whichs;
+	}
+	
+	private static boolean isSet(Incident inc, int id) {
+		switch (id) {
+			case IncidentInfo.ESTIMATED_CAP_COST:
+			case IncidentInfo.ESTIMATED_EXPENSE_COST:
+			case IncidentInfo.ZIP_CODE:
+			case IncidentInfo.INCIDENT_YEAR:
+			case IncidentInfo.RECORD_NUMBER:
+				return (Integer) getSingleInfo(inc, id).getValue() != 0;
+			default:
+				return getSingleInfo(inc, id).getValue() != null;
+		}
 	}
 	
 	public static IncidentInfo getSingleInfo(Incident inc, int which) {
@@ -46,7 +64,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.BUILDING_NAME:
 				value = inc.getBuildingName();
 				break;
-			case IncidentInfo.COMMUNICATIONS_POWER_INDICATOR:
+			case IncidentInfo.COMMERCIAL_POWER_INDICATOR:
 				value = inc.getComPowerIndicator();
 				break;
 			case IncidentInfo.COMPLETION_DATE:
@@ -61,7 +79,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.DAMAGE_INDICATOR:
 				value = inc.getDamageIndicator();
 				break;
-			case IncidentInfo.ELECETRICAL_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR:
 				value = inc.getElecIssueClsdIndicator();
 				break;
 			case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
@@ -88,10 +106,10 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
 				value = inc.getFenceGateIssueIndicator();
 				break;
-			case IncidentInfo.GENERAL_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR:
 				value = inc.getGenIssueClsdIndicator();
 				break;
-			case IncidentInfo.GENERAL_ISSUE_INDICATOR:
+			case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
 				value = inc.getGenIssueIndicator();
 				break;
 			case IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR:
@@ -121,7 +139,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
 				value = inc.getMechIssueIndicator();
 				break;
-			case IncidentInfo.MOB_CO_INDICATOR:
+			case IncidentInfo.MOBILITY_CO_INDICATOR:
 				value = inc.getMobCOIndicator();
 				break;
 			case IncidentInfo.ON_GENERATOR_INDICATOR:
@@ -145,7 +163,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.RECORD_NUMBER:
 				value = inc.getRecNumber();
 				break;
-			case IncidentInfo.REQ_ATTUID:
+			case IncidentInfo.REQUESTOR_ATTUID:
 				value = inc.getReqATTUID();
 				break;
 			case IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR:
@@ -195,12 +213,16 @@ public class IncidentHelper extends Incident {
 	
 	/**
 	 * The method that extracts all of the available infos from the incident
-	 * that calls it.
+	 * that is passed.
 	 * 
+	 * @param inc
+	 *            The incident from which to extract data.
+	 * @param ADD_ORDER
+	 *            Either IncidentHelper.ADD_ORDER or IncidentHelper.UPDATE_ORDER
 	 * @return An IncidentInfo[] that has all of the informations.
 	 */
-	public static IncidentInfo[] getInfos(Incident inc) {
-		boolean[] whichs = isSet(inc);
+	public static IncidentInfo[] getInfos(Incident inc, int[] order) {
+		boolean[] whichs = isSet(inc, order);
 		
 		int sizeCount = 0;
 		for (int i = 0; i < whichs.length; i++)
@@ -210,7 +232,7 @@ public class IncidentHelper extends Incident {
 		IncidentInfo[] info = new IncidentInfo[size];
 		
 		for (int i = 0, counter = 0; i < whichs.length; i++)
-			if (whichs[i]) info[counter++] = getSingleInfo(inc, i);
+			if (whichs[i]) info[counter++] = getSingleInfo(inc, order[i]);
 		
 		return info;
 	}
@@ -292,7 +314,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.COMPLETION_DATE:
 				inc.setCompltnDate(newContents);
 				break;
-			case IncidentInfo.COMMUNICATIONS_POWER_INDICATOR:
+			case IncidentInfo.COMMERCIAL_POWER_INDICATOR:
 				inc.setComPowerIndicator(newContents);
 				break;
 			case IncidentInfo.CONTACT_PHONE_NUMBER:
@@ -304,7 +326,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.DAMAGE_INDICATOR:
 				inc.setDamageIndicator(newContents);
 				break;
-			case IncidentInfo.ELECETRICAL_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR:
 				inc.setElecIssueClsdIndicator(newContents);
 				break;
 			case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
@@ -331,10 +353,10 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
 				inc.setFenceGateIssueIndicator(newContents);
 				break;
-			case IncidentInfo.GENERAL_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR:
 				inc.setGenIssueClsdIndicator(newContents);
 				break;
-			case IncidentInfo.GENERAL_ISSUE_INDICATOR:
+			case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
 				inc.setGenIssueIndicator(newContents);
 				break;
 			case IncidentInfo.ZIP_CODE:
@@ -367,7 +389,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
 				inc.setMechIssueIndicator(newContents);
 				break;
-			case IncidentInfo.MOB_CO_INDICATOR:
+			case IncidentInfo.MOBILITY_CO_INDICATOR:
 				inc.setMobCOIndicator(newContents);
 				break;
 			case IncidentInfo.ON_GENERATOR_INDICATOR:
@@ -392,7 +414,7 @@ public class IncidentHelper extends Incident {
 			// case IncidentInfo.RECORD_NUMBER:
 			// inc.setRecNumber((int) Long.parseLong(newContents));
 			// break;
-			case IncidentInfo.REQ_ATTUID:
+			case IncidentInfo.REQUESTOR_ATTUID:
 				inc.setReqATTUID(newContents);
 				break;
 			case IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR:
@@ -521,7 +543,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.RECORD_NUMBER:
 				// TODO add check
 				break;
-			case IncidentInfo.REQ_ATTUID:
+			case IncidentInfo.REQUESTOR_ATTUID:
 				if (!newContents.matches("[a-zA-Z]{2}[0-9]{3}[a-zA-Z0-9]")) message = "The supplied ATTUID is not valid.";
 				break;
 			case IncidentInfo.WORK_REQUEST_NUMBER:
