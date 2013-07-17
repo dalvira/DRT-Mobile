@@ -12,13 +12,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.att.intern.webservice.Incident;
 import com.att.intern.webservice.Webservice;
@@ -26,6 +29,8 @@ import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
+import com.teamuniverse.drtmobile.support.IncidentHelper;
+import com.teamuniverse.drtmobile.support.IncidentInfo;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 import com.teamuniverse.drtmobile.support.SetterUpper;
 
@@ -87,7 +92,7 @@ public class IncidentZIPResultsFragment extends Fragment {
 				
 				db = new DatabaseManager(m);
 				String token = db.sessionGet("token");
-				int zip = (int) Long.parseLong(db.sessionGet("zip"));
+				final int zip = (int) Long.parseLong(db.sessionGet("zip"));
 				db.close();
 				
 				try {
@@ -108,6 +113,22 @@ public class IncidentZIPResultsFragment extends Fragment {
 								temp.setText(R.string.no_results);
 								temp.setGravity(Gravity.CENTER_HORIZONTAL);
 								container.addView(temp);
+								
+								if (IncidentHelper.isValidInfoForField(null, IncidentInfo.ZIP_CODE, zip + "").equals("")) {
+									Button addNew = new Button(m);
+									addNew.setText(m.getString(R.string.add_incident_title));
+									addNew.setOnClickListener(new OnClickListener() {
+										@Override
+										public void onClick(View arg0) {
+											DatabaseManager db = new DatabaseManager(m);
+											db.sessionSet("adding_zip", zip + "");
+											db.close();
+											SectionListActivity.m.putSection(SectionAdder.ADD_INCIDENT);
+										}
+									});
+									container.addView(addNew);
+									
+								} else Toast.makeText(m, IncidentHelper.isValidInfoForField(null, IncidentInfo.ZIP_CODE, zip + ""), Toast.LENGTH_SHORT).show();
 							} else {
 								TextView temp;
 								LinearLayout each;
@@ -159,11 +180,13 @@ public class IncidentZIPResultsFragment extends Fragment {
 									for (int j = 0; j < COLUMNS; j++) {
 										temp = new TextView(m);
 										temp.setGravity(Gravity.CENTER);
-										temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
 										temp.setMaxLines(1);
-										if (j == 0) temp.setText(results.get(i).getEventName());
-										else if (j == 1) temp.setText(results.get(i).getRecNumber() + "");
-										else if (j == 2) temp.setText(results.get(i).getIncidentNotes());
+										if (j == 0) {
+											temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
+											temp.setGravity(Gravity.LEFT);
+											temp.setText("Record Num: " + results.get(i).getRecNumber() + "");
+										} else if (j == 1) temp.setText("Event Name: " + results.get(i).getEventName());
+										// else if (j == 2) temp.setText();
 										// else if (j == 3) temp.setText();
 										// else if (j == 4) temp.setText();
 										// else if (j == 5) temp.setText();

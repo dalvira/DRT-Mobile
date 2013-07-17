@@ -591,6 +591,12 @@ public class IncidentRecNumResultsFragment extends Fragment {
 										SetterUpper.timedOut(m);
 										for (int i = 0; i < toDisable.length; i++)
 											toDisable[i].setEnabled(true);
+										editInPlaceQuerying = false;
+										try {
+											progress.setVisibility(View.INVISIBLE);
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
 									} else {
 										progress.setVisibility(View.INVISIBLE);
 										editInPlaceQuerying = false;

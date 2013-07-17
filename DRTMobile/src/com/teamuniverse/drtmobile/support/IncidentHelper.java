@@ -437,9 +437,12 @@ public class IncidentHelper extends Incident {
 	}
 	
 	public static String isValidInfoForField(Incident inc, int which, String newContents) {
-		String message = "", oldReportDate;
+		String message = "";
+		
+		String oldReportDate;
 		int incidentYear, incidentCompletionYear;
 		Calendar initialReportDate;
+		
 		switch (which) {
 			case IncidentInfo.COMPLETION_DATE:
 				/**

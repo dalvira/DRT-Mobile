@@ -23,6 +23,7 @@ import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
+import com.teamuniverse.drtmobile.support.IncidentHelper;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 import com.teamuniverse.drtmobile.support.SetterUpper;
 
@@ -161,9 +162,7 @@ public class IncidentZIPSearchFragment extends Fragment {
 						String token = db.sessionGet("token");
 						db.close();
 						
-						Incident incident = new Incident();
-						incident.setGeoLoc(theZip);
-						incident.setEventName("Event #" + num + "!");
+						Incident incident = IncidentHelper.init(m, theZip);
 						incident.setIncidentStatus("Open");
 						incident.setIncidentNotes("Sample number " + num);
 						
