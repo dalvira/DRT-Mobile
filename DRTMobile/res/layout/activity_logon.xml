@@ -3,6 +3,7 @@
 	android:id="@+id/logon_container"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:focusableInTouchMode="true"
 	tools:context=".LogonActivity" >
 	<ImageView
 		android:layout_width="match_parent"
@@ -48,7 +49,6 @@
 				android:imeActionLabel="@string/next"
 				android:imeOptions="actionNext"
 				android:inputType="textEmailAddress" >
-				<requestFocus />
 			</EditText>
 			<EditText
 				android:id="@+id/password"

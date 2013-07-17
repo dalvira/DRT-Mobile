@@ -59,15 +59,12 @@ public class IncidentRecNumSearchFragment extends Fragment {
 		}
 		db.close();
 		
-		getRecordNumber.requestFocus();
+		// getRecordNumber.requestFocus();
 		
 		button = (Button) view.findViewById(R.id.go_button);
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// Hide virtual keyboard
-				SetterUpper.hideKeys(m);
-				
 				get();
 			}
 		});
@@ -76,7 +73,6 @@ public class IncidentRecNumSearchFragment extends Fragment {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-					v.performClick();
 					button.performClick();
 					return true;
 				}

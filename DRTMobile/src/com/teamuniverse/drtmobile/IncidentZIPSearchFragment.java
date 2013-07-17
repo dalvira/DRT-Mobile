@@ -112,8 +112,6 @@ public class IncidentZIPSearchFragment extends Fragment {
 	
 	protected void search() {
 		zip = zipBox.getText().toString();
-		// Hide virtual keyboard
-		SetterUpper.hideKeys(m);
 		
 		if (!zip.equals("") && zip.length() == 5 && zip.matches("[0-9]{5}")) {
 			DatabaseManager db = new DatabaseManager(m);

@@ -534,13 +534,14 @@ public class IncidentRecNumResultsFragment extends Fragment {
 			this.toDisable = new View[] { negButton, newInfoField, newInfoSpinner, newInfoDatePicker, null };
 		}
 		
-		private boolean	success	= false;
-		private boolean	timed	= false;
+		private boolean	success;
+		private boolean	timed;
 		
 		@Override
-		public void onClick(View v) {
+		public void onClick(final View v) {
+			success = false;
+			timed = false;
 			toDisable[4] = v;
-			SetterUpper.hideKeys(m);
 			String maybeNewContents = newInfoField.getText().toString();
 			String newContentsTempContainer;
 			if (!newDateData.equals("")) newContentsTempContainer = newDateData;
@@ -588,14 +589,8 @@ public class IncidentRecNumResultsFragment extends Fragment {
 									// Hide the progress bar
 									if (timed) {
 										SetterUpper.timedOut(m);
-										try {
-											for (int i = 0; i < toDisable.length; i++)
-												toDisable[i].setEnabled(true);
-											progress.setVisibility(View.INVISIBLE);
-											editInPlaceQuerying = false;
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
+										for (int i = 0; i < toDisable.length; i++)
+											toDisable[i].setEnabled(true);
 									} else {
 										progress.setVisibility(View.INVISIBLE);
 										editInPlaceQuerying = false;

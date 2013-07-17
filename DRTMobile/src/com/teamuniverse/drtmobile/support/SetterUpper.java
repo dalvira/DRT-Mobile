@@ -3,7 +3,6 @@ package com.teamuniverse.drtmobile.support;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -52,12 +50,6 @@ public class SetterUpper {
 		((TextView) parent.findViewById(R.id.attuid)).setText(db.sessionGet("attuid"));
 		((TextView) parent.findViewById(R.id.authorization)).setText(db.sessionGet("authorization"));
 		db.close();
-	}
-	
-	public static void hideKeys(Activity m) {
-		if (m.getCurrentFocus() != null) {
-			((InputMethodManager) m.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(m.getCurrentFocus().getWindowToken(), 0);
-		}
 	}
 	
 	public static void setSelected(Activity m, View v) {
@@ -102,7 +94,7 @@ public class SetterUpper {
 		DatabaseManager db = new DatabaseManager(m);
 		attuidEditText.setText(db.sessionGet("attuid"));
 		passEditText.setText("password");
-		passEditText.requestFocus();
+		// passEditText.requestFocus();
 		db.close();
 		
 		attuidEditText.setEnabled(false);
@@ -169,8 +161,6 @@ public class SetterUpper {
 		@Override
 		public void onClick(final View v) {
 			if (!timedOutQuerying) {
-				// Hide virtual keyboard
-				hideKeys(m);
 				
 				timedOutQuerying = true;
 				progress.setVisibility(View.VISIBLE);

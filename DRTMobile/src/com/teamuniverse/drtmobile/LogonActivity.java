@@ -21,7 +21,6 @@ import com.att.intern.webservice.Webservice;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.SectionAdder;
-import com.teamuniverse.drtmobile.support.SetterUpper;
 
 public class LogonActivity extends Activity {
 	/** The shortcut to the current activity */
@@ -74,7 +73,7 @@ public class LogonActivity extends Activity {
 			rememberATTUID.setChecked(true);
 			attuidEditText.setText(db.getFirstInfoOfType("attuid"));
 			passEditText.setText("password");
-			passEditText.requestFocus();
+			// passEditText.requestFocus();
 		}
 		db.close();
 		
@@ -109,8 +108,6 @@ public class LogonActivity extends Activity {
 	private void logon() {
 		// Get contents of the EditTexts
 		if (!querying) {
-			// Hide virtual keyboard
-			SetterUpper.hideKeys(m);
 			querying = true;
 			progress.setVisibility(View.VISIBLE);
 			attuidEditText.setEnabled(false);
