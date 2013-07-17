@@ -2,7 +2,10 @@ package com.teamuniverse.drtmobile.support;
 
 import java.util.Calendar;
 
+import android.app.Activity;
+
 import com.att.intern.webservice.Incident;
+import com.att.intern.webservice.Webservice;
 
 /**
  * This class greatly facilitates the extraction of info from an incident
@@ -40,7 +43,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.BUILDING_TYPE:
 				value = inc.getBuildingType();
 				break;
-			case IncidentInfo.BULDING_NAME:
+			case IncidentInfo.BUILDING_NAME:
 				value = inc.getBuildingName();
 				break;
 			case IncidentInfo.COMMUNICATIONS_POWER_INDICATOR:
@@ -212,6 +215,63 @@ public class IncidentHelper extends Incident {
 		return info;
 	}
 	
+	public static Incident init(Activity m, int zip) {
+		String[] startValues = new Webservice(m).getGLCInfo().get(zip).split("~");
+		Incident inc = new Incident();
+		inc.setAssessNotes("");
+		inc.setBuildingAddress(startValues[3]);
+		inc.setBuildingName(startValues[2]);
+		inc.setBuildingStatus("");
+		inc.setBuildingType("");
+		inc.setCompltnDate("");
+		inc.setComPowerIndicator("");
+		inc.setContactPhone("");
+		inc.setCreLead("");
+		inc.setDamageIndicator("");
+		inc.setElecIssueClsdIndicator("");
+		inc.setElecIssueIndicator("");
+		inc.setEnvIssueClsdIndicator("");
+		inc.setEnvIssueIndicator("");
+		inc.setEstCapCost(0);
+		inc.setEstExpenseCost(0);
+		inc.setEventName("");
+		inc.setFenceGateIssueClsdIndicator("");
+		inc.setFenceGateIssueIndicator("");
+		inc.setGenIssueClsdIndicator("");
+		inc.setGenIssueIndicator("");
+		inc.setGeoLoc(zip);
+		inc.setGroundsIssueClsdIndicator("");
+		inc.setGroundsIssueIndicator("");
+		inc.setIncidentCompltnDate("");
+		inc.setIncidentNotes("");
+		inc.setIncidentStatus("Open");
+		inc.setIncidentYear(0);
+		inc.setInitialRptDate("");
+		inc.setMechIssueClsdIndicator("");
+		inc.setMechIssueIndicator("");
+		inc.setMobCOIndicator("");
+		inc.setOnGeneratorIndicator("");
+		inc.setOtherIssueClsdIndicator("");
+		inc.setOtherIssueIndicator("");
+		inc.setPlumbIssueClsdIndicator("");
+		inc.setPlumbIssueIndicator("");
+		inc.setPMAttuid(startValues[1]);
+		inc.setReqATTUID("");
+		inc.setRoofsIssueClsdIndicator("");
+		inc.setRoofsIssueIndicator("");
+		inc.setSafetyIssueClsdIndicator("");
+		inc.setSafetyIssueIndicator("");
+		inc.setState(startValues[0]);
+		inc.setStatusNotes("");
+		inc.setStructIssueClsdIndicator("");
+		inc.setStructIssueIndicator("");
+		inc.setUnOccupiableIndicator("");
+		inc.setWaterIssueClsdIndicator("");
+		inc.setWaterIssueIndicator("");
+		inc.setWorkReqNumber("");
+		return inc;
+	}
+	
 	public static void setFieldByLabel(Incident inc, int which, String newContents) {
 		switch (which) {
 			case IncidentInfo.ASSESSMENT_NOTES:
@@ -220,7 +280,7 @@ public class IncidentHelper extends Incident {
 			case IncidentInfo.BUILDING_ADDRESS:
 				inc.setBuildingAddress(newContents);
 				break;
-			case IncidentInfo.BULDING_NAME:
+			case IncidentInfo.BUILDING_NAME:
 				inc.setBuildingName(newContents);
 				break;
 			case IncidentInfo.BUILDING_STATUS:

@@ -15,7 +15,7 @@ public class IncidentInfo {
 	public static final int			BUILDING_ADDRESS						= 1;
 	public static final int			BUILDING_STATUS							= 2;
 	public static final int			BUILDING_TYPE							= 3;
-	public static final int			BULDING_NAME							= 4;
+	public static final int			BUILDING_NAME							= 4;
 	public static final int			COMMUNICATIONS_POWER_INDICATOR			= 5;
 	public static final int			COMPLETION_DATE							= 6;
 	public static final int			CONTACT_PHONE_NUMBER					= 7;
@@ -65,15 +65,13 @@ public class IncidentInfo {
 	public static final int			ZIP_CODE								= 51;
 	
 	private static final int[]		LENGTHS									= { 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 4, 6, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 16, 6 };
-	private static final String[]	DESCRIPTORS								= { "Assessment Notes", "Building Address", "Building Status", "Building Type", "Bulding Name", "Communications Power Indicator", "Completion Date", "Contact Phone Number", "CRE Lead", "Damage Indicator", "Elecetrical Issue Closed Indicator", "Electrical Issue Indicator", "Environmental Issue Closed Indicator", "Environmental Issue Indicator", "Estimated Cap Cost", "Estimated Expense Cost", "Event Name", "Fence Gate Issue Closed Indicator", "Fence Gate Issue Indicator", "General Issue Closed Indicator", "General Issue Indicator", "Grounds Issue Closed Indicator", "Grounds Issue Indicator", "Incident Completion Date", "Incident Notes", "Incident Status", "Incident Year", "Initial Report Date", "Mechanical Issue Closed Indicator", "Mechanical Issue Indicator", "Mob CO Indicator", "On Generator Indicator", "Other Issue Closed Indicator", "Other Issue Indicator", "Plumb Issue Closed Indicator", "Plumb Issue Indicator", "PM ATTUID", "Record Number", "Req ATTUID", "Roofs Issue Closed Indicator", "Roofs Issue Indicator", "Safety Issue Closed Indicator", "Safety Issue Indicator", "State", "Status Notes", "Structural Issue Closed Indicator", "Structural Issue Indicator", "Unoccupiable Indicator", "Water Issue Closed Indicator", "Water Issue Indicator", "Work Request Number", "ZIP Code" };
-	private static final String[]	FORMATS									= { "STR", "STR", "OCD", "BDG", "STR", "YON", "DAT", "NUM", "STR", "YON", "YON", "YON", "YON", "YON", "NUM", "NUM", "STR", "YON", "YON", "YON", "YON", "YON", "YON", "DAT", "STR", "OOC", "NUM", "DAT", "YON", "YON", "YON", "YON", "YON", "YON", "YON", "YON", "STR", "NUM", "STR", "YON", "YON", "YON", "YON", "STA", "STR", "YON", "YON", "YON", "YON", "YON", "NUM", "NUM" };
+	private static final String[]	DESCRIPTORS								= { "Assessment Notes", "Building Address", "Building Status", "Building Type", "Building Name", "Communications Power Indicator", "Completion Date", "Contact Phone Number", "CRE Lead", "Damage Indicator", "Elecetrical Issue Closed Indicator", "Electrical Issue Indicator", "Environmental Issue Closed Indicator", "Environmental Issue Indicator", "Estimated Cap Cost", "Estimated Expense Cost", "Event Name", "Fence Gate Issue Closed Indicator", "Fence Gate Issue Indicator", "General Issue Closed Indicator", "General Issue Indicator", "Grounds Issue Closed Indicator", "Grounds Issue Indicator", "Incident Completion Date", "Incident Notes", "Incident Status", "Incident Year", "Initial Report Date", "Mechanical Issue Closed Indicator", "Mechanical Issue Indicator", "Mob CO Indicator", "On Generator Indicator", "Other Issue Closed Indicator", "Other Issue Indicator", "Plumb Issue Closed Indicator", "Plumb Issue Indicator", "PM ATTUID", "Record Number", "Req ATTUID", "Roofs Issue Closed Indicator", "Roofs Issue Indicator", "Safety Issue Closed Indicator", "Safety Issue Indicator", "State", "Status Notes", "Structural Issue Closed Indicator", "Structural Issue Indicator", "Unoccupiable Indicator", "Water Issue Closed Indicator", "Water Issue Indicator", "Work Request Number", "ZIP Code" };
 	
 	private final int				id;
 	private final Object			value;
 	
 	private final int				length;
 	private final String			descriptor;
-	private final String			format;
 	
 	protected IncidentInfo() {
 		id = -1;
@@ -81,7 +79,6 @@ public class IncidentInfo {
 		
 		length = -1;
 		descriptor = null;
-		format = null;
 	}
 	
 	protected IncidentInfo(int id, Object value) {
@@ -90,7 +87,6 @@ public class IncidentInfo {
 		
 		length = LENGTHS[id];
 		descriptor = DESCRIPTORS[id];
-		format = FORMATS[id];
 	}
 	
 	/**
@@ -129,13 +125,5 @@ public class IncidentInfo {
 	 */
 	public String getDescriptor() {
 		return descriptor;
-	}
-	
-	/**
-	 * 
-	 * @return The String format.
-	 */
-	public String getType() {
-		return format;
 	}
 }

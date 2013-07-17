@@ -1,8 +1,5 @@
 package com.teamuniverse.drtmobile;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -125,28 +122,17 @@ public class IncidentZIPSearchFragment extends Fragment {
 			
 			SectionListActivity.m.putSection(SectionAdder.INCIDENT_ZIP_RESULTS);
 		} else {
-			// 1. Instantiate an AlertDialog.Builder with its
-			// constructor
-			AlertDialog.Builder builder = new AlertDialog.Builder(m);
-			// 2. Chain together various setter methods to set the
-			// dialog
-			// characteristics
-			builder.setMessage(R.string.zip_invalid).setTitle(R.string.zip_invalid_title);
-			// 3. Add an okay
-			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			new AlertDialog.Builder(m).setMessage(R.string.zip_invalid).setTitle(R.string.zip_invalid_title).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int id) {
 					dialog.cancel();
 				}
-			});
-			// 4. Get the AlertDialog from create() and show it
-			builder.create().show();
+			}).create().show();
 		}
 	}
 	
-	String						error		= "";
-	String						addResult	= "";
-	Hashtable<Integer, String>	validGLCs;
+	String	error		= "";
+	String	addResult	= "";
 	
 	protected void sample() {
 		zip = zipBox.getText().toString();
@@ -156,7 +142,7 @@ public class IncidentZIPSearchFragment extends Fragment {
 			AlertDialog.Builder builder = new AlertDialog.Builder(m);
 			// 2. Chain together various methods to set the dialog
 			// characteristics
-			builder.setMessage("ZIP must be one of: 27685, 74685, 88534, 27689, 63784, or 78549 to be successfully added!").setTitle("Not a eligible ZIP!");
+			builder.setMessage("ZIP must be one of: 27685, 74685, 88534, 27689, 63784, or 78549 to be successfully added!").setTitle("Not an eligible ZIP!");
 			// 3. Add an okay
 			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 				@Override
@@ -167,7 +153,7 @@ public class IncidentZIPSearchFragment extends Fragment {
 			// 4. Get the AlertDialog from create() and show it
 			builder.create().show();
 		} else {
-			final int theZip = (int) Long.parseLong(zip);
+			final int theZip = Integer.parseInt(zip);
 			if (!querying) {
 				querying = true;
 				progress.setVisibility(View.VISIBLE);
@@ -185,7 +171,6 @@ public class IncidentZIPSearchFragment extends Fragment {
 						
 						Webservice ws = new Webservice(m);
 						try {
-							validGLCs = ws.getGLCInfo();
 							ws.addIncident(token, incident);
 						} catch (TokenInvalidException e) {
 							error = e.getMessage();
@@ -199,12 +184,10 @@ public class IncidentZIPSearchFragment extends Fragment {
 								// Hide the progress bar
 								querying = false;
 								progress.setVisibility(View.GONE);
-								if (error.equals("")) Toast.makeText(m, "Made incident #" + num++ + " in " + theZip, Toast.LENGTH_SHORT).show();
+								if (error.equals("")) Toast.makeText(m, "Made sample incident in " + theZip, Toast.LENGTH_SHORT).show();
 								else {
 									SetterUpper.timedOut(m);
-									Enumeration<Integer> nums = validGLCs.keys();
-									while (nums.hasMoreElements())
-										Toast.makeText(m, "" + nums.nextElement(), Toast.LENGTH_SHORT).show();
+									sample();
 								}
 							}
 						}, 0);

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Eric -->
+	<string-array name="YON">
+		<item>Y</item>
+		<item>N</item>
+	</string-array>
+	<string-array name="OOC">
+		<item>Open</item>
+		<item>Closed</item>
+	</string-array>
+	<!-- Darius -->
+	<string-array name="building_statuses">
+		<item>Open</item>
+		<item>Closed</item>
+		<item>Delayed</item>
+		<item>Opening</item>
+		<item>Re-Opened</item>
+	</string-array>
+	<string-array name="building_types">
+		<item>ADM</item>
+		<item>CEV</item>
+		<item>CO</item>
+		<item>DAT</item>
+		<item>HUT</item>
+		<item>Lab</item>
+		<item>Land</item>
+		<item>Other</item>
+		<item>RET</item>
+		<item>STO</item>
+		<item>TWR</item>
+		<item>WAR</item>
+		<item>WCR</item>
+	</string-array>
+	<string-array name="years">
+		<item>2012</item>
+		<item>2011</item>
+		<item>2010</item>
+	</string-array>
+	<string-array name="yes_no">
+		<item>Y</item>
+		<item>N</item>
+	</string-array>
+	<string-array name="no_yes">
+		<item>N</item>
+		<item>Y</item>
+	</string-array>
+	<string-array name="open_closed">
+		<item>Open</item>
+		<item>Closed</item>
+	</string-array>
+	<string-array name="cre_lead">
+		<item>PM</item>
+		<item>D&amp;C</item>
+	</string-array>
+	<string-array name="event">
+		<item>Hurricane</item>
+		<item>Earthquake</item>
+		<item>Flood</item>
+		<item>Ice Storm</item>
+		<item>Snow Storm</item>
+		<item>Tornado</item>
+		<item>Wildfire</item>
+	</string-array>
+	<string-array name="names_array">
+		<item>Earthquake</item>
+		<item>Flood</item>
+		<item>Ice Storm</item>
+		<item>Snow Storm</item>
+		<item>Tornado</item>
+		<item>Wildfire</item>
+		<item>Alex</item>
+		<item>Bonnie</item>
+		<item>Colin</item>
+		<item>Danielle</item>
+		<item>Earl</item>
+		<item>Fiona</item>
+		<item>Gaston</item>
+		<item>Hermine</item>
+		<item>Shary</item>
+		<item>Igor</item>
+		<item>Julia</item>
+		<item>Karl</item>
+		<item>Lisa</item>
+		<item>Matthew</item>
+		<item>Nicole</item>
+		<item>Otto</item>
+		<item>Paula</item>
+		<item>Richard</item>
+		<item>Shary</item>
+		<item>Thomas</item>
+		<item>Virginie</item>
+		<item>Walter</item>
+		<item>Arlene</item>
+		<item>Bret</item>
+		<item>Cindy</item>
+		<item>Don</item>
+		<item>Emily</item>
+		<item>Franklin</item>
+		<item>Gert</item>
+		<item>Harvey</item>
+		<item>Irene</item>
+		<item>Jose</item>
+		<item>Katia</item>
+		<item>Lee</item>
+		<item>Maria</item>
+		<item>Nate</item>
+		<item>Ophelia</item>
+		<item>Philippe</item>
+		<item>Rina</item>
+		<item>Sean</item>
+		<item>Tammy</item>
+		<item>Vince</item>
+		<item>Whitney</item>
+		<item>Alberto</item>
+		<item>Beryl</item>
+		<item>Chris</item>
+		<item>Debby</item>
+		<item>Ernesto</item>
+		<item>Florence</item>
+		<item>Gordon</item>
+		<item>Helene</item>
+		<item>Isaac</item>
+		<item>Joyce</item>
+		<item>Kirk</item>
+		<item>Leslie</item>
+		<item>Michael</item>
+		<item>Nadine</item>
+		<item>Oscar</item>
+		<item>Patty</item>
+		<item>Rafael</item>
+		<item>Sandy</item>
+		<item>Tony</item>
+		<item>Valerie</item>
+	</string-array>
+</resources>

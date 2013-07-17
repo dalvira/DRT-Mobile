@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -74,6 +75,8 @@ public class SetterUpper {
 	private static boolean	timedOutQuerying;
 	/** The String[] that will hold the results of the call to Webservice */
 	private static String[]	loginResults;
+	/** The flag that tells the OnDismissListener if success was reached */
+	private static boolean	loggedBackIn;
 	
 	/**
 	 * Call this method in the InvalidTokenException catch clause of the
@@ -86,8 +89,8 @@ public class SetterUpper {
 	 */
 	public static void timedOut(Activity activity) {
 		final Activity m = activity;
+		loggedBackIn = false;
 		// 1. Instantiate an AlertDialog.Builder with its constructor
-		AlertDialog.Builder builder = new AlertDialog.Builder(m);
 		// 2. Chain together various methods to set the dialog characteristics
 		LayoutInflater inflater = m.getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_timed_out, null);
@@ -104,15 +107,11 @@ public class SetterUpper {
 		
 		attuidEditText.setEnabled(false);
 		
-		builder.setView(view);
-		builder.setTitle(R.string.timed_out_title);
-		// 3. Add an okay
-		builder.setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
+		final AlertDialog dialog = new AlertDialog.Builder(m).setView(view).setTitle(R.string.timed_out_title).setPositiveButton(R.string.go, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 			}
-		});
-		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+		}).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				Intent intent = new Intent(m.getApplicationContext(), LogonActivity.class);
@@ -121,9 +120,14 @@ public class SetterUpper {
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				m.startActivity(intent);
 			}
-		});
-		final AlertDialog dialog = builder.create();
+		}).create();
 		dialog.setCanceledOnTouchOutside(false);
+		dialog.setOnDismissListener(new OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface arg0) {
+				if (!loggedBackIn) (dialog.getButton(DialogInterface.BUTTON_NEGATIVE)).performClick();
+			}
+		});
 		dialog.show();
 		
 		/**
@@ -140,8 +144,7 @@ public class SetterUpper {
 			}
 		});
 		
-		SetterUpper me = new SetterUpper();
-		(dialog.getButton(DialogInterface.BUTTON_POSITIVE)).setOnClickListener(me.new TimedOutDialogListener(dialog, m, progress, attuidEditText, passEditText, (Button) dialog.getButton(DialogInterface.BUTTON_NEGATIVE)));
+		(dialog.getButton(DialogInterface.BUTTON_POSITIVE)).setOnClickListener(new SetterUpper().new TimedOutDialogListener(dialog, m, progress, attuidEditText, passEditText, (Button) dialog.getButton(DialogInterface.BUTTON_NEGATIVE)));
 	}
 	
 	class TimedOutDialogListener implements View.OnClickListener {
@@ -205,6 +208,7 @@ public class SetterUpper {
 										db.sessionSet("token", loginResults[0]);
 										db.close();
 										
+										loggedBackIn = true;
 										dialog.dismiss();
 									}
 								} catch (Exception e) {

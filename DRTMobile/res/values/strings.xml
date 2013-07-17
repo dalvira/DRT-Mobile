@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- Eric -->
 	<string name="app_name">DRT Mobile</string>
 	<string name="action_settings">Settings</string>
 	<string name="title_section_list">Sections</string>
@@ -34,17 +35,6 @@
 	<string name="cancel">Cancel</string>
 	<string name="contents">New Contents</string>
 	<string name="edit_in_place">Edit Field</string>
-	<string-array name="YON">
-		<item>Y</item>
-		<item>N</item>
-	</string-array>
-	<string-array name="OOC">
-		<item>Open</item>
-		<item>Closed</item>
-	</string-array>
-	<color name="fake_tansparent">#fefefe</color>
-	<color name="selected">#33b5e5</color>
-	<color name="unselected_gray">#dcdcdc</color>
 	<string name="edit_in_place_error">Invalid Contents</string>
 	<string name="incident_rec_num_search_subtitle">Enter Record Number to Search</string>
 	<string name="next">Next</string>
@@ -79,72 +69,12 @@
 	<string name="no">No</string>
 	<string name="ongenerator">On Generator</string>
 	<string name="anyfac"><u>Any Facility</u></string>
-	<string-array name="building_status_array">
-		<item>Open</item>
-		<item>Closed</item>
-		<item>Delayed Opening</item>
-		<item>Re-Opening</item>
-	</string-array>
 	<string name="estcost"><u>Estimated Cost</u></string>
 	<string name="capital">Capital ($)</string>
 	<string name="expense">Expense ($)</string>
 	<string name="categories">Categories</string>
 	<string name="choose">Choose One</string>
 	<string name="update">Update</string>
-	<!-- putting here -->
-	<!-- string array that will build lists of items in the drop down boxes -->
-	<string-array name="property_type">
-		<item>ADM</item>
-		<item>CEV</item>
-		<item>CO</item>
-		<item>DAT</item>
-		<item>HUT</item>
-		<item>Lab</item>
-		<item>Land</item>
-		<item>Other</item>
-		<item>RET</item>
-		<item>STO</item>
-		<item>TWR</item>
-		<item>WAR</item>
-		<item>WCR</item>
-	</string-array>
-	<string-array name="eventYear">
-		<item>2012</item>
-		<item>2011</item>
-		<item>2010</item>
-	</string-array>
-	<string-array name="yes_no">
-		<item>Y</item>
-		<item>N</item>
-	</string-array>
-	<string-array name="no_yes">
-		<item>N</item>
-		<item>Y</item>
-	</string-array>
-	<string-array name="open_closed">
-		<item>Open</item>
-		<item>Closed</item>
-	</string-array>
-	<string-array name="building_status">
-		<item>Open</item>
-		<item>Closed</item>
-		<item>Delayed</item>
-		<item>Opening</item>
-		<item>Re-Opened</item>
-	</string-array>
-	<string-array name="cre_lead">
-		<item>PM</item>
-		<item>D&amp;C</item>
-	</string-array>
-	<string-array name="event">
-		<item>Hurricane</item>
-		<item>Earthquake</item>
-		<item>Flood</item>
-		<item>Ice Storm</item>
-		<item>Snow Storm</item>
-		<item>Tornado</item>
-		<item>Wildfire</item>
-	</string-array>
 	<!-- Darius -->
 	<string name="searchresult">Search Result</string>
 	<string name="adminCondCan">Admin Condition Canned Report</string>
@@ -152,82 +82,6 @@
 	<string name="eventYear">Event Year:</string>
 	<string name="eventName">Event Name:</string>
 	<string name="eventtype">Event Type:</string>
-	<string-array name="year_array">
-		<item>2012</item>
-		<item>2011</item>
-		<item>2010</item>
-	</string-array>
-	<string-array name="names_array">
-		<item>Earthquake</item>
-		<item>Flood</item>
-		<item>Ice Storm</item>
-		<item>Snow Storm</item>
-		<item>Tornado</item>
-		<item>Wildfire</item>
-		<item>Alex</item>
-		<item>Bonnie</item>
-		<item>Colin</item>
-		<item>Danielle</item>
-		<item>Earl</item>
-		<item>Fiona</item>
-		<item>Gaston</item>
-		<item>Hermine</item>
-		<item>Shary</item>
-		<item>Igor</item>
-		<item>Julia</item>
-		<item>Karl</item>
-		<item>Lisa</item>
-		<item>Matthew</item>
-		<item>Nicole</item>
-		<item>Otto</item>
-		<item>Paula</item>
-		<item>Richard</item>
-		<item>Shary</item>
-		<item>Thomas</item>
-		<item>Virginie</item>
-		<item>Walter</item>
-		<item>Arlene</item>
-		<item>Bret</item>
-		<item>Cindy</item>
-		<item>Don</item>
-		<item>Emily</item>
-		<item>Franklin</item>
-		<item>Gert</item>
-		<item>Harvey</item>
-		<item>Irene</item>
-		<item>Jose</item>
-		<item>Katia</item>
-		<item>Lee</item>
-		<item>Maria</item>
-		<item>Nate</item>
-		<item>Ophelia</item>
-		<item>Philippe</item>
-		<item>Rina</item>
-		<item>Sean</item>
-		<item>Tammy</item>
-		<item>Vince</item>
-		<item>Whitney</item>
-		<item>Alberto</item>
-		<item>Beryl</item>
-		<item>Chris</item>
-		<item>Debby</item>
-		<item>Ernesto</item>
-		<item>Florence</item>
-		<item>Gordon</item>
-		<item>Helene</item>
-		<item>Isaac</item>
-		<item>Joyce</item>
-		<item>Kirk</item>
-		<item>Leslie</item>
-		<item>Michael</item>
-		<item>Nadine</item>
-		<item>Oscar</item>
-		<item>Patty</item>
-		<item>Rafael</item>
-		<item>Sandy</item>
-		<item>Tony</item>
-		<item>Valerie</item>
-	</string-array>
 	<string name="admincanrep">Admin Condition Canned Report</string>
 	<string name="damageReslts">Damage Report Results</string>
 	<string name="event">Event:</string>

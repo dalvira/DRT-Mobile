@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,7 +45,6 @@ import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.IncidentHelper;
 import com.teamuniverse.drtmobile.support.IncidentInfo;
-import com.teamuniverse.drtmobile.support.SectionAdder;
 import com.teamuniverse.drtmobile.support.SetterUpper;
 
 /**
@@ -60,8 +60,6 @@ public class IncidentRecNumResultsFragment extends Fragment {
 	private static Activity			m;
 	/** The progress bar that is shown to indicate background processes */
 	private static ProgressBar		progress;
-	/** A boolean that will stop many clicks from starting a bunch of threads */
-	private static boolean			querying;
 	/** The handler that will allow the multi-threading */
 	private Handler					handler;
 	private DatabaseManager			db;
@@ -87,26 +85,11 @@ public class IncidentRecNumResultsFragment extends Fragment {
 		SetterUpper.setup(m, view);
 		
 		progress = (ProgressBar) view.findViewById(R.id.progress);
-		querying = false;
 		handler = new Handler();
 		
 		db = new DatabaseManager(m);
 		db.sessionUnset("goto_tab");
 		db.close();
-		
-		Button backButton = (Button) view.findViewById(R.id.back_button);
-		backButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				db = new DatabaseManager(m);
-				db.sessionSet("back", "true");
-				String which = db.sessionGet("from");
-				db.sessionUnset("from");
-				db.close();
-				if (which.equals("incident")) SectionListActivity.m.putSection(SectionAdder.INCIDENT_ZIP_RESULTS);
-				else SectionListActivity.m.putSection(SectionAdder.INCIDENT_REC_NUM_SEARCH);
-			}
-		});
 		
 		LinearLayout list = (LinearLayout) view.findViewById(R.id.list_container);
 		search(list);
@@ -114,38 +97,39 @@ public class IncidentRecNumResultsFragment extends Fragment {
 		return view;
 	}
 	
-	Incident	result	= null;
-	boolean		success	= false;
+	Incident	result					= null;
+	boolean		success					= false;
+	boolean		timedOutDuringSearch	= false;
 	
 	private void search(LinearLayout containerRef) {
 		final LinearLayout container = containerRef;
 		// Get contents of the EditTexts
-		if (!querying) {
-			querying = true;
-			new Thread(new Runnable() {
-				public void run() {
-					Webservice ws = new Webservice(m);
-					
-					db = new DatabaseManager(m);
-					String token = db.sessionGet("token");
-					int recordNumber = (int) Long.parseLong(db.sessionGet("record_number"));
-					db.close();
-					
-					try {
-						result = ws.incidByRecNum(token, recordNumber);
-						success = true;
-					} catch (TokenInvalidException e) {
-						e.printStackTrace();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					handler.postDelayed(new Runnable() {
-						public void run() {
-							// Hide the progress bar
+		new Thread(new Runnable() {
+			public void run() {
+				Webservice ws = new Webservice(m);
+				
+				db = new DatabaseManager(m);
+				String token = db.sessionGet("token");
+				int recordNumber = (int) Long.parseLong(db.sessionGet("record_number"));
+				db.close();
+				
+				try {
+					result = ws.incidByRecNum(token, recordNumber);
+					success = true;
+				} catch (TokenInvalidException e) {
+					timedOutDuringSearch = true;
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				handler.postDelayed(new Runnable() {
+					public void run() {
+						// Hide the progress bar
+						
+						TextView temp;
+						LinearLayout each;
+						try {
 							progress.setVisibility(View.GONE);
-							
-							TextView temp;
-							LinearLayout each;
 							if (success) {
 								if (result == null) {
 									temp = new TextView(m);
@@ -153,84 +137,84 @@ public class IncidentRecNumResultsFragment extends Fragment {
 									temp.setGravity(Gravity.CENTER_HORIZONTAL);
 									container.addView(temp);
 								} else {
-									try {
-										IncidentInfo[] infos = IncidentHelper.getInfos(result);
-										for (int i = 0; i < infos.length; i++) {
-											if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
-											
-											each = new LinearLayout(m);
-											each.setPadding(0, 6, 0, 6);
-											each.setOrientation(LinearLayout.HORIZONTAL);
-											each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-											
-											for (int j = 0; j < COLUMNS; j++) {
-												temp = new TextView(m);
-												temp.setGravity(Gravity.CENTER);
-												temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
-												if (j == 0) temp.setText(infos[i].getDescriptor());
-												else if (j == 1) {
-													try {
-														temp.setText((String) infos[i].getValue());
-													} catch (ClassCastException e) {
-														temp.setText((Integer) infos[i].getValue() + "");
-													}
-													each.setTag(R.id.field_label, temp);
+									IncidentInfo[] infos = IncidentHelper.getInfos(result);
+									for (int i = 0; i < infos.length; i++) {
+										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
+										
+										each = new LinearLayout(m);
+										each.setPadding(0, 6, 0, 6);
+										each.setOrientation(LinearLayout.HORIZONTAL);
+										each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+										
+										for (int j = 0; j < COLUMNS; j++) {
+											temp = new TextView(m);
+											temp.setGravity(Gravity.CENTER);
+											temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
+											if (j == 0) temp.setText(infos[i].getDescriptor());
+											else if (j == 1) {
+												try {
+													temp.setText((String) infos[i].getValue());
+												} catch (ClassCastException e) {
+													temp.setText((Integer) infos[i].getValue() + "");
 												}
-												each.addView(temp);
+												each.setTag(R.id.field_label, temp);
 											}
-											
-											if (i % 2 == 1) {
-												each.setBackgroundColor(Color.rgb(220, 220, 220));
-												each.setTag(R.string.default_color, "color");
-											} else each.setTag(R.string.default_color, "none");
-											
-											int which = infos[i].getId();
-											switch (which) {
-												case IncidentInfo.RECORD_NUMBER:
-													break;
-												default:
-													each.setClickable(true);
-													
-													each.setTag(R.string.edit_in_place, infos[i]);
-													
-													each.setOnTouchListener(new OnTouchListener() {
-														@Override
-														public boolean onTouch(View v, MotionEvent event) {
-															switch (event.getAction()) {
-																case MotionEvent.ACTION_DOWN:
-																	SetterUpper.setSelected(m, v);
-																	break;
-																case MotionEvent.ACTION_MOVE:
-																	SetterUpper.setSelected(m, v);
-																	break;
-																case MotionEvent.ACTION_CANCEL:
-																	if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
-																	else SetterUpper.setUnSelected(m, v, true);
-																	break;
-																case MotionEvent.ACTION_UP:
-																	if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
-																	else SetterUpper.setUnSelected(m, v, true);
-																	editInPlace(m, result, (IncidentInfo) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
-																	break;
-															}
-															return true;
-														}
-													});
-											}
-											container.addView(each);
+											each.addView(temp);
 										}
 										
-									} catch (Exception e) {
-										e.printStackTrace();
+										if (i % 2 == 1) {
+											each.setBackgroundColor(Color.rgb(220, 220, 220));
+											each.setTag(R.string.default_color, "color");
+										} else each.setTag(R.string.default_color, "none");
+										
+										int which = infos[i].getId();
+										switch (which) {
+											case IncidentInfo.RECORD_NUMBER:
+												break;
+											default:
+												each.setClickable(true);
+												
+												each.setTag(R.string.edit_in_place, infos[i]);
+												
+												each.setOnTouchListener(new OnTouchListener() {
+													@Override
+													public boolean onTouch(View v, MotionEvent event) {
+														switch (event.getAction()) {
+															case MotionEvent.ACTION_DOWN:
+																SetterUpper.setSelected(m, v);
+																break;
+															case MotionEvent.ACTION_MOVE:
+																SetterUpper.setSelected(m, v);
+																break;
+															case MotionEvent.ACTION_CANCEL:
+																if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
+																else SetterUpper.setUnSelected(m, v, true);
+																break;
+															case MotionEvent.ACTION_UP:
+																if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
+																else SetterUpper.setUnSelected(m, v, true);
+																editInPlace(m, result, (IncidentInfo) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
+																break;
+														}
+														return true;
+													}
+												});
+										}
+										container.addView(each);
 									}
+									
 								}
-							} else SetterUpper.timedOut(m);
-							
+							} else if (timedOutDuringSearch) {
+								SetterUpper.timedOut(m);
+								search(container);
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-					}, 0);
-				}
-			}).start();
-		}
+					}
+				}, 0);
+			}
+		}).start();
 	}
 	
 	@Override
@@ -251,11 +235,13 @@ public class IncidentRecNumResultsFragment extends Fragment {
 	/** A boolean that will stop many clicks from starting a bunch of threads */
 	private static boolean	editInPlaceQuerying	= false;
 	private static boolean	editInPlaceFilling	= false;
-	private static String	newDateData			= "";
-	private static String	newSpinnerData		= "";
+	private static String	newDateData;
+	private static String	newSpinnerData;
 	
 	public static void editInPlace(Activity activity, Incident incident, IncidentInfo current, TextView infoFieldInList) {
 		final Activity m = activity;
+		newDateData = "";
+		newSpinnerData = "";
 		String oldContents;
 		if (!editInPlaceFilling) {
 			oldContents = infoFieldInList.getText().toString();
@@ -275,97 +261,216 @@ public class IncidentRecNumResultsFragment extends Fragment {
 			((TextView) view.findViewById(R.id.field_label)).setText(current.getDescriptor());
 			
 			int which = current.getId();
-			final String type = current.getType();
 			final int limit = current.getMaxLength();
 			boolean multiline = false;
-			if (type.equals("OOC") || type.equals("YON") || type.equals("STA") || type.equals("OCD") || type.equals("BDG")) {
-				ArrayAdapter<CharSequence> adapter;
-				if (type.equals("STA")) {
-					adapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_item);
-					adapter.addAll(STATE_NAMES);
-				} else if (type.equals("YON") || type.equals("OOC")) {
-					adapter = ArrayAdapter.createFromResource(m, type.equals("OOC")	? R.array.OOC
-																					: R.array.YON, android.R.layout.simple_spinner_item);
-				} else if (type.equals("OCD")) {
-					adapter = ArrayAdapter.createFromResource(m, R.array.building_status_array, android.R.layout.simple_spinner_item);
-					
-				} else {
-					adapter = ArrayAdapter.createFromResource(m, R.array.property_type, android.R.layout.simple_spinner_item);
-					
-				}
-				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				newSpin.setAdapter(adapter);
-				
-				// Set the default selected position!!!
-				if (type.equals("STA")) {
+			
+			switch (which) {
+				case IncidentInfo.BUILDING_STATUS:
+					newSpin.setVisibility(View.VISIBLE);
+					ArrayAdapter<CharSequence> buildingStatusAdapter = ArrayAdapter.createFromResource(m, R.array.building_statuses, android.R.layout.simple_spinner_item);
+					buildingStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					newSpin.setAdapter(buildingStatusAdapter);
+					final String[] buildingStatuses = m.getResources().getStringArray(R.array.building_statuses);
+					for (int i = 0; i < buildingStatuses.length; i++) {
+						if (oldContents.equals(buildingStatuses[i])) newSpin.setSelection(i);
+					}
+					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
+						@Override
+						public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+							newSpinnerData = buildingStatuses[pos];
+						}
+						
+						@Override
+						public void onNothingSelected(AdapterView<?> arg0) {
+						}
+					});
+					break;
+				case IncidentInfo.BUILDING_TYPE:
+					newSpin.setVisibility(View.VISIBLE);
+					ArrayAdapter<CharSequence> buildingTypeAdapter = ArrayAdapter.createFromResource(m, R.array.building_types, android.R.layout.simple_spinner_item);
+					buildingTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					newSpin.setAdapter(buildingTypeAdapter);
+					final String[] buildingTypes = m.getResources().getStringArray(R.array.building_types);
+					for (int i = 0; i < buildingTypes.length; i++) {
+						if (oldContents.equals(buildingTypes[i])) newSpin.setSelection(i);
+					}
+					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
+						@Override
+						public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+							newSpinnerData = buildingTypes[pos];
+						}
+						
+						@Override
+						public void onNothingSelected(AdapterView<?> arg0) {
+						}
+					});
+					break;
+				case IncidentInfo.INCIDENT_STATUS:
+					newSpin.setVisibility(View.VISIBLE);
+					ArrayAdapter<CharSequence> incidentStatusAdapter = ArrayAdapter.createFromResource(m, R.array.OOC, android.R.layout.simple_spinner_item);
+					incidentStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					newSpin.setAdapter(incidentStatusAdapter);
+					newSpin.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("open") ? 0
+																									: 1);
+					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
+						@Override
+						public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
+							newSpinnerData = pos == 0 ? "Open" : "Closed";
+						}
+						
+						@Override
+						public void onNothingSelected(AdapterView<?> arg0) {
+						}
+					});
+					break;
+				case IncidentInfo.EVENT_NAME:
+					newSpin.setVisibility(View.VISIBLE);
+					ArrayAdapter<CharSequence> eventNameAdapter = ArrayAdapter.createFromResource(m, R.array.names_array, android.R.layout.simple_spinner_item);
+					eventNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					newSpin.setAdapter(eventNameAdapter);
+					final String[] eventNames = m.getResources().getStringArray(R.array.names_array);
+					for (int i = 0; i < eventNames.length; i++) {
+						if (oldContents.equals(eventNames[i])) newSpin.setSelection(i);
+					}
+					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
+						@Override
+						public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+							newSpinnerData = eventNames[pos];
+						}
+						
+						@Override
+						public void onNothingSelected(AdapterView<?> arg0) {
+						}
+					});
+					break;
+				case IncidentInfo.STATE:
+					newSpin.setVisibility(View.VISIBLE);
+					ArrayAdapter<CharSequence> stateAdapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_item);
+					stateAdapter.addAll(STATE_NAMES);
+					stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					newSpin.setAdapter(stateAdapter);
 					for (int i = 0; i < STATE_NAMES.length; i++) {
 						if (oldContents.equals(STATE_POSTALS[i])) {
 							newSpin.setSelection(i);
 							break;
 						}
 					}
-				} else {
-					if (oldContents.equals("Y") || oldContents.toLowerCase(Locale.getDefault()).equals("open")) {
-						newSpin.setSelection(0);
-					} else newSpin.setSelection(1);
-				}
-				
-				newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
-					@Override
-					public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
-						if (type.equals("STA")) {
+					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
+						@Override
+						public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
 							newSpinnerData = STATE_POSTALS[pos];
-						} else {
-							newSpinnerData = pos == 0	? type.equals("YON") ? "Y"
-																			
-																			: "Open"
-														: type.equals("YON") ? "N"
-																			: "Closed";
 						}
-					}
-					
-					@Override
-					public void onNothingSelected(AdapterView<?> arg0) {
-					}
-				});
-				newText.setVisibility(View.GONE);
-				newDate.setVisibility(View.GONE);
-			} else if (type.equals("DAT")) {
-				newDateData = oldContents;
-				newText.setVisibility(View.GONE);
-				newSpin.setVisibility(View.GONE);
-				newDate.init((int) Long.parseLong(oldContents.substring(0, 4)), (int) Long.parseLong(oldContents.substring(5, 7)) - 1, (int) Long.parseLong(oldContents.substring(8)), new OnDateChangedListener() {
-					@Override
-					public void onDateChanged(DatePicker arg0, int y, int m, int d) {
-						newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0"
-																							: "") + d;
-					}
-				});
-			} else {
-				if (which == 0 || which == 25 || which == 45) {
+						
+						@Override
+						public void onNothingSelected(AdapterView<?> arg0) {
+						}
+					});
+					break;
+				case IncidentInfo.COMMUNICATIONS_POWER_INDICATOR:
+				case IncidentInfo.DAMAGE_INDICATOR:
+				case IncidentInfo.ELECETRICAL_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
+				case IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR:
+				case IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
+				case IncidentInfo.GENERAL_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.GENERAL_ISSUE_INDICATOR:
+				case IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.GROUNDS_ISSUE_INDICATOR:
+				case IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
+				case IncidentInfo.MOB_CO_INDICATOR:
+				case IncidentInfo.ON_GENERATOR_INDICATOR:
+				case IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.OTHER_ISSUE_INDICATOR:
+				case IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.PLUMB_ISSUE_INDICATOR:
+				case IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.ROOFS_ISSUE_INDICATOR:
+				case IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.SAFETY_ISSUE_INDICATOR:
+				case IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.STRUCTURAL_ISSUE_INDICATOR:
+				case IncidentInfo.UNOCCUPIABLE_INDICATOR:
+				case IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR:
+				case IncidentInfo.WATER_ISSUE_INDICATOR:
+					newSpin.setVisibility(View.VISIBLE);
+					ArrayAdapter<CharSequence> indicatorAdapter = ArrayAdapter.createFromResource(m, R.array.YON, android.R.layout.simple_spinner_item);
+					indicatorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					newSpin.setAdapter(indicatorAdapter);
+					newSpin.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("y")	? 0
+																									: 1);
+					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
+						@Override
+						public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
+							newSpinnerData = pos == 0 ? "Y" : "N";
+						}
+						
+						@Override
+						public void onNothingSelected(AdapterView<?> arg0) {
+						}
+					});
+					break;
+				case IncidentInfo.COMPLETION_DATE:
+				case IncidentInfo.INCIDENT_COMPLETION_DATE:
+				case IncidentInfo.INITIAL_REPORT_DATE:
+					newDate.setVisibility(View.VISIBLE);
+					newDateData = oldContents;
+					newDate.setVisibility(View.VISIBLE);
+					newDate.init((int) Long.parseLong(oldContents.substring(0, 4)), (int) Long.parseLong(oldContents.substring(5, 7)) - 1, (int) Long.parseLong(oldContents.substring(8)), new OnDateChangedListener() {
+						@Override
+						public void onDateChanged(DatePicker arg0, int y, int m, int d) {
+							newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0"
+																								: "") + d;
+						}
+					});
+					break;
+				case IncidentInfo.ASSESSMENT_NOTES:
+				case IncidentInfo.INCIDENT_NOTES:
+				case IncidentInfo.STATUS_NOTES:
+					newText.setVisibility(View.VISIBLE);
 					multiline = true;
 					newText.setMinLines(1);
-				} else {
+					newText.setText(oldContents);
+					break;
+				case IncidentInfo.CONTACT_PHONE_NUMBER:
+					newText.setVisibility(View.VISIBLE);
 					newText.setImeActionLabel(m.getString(R.string.go), EditorInfo.IME_ACTION_GO);
-					if (type.equals("STR")) {
-						newText.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
-					} else if (type.equals("NUM")) {
-						newText.setInputType(InputType.TYPE_CLASS_NUMBER);
-					}
-				}
-				newSpin.setVisibility(View.GONE);
-				newDate.setVisibility(View.GONE);
-				if (which == 7) newText.setText(oldContents.replaceAll("-", ""));
-				else newText.setText(oldContents);
-				if (limit != 0) {
-					InputFilter[] filters = new InputFilter[1];
-					filters[0] = new InputFilter.LengthFilter(limit);
-					newText.setFilters(filters);
-				}
+					newText.setInputType(InputType.TYPE_CLASS_NUMBER);
+					newText.setText(oldContents.replaceAll("-", ""));
+					break;
+				case IncidentInfo.ESTIMATED_CAP_COST:
+				case IncidentInfo.ESTIMATED_EXPENSE_COST:
+				case IncidentInfo.WORK_REQUEST_NUMBER:
+					newText.setVisibility(View.VISIBLE);
+					newText.setImeActionLabel(m.getString(R.string.go), EditorInfo.IME_ACTION_GO);
+					newText.setInputType(InputType.TYPE_CLASS_NUMBER);
+					newText.setText(oldContents);
+					break;
+				default:
+					newText.setVisibility(View.VISIBLE);
+					newText.setImeActionLabel(m.getString(R.string.go), EditorInfo.IME_ACTION_GO);
+					newText.setInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+					newText.setText(oldContents);
+					break;
+			}
+			
+			if (limit != 0) {
+				InputFilter[] filters = new InputFilter[1];
+				filters[0] = new InputFilter.LengthFilter(limit);
+				newText.setFilters(filters);
 			}
 			
 			final AlertDialog dialog = builder.setView(view).setTitle(R.string.edit_in_place).setPositiveButton(R.string.go, null).setNegativeButton(R.string.cancel, null).create();
-			dialog.setCanceledOnTouchOutside(false);
+			dialog.setCanceledOnTouchOutside(true);
+			dialog.setOnDismissListener(new OnDismissListener() {
+				@Override
+				public void onDismiss(DialogInterface arg0) {
+					editInPlaceQuerying = false;
+					editInPlaceFilling = false;
+				}
+			});
 			dialog.show();
 			
 			if (!multiline) {
@@ -412,7 +517,6 @@ public class IncidentRecNumResultsFragment extends Fragment {
 		private final ProgressBar	progress;
 		private final EditText		newInfoField;
 		private final Handler		handler;
-		private final String		type;
 		private final TextView		infoFieldInList;
 		private final String		oldContents;
 		private View[]				toDisable;
@@ -422,7 +526,6 @@ public class IncidentRecNumResultsFragment extends Fragment {
 			this.m = m;
 			this.incident = incident;
 			this.which = current.getId();
-			this.type = current.getType();
 			this.progress = progress;
 			this.newInfoField = newInfoField;
 			this.handler = new Handler();
@@ -440,8 +543,8 @@ public class IncidentRecNumResultsFragment extends Fragment {
 			SetterUpper.hideKeys(m);
 			String maybeNewContents = newInfoField.getText().toString();
 			String newContentsTempContainer;
-			if (type.equals("DAT")) newContentsTempContainer = newDateData;
-			else if (type.equals("OOC") || type.equals("YON") || type.equals("STA") || type.equals("OCD") || type.equals("BDG")) newContentsTempContainer = newSpinnerData;
+			if (!newDateData.equals("")) newContentsTempContainer = newDateData;
+			else if (!newSpinnerData.equals("")) newContentsTempContainer = newSpinnerData;
 			else {
 				newContentsTempContainer = maybeNewContents;
 				if (which == IncidentInfo.CONTACT_PHONE_NUMBER && newContentsTempContainer.length() == 10) newContentsTempContainer = newContentsTempContainer.substring(0, 3) + "-" + newContentsTempContainer.substring(3, 6) + "-" + newContentsTempContainer.substring(6);
@@ -483,22 +586,36 @@ public class IncidentRecNumResultsFragment extends Fragment {
 								
 								public void run() {
 									// Hide the progress bar
-									if (timed) SetterUpper.timedOut(m);
-									try {
+									if (timed) {
+										SetterUpper.timedOut(m);
+										try {
+											for (int i = 0; i < toDisable.length; i++)
+												toDisable[i].setEnabled(true);
+											progress.setVisibility(View.INVISIBLE);
+											editInPlaceQuerying = false;
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									} else {
 										progress.setVisibility(View.INVISIBLE);
 										editInPlaceQuerying = false;
-										editInPlaceFilling = false;
-										for (int i = 0; i < toDisable.length; i++)
-											toDisable[i].setEnabled(true);
-										if (success) {
-											infoFieldInList.setText(newContents);
-											Toast.makeText(m, "Successfully updated!", Toast.LENGTH_SHORT).show();
-										} else {
-											Toast.makeText(m, "Failed to update!", Toast.LENGTH_SHORT).show();
+										try {
+											progress.setVisibility(View.INVISIBLE);
+											editInPlaceQuerying = false;
+											editInPlaceFilling = false;
+											for (int i = 0; i < toDisable.length; i++)
+												toDisable[i].setEnabled(true);
+											if (success) {
+												infoFieldInList.setText(newContents);
+												Toast.makeText(m, "Successfully updated!", Toast.LENGTH_SHORT).show();
+											} else {
+												Toast.makeText(m, "Failed to update!", Toast.LENGTH_SHORT).show();
+											}
+											dialog.dismiss();
+										} catch (Exception e) {
+											e.printStackTrace();
 										}
-										dialog.dismiss();
-									} catch (Exception e) {
-										e.printStackTrace();
+										
 									}
 								}
 							}, 0);

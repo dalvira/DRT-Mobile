@@ -88,7 +88,7 @@
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
-					android:entries="@array/eventYear" />
+					android:entries="@array/years" />
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="wrap_content"
@@ -167,7 +167,7 @@
 					android:id="@+id/propertyTypedrop_box"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:entries="@array/property_type" />
+					android:entries="@array/building_types" />
 			</LinearLayout>
 			<TextView
 				android:id="@+id/workRequest"
@@ -286,7 +286,7 @@
 					android:id="@+id/buildingStatus_box"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:entries="@array/building_status" />
+					android:entries="@array/building_statuses" />
 			</LinearLayout>
 			<LinearLayout
 				android:layout_width="wrap_content"
