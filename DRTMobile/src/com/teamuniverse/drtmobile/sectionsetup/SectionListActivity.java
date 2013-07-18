@@ -3,6 +3,7 @@ package com.teamuniverse.drtmobile.sectionsetup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 import com.teamuniverse.drtmobile.R;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
@@ -36,6 +37,7 @@ public class SectionListActivity extends FragmentActivity implements
 	 */
 	public static boolean				mTwoPane;
 	public static SectionListActivity	m;
+	public static FragmentManager		fragmentManager;
 	
 	private DatabaseManager				db;
 	
@@ -146,9 +148,10 @@ public class SectionListActivity extends FragmentActivity implements
 			String authorization = db.sessionGet("authorization");
 			db.close();
 			try {
-				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? SectionAdder.PARENTS_RPT_FIXER[id]
-																																						: SectionAdder.SECTION_PARENTS[id]);
-				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(id)).commit();
+				fragmentManager = getSupportFragmentManager();
+				((SectionListFragment) fragmentManager.findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? SectionAdder.PARENTS_RPT_FIXER[id]
+																																			: SectionAdder.SECTION_PARENTS[id]);
+				fragmentManager.beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(id)).commit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -157,5 +160,9 @@ public class SectionListActivity extends FragmentActivity implements
 			detailIntent.putExtra(FRAG_ID, id + "");
 			startActivity(detailIntent);
 		}
+	}
+	
+	public static void setFragmentManager(FragmentManager fm) {
+		fragmentManager = fm;
 	}
 }

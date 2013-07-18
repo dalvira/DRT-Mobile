@@ -9,6 +9,15 @@
 		<item>Open</item>
 		<item>Closed</item>
 	</string-array>
+	<string-array name="valid_zips">
+		<item></item>
+		<item>27685</item>
+		<item>74685</item>
+		<item>88534</item>
+		<item>27689</item>
+		<item>63784</item>
+		<item>78594</item>
+	</string-array>
 	<!-- Darius -->
 	<string-array name="building_statuses">
 		<item>Open</item>

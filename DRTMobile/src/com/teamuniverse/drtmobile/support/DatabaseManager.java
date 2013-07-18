@@ -96,7 +96,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(sqlQuery, null);
 		
-		// Loop through the result and add it to the temp_array
+		// Loop through the result and attach_picture it to the temp_array
 		if (c.moveToFirst()) {
 			do {
 				temp_array.add(c.getString(c.getColumnIndexOrThrow(CONTENTS)));
@@ -129,7 +129,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(sqlQuery, null);
 		
-		// Loop through the result and add it to the temp_array
+		// Loop through the result and attach_picture it to the temp_array
 		if (c.moveToFirst()) {
 			match = c.getString(c.getColumnIndexOrThrow(CONTENTS));
 		}
@@ -239,7 +239,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		// Define database and cursor
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(sqlQuery, null);
-		// Loop through the result and add it to the temp_array
+		// Loop through the result and attach_picture it to the temp_array
 		if (c.moveToFirst()) {
 			do {
 				match = c.getString(c.getColumnIndexOrThrow(CONTENTS));
@@ -268,16 +268,23 @@ public class DatabaseManager extends SQLiteOpenHelper {
 	}
 	
 	/**
-	 * Clear a single session variable from the database. This approximates
-	 * session variables that are erased after the end of each session.
+	 * Return a value under the type, then clear the value. USeful for single
+	 * gets that would necessitate the unset right after.
+	 * 
+	 * @param which
+	 *            The name under which the relevant one is stored.
+	 * @return The value stored under the name.
 	 */
-	public void sessionUnset(String which) {
-		SQLiteDatabase db = this.getWritableDatabase();
+	public String sessionUnset(String which) {
+		String value = sessionGet(which);
 		
+		SQLiteDatabase db = this.getWritableDatabase();
 		/* clearing the table */
-		db.delete(SESSION_VARIABLES_TABLE, TYPE + "=\"" + which + "\"", null);
+		if (!value.equals("")) db.delete(SESSION_VARIABLES_TABLE, TYPE + "=\"" + which + "\"", null);
 		// close the database connection
 		db.close();
+		
+		return value;
 	}
 	
 	/**
@@ -317,7 +324,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
 		// Define database and cursor
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor c = db.rawQuery(sqlQuery, null);
-		// Loop through the result and add it to the temp_array
+		// Loop through the result and attach_picture it to the temp_array
 		if (c.moveToFirst()) {
 			do {
 				match = c.getString(c.getColumnIndexOrThrow(CONTENTS));

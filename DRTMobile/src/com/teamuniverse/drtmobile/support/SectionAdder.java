@@ -17,7 +17,7 @@ import com.teamuniverse.drtmobile.ReportSelectionFragment;
 /**
  * Helper class for adding sections and linking to their fragments.
  * 
- * To add a new section:
+ * To attach_picture a new section:
  * 
  * 1. Add its ID as a 'public static final int'
  * 2. Add it to the getSection(id) method.
@@ -25,7 +25,7 @@ import com.teamuniverse.drtmobile.ReportSelectionFragment;
  * 
  * To make it show in the section list:
  * 
- * 1. add it to SECTIONS_IN_LIST.
+ * 1. attach_picture it to SECTIONS_IN_LIST.
  * 
  * If the section is a subsection of another section:
  * 
@@ -113,7 +113,7 @@ public class SectionAdder {
 	}
 	
 	/**
-	 * Method to add a section to the mapping, in order for it to be shown in
+	 * Method to attach_picture a section to the mapping, in order for it to be shown in
 	 * the list.
 	 * 
 	 * @param section

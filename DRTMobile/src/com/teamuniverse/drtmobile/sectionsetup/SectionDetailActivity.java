@@ -32,17 +32,18 @@ public class SectionDetailActivity extends FragmentActivity {
 		// saved from previous configurations of this activity
 		// (e.g. when rotating the screen from portrait to landscape).
 		// In this case, the fragment will automatically be re-added
-		// to its container so we don't need to manually add it.
+		// to its container so we don't need to manually attach_picture it.
 		// For more information, see the Fragments API guide at:
 		//
 		// http://developer.android.com/guide/components/fragments.html
 		//
 		if (savedInstanceState == null) {
-			// Create the detail fragment and add it to the activity
+			// Create the detail fragment and attach_picture it to the activity
 			// using a fragment transaction.
 			try {
 				String id = getIntent().getStringExtra(SectionListActivity.FRAG_ID);
-				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection((int) Long.parseLong(id))).commit();
+				SectionListActivity.setFragmentManager(getSupportFragmentManager());
+				SectionListActivity.fragmentManager.beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection((int) Long.parseLong(id))).commit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

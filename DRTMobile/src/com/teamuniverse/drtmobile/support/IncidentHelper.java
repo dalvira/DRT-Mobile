@@ -239,58 +239,60 @@ public class IncidentHelper extends Incident {
 	
 	public static Incident init(Activity m, int zip) {
 		String[] startValues = new Webservice(m).getGLCInfo().get(zip).split("~");
+		DatabaseManager db = new DatabaseManager(m);
 		Incident inc = new Incident();
 		inc.setAssessNotes("");
 		inc.setBuildingAddress(startValues[3]);
 		inc.setBuildingName(startValues[2]);
-		inc.setBuildingStatus("");
-		inc.setBuildingType("");
-		inc.setCompltnDate("");
-		inc.setComPowerIndicator("");
+		inc.setBuildingStatus("Open");
+		inc.setBuildingType("ADM");
+		inc.setCompltnDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+		inc.setComPowerIndicator("Y");
 		inc.setContactPhone("");
-		inc.setCreLead("");
-		inc.setDamageIndicator("");
-		inc.setElecIssueClsdIndicator("");
-		inc.setElecIssueIndicator("");
-		inc.setEnvIssueClsdIndicator("");
-		inc.setEnvIssueIndicator("");
+		inc.setCreLead("PM");
+		inc.setDamageIndicator("N");
+		inc.setElecIssueClsdIndicator("N");
+		inc.setElecIssueIndicator("N");
+		inc.setEnvIssueClsdIndicator("N");
+		inc.setEnvIssueIndicator("N");
 		inc.setEstCapCost(0);
 		inc.setEstExpenseCost(0);
-		inc.setEventName("");
-		inc.setFenceGateIssueClsdIndicator("");
-		inc.setFenceGateIssueIndicator("");
+		inc.setEventName("Select Storm Type or Hurricane Name");
+		inc.setFenceGateIssueClsdIndicator("N");
+		inc.setFenceGateIssueIndicator("N");
 		inc.setGenIssueClsdIndicator("");
 		inc.setGenIssueIndicator("");
 		inc.setGeoLoc(zip);
-		inc.setGroundsIssueClsdIndicator("");
-		inc.setGroundsIssueIndicator("");
+		inc.setGroundsIssueClsdIndicator("N");
+		inc.setGroundsIssueIndicator("N");
 		inc.setIncidentCompltnDate("");
 		inc.setIncidentNotes("");
 		inc.setIncidentStatus("Open");
-		inc.setIncidentYear(0);
-		inc.setInitialRptDate("");
-		inc.setMechIssueClsdIndicator("");
-		inc.setMechIssueIndicator("");
-		inc.setMobCOIndicator("");
-		inc.setOnGeneratorIndicator("");
-		inc.setOtherIssueClsdIndicator("");
-		inc.setOtherIssueIndicator("");
-		inc.setPlumbIssueClsdIndicator("");
-		inc.setPlumbIssueIndicator("");
+		inc.setIncidentYear(Calendar.getInstance().get(Calendar.YEAR));
+		inc.setInitialRptDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+		inc.setMechIssueClsdIndicator("N");
+		inc.setMechIssueIndicator("N");
+		inc.setMobCOIndicator("N");
+		inc.setOnGeneratorIndicator("N");
+		inc.setOtherIssueClsdIndicator("N");
+		inc.setOtherIssueIndicator("N");
+		inc.setPlumbIssueClsdIndicator("N");
+		inc.setPlumbIssueIndicator("N");
 		inc.setPMAttuid(startValues[1]);
-		inc.setReqATTUID("");
-		inc.setRoofsIssueClsdIndicator("");
-		inc.setRoofsIssueIndicator("");
-		inc.setSafetyIssueClsdIndicator("");
-		inc.setSafetyIssueIndicator("");
+		inc.setReqATTUID(db.sessionGet("attuid"));
+		inc.setRoofsIssueClsdIndicator("N");
+		inc.setRoofsIssueIndicator("N");
+		inc.setSafetyIssueClsdIndicator("N");
+		inc.setSafetyIssueIndicator("N");
 		inc.setState(startValues[0]);
 		inc.setStatusNotes("");
-		inc.setStructIssueClsdIndicator("");
-		inc.setStructIssueIndicator("");
-		inc.setUnOccupiableIndicator("");
-		inc.setWaterIssueClsdIndicator("");
-		inc.setWaterIssueIndicator("");
+		inc.setStructIssueClsdIndicator("N");
+		inc.setStructIssueIndicator("N");
+		inc.setUnOccupiableIndicator("N");
+		inc.setWaterIssueClsdIndicator("N");
+		inc.setWaterIssueIndicator("N");
 		inc.setWorkReqNumber("");
+		db.close();
 		return inc;
 	}
 	
@@ -541,7 +543,7 @@ public class IncidentHelper extends Incident {
 				if (!newContents.matches("[a-zA-Z]{2}[0-9]{3}[a-zA-Z0-9]")) message = "The supplied ATTUID is not valid.";
 				break;
 			case IncidentInfo.RECORD_NUMBER:
-				// TODO add check
+				// TODO attach_picture check
 				break;
 			case IncidentInfo.REQUESTOR_ATTUID:
 				if (!newContents.matches("[a-zA-Z]{2}[0-9]{3}[a-zA-Z0-9]")) message = "The supplied ATTUID is not valid.";

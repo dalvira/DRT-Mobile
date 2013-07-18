@@ -54,18 +54,16 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class IncidentRecNumResultsFragment extends Fragment {
-	private static final String[]	STATE_NAMES		= { "Alabama", "Alaska", "American Samoa", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Federated States of Micronesia", "Florida", "Georgia", "Guam", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Marshall Islands", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio", "Oklahoma", "Oregon", "Palau", "Panama Canal Zone", "Pennsylvania", "Philippine Islands", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Trust Territory of the Pacific Islands", "U.S. Armed Forces – Americas", "U.S. Armed Forces – Europe", "U.S. Armed Forces – Pacific", "Utah", "Vermont", "Virgin Islands", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming" };
-	private static final String[]	STATE_POSTALS	= { "AL", "AK", "AS", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FM", "FL", "GA", "GU", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MH", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "MP", "OH", "OK", "OR", "PW", "CZ", "PA", "PI", "PR", "RI", "SC", "SD", "TN", "TX", "TT", "AA", "AE", "AP", "UT", "VT", "VI", "VA", "WA", "WV", "WI", "WY" };
 	
 	/** The shortcut to the current activity */
-	private static Activity			m;
+	private static Activity		m;
 	/** The progress bar that is shown to indicate background processes */
-	private static ProgressBar		progress;
+	private static ProgressBar	progress;
 	/** The handler that will allow the multi-threading */
-	private Handler					handler;
-	private DatabaseManager			db;
+	private Handler				handler;
+	private DatabaseManager		db;
 	
-	private final int				COLUMNS			= 2;
+	private final int			COLUMNS	= 2;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -402,11 +400,11 @@ public class IncidentRecNumResultsFragment extends Fragment {
 				case IncidentInfo.STATE:
 					newSpin.setVisibility(View.VISIBLE);
 					ArrayAdapter<CharSequence> stateAdapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_item);
-					stateAdapter.addAll(STATE_NAMES);
+					stateAdapter.addAll(IncidentInfo.STATE_NAMES);
 					stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					newSpin.setAdapter(stateAdapter);
-					for (int i = 0; i < STATE_NAMES.length; i++) {
-						if (oldContents.equals(STATE_POSTALS[i])) {
+					for (int i = 0; i < IncidentInfo.STATE_NAMES.length; i++) {
+						if (oldContents.equals(IncidentInfo.STATE_POSTALS[i])) {
 							newSpin.setSelection(i);
 							break;
 						}
@@ -414,7 +412,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
-							newSpinnerData = STATE_POSTALS[pos];
+							newSpinnerData = IncidentInfo.STATE_POSTALS[pos];
 						}
 						
 						@Override
