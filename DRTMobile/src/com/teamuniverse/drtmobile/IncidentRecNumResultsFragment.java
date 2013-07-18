@@ -180,6 +180,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 													} catch (ClassCastException e) {
 														temp.setText((Integer) infos[i].getValue() + "");
 													}
+													temp.setMaxEms(10);
 													each.setTag(R.id.field_label, temp);
 												}
 												each.addView(temp);
