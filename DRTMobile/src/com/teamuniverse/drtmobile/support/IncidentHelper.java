@@ -239,14 +239,15 @@ public class IncidentHelper extends Incident {
 	
 	public static Incident init(Activity m, int zip) {
 		String[] startValues = new Webservice(m).getGLCInfo().get(zip).split("~");
-		DatabaseManager db = new DatabaseManager(m);
 		Incident inc = new Incident();
 		inc.setAssessNotes("");
 		inc.setBuildingAddress(startValues[3]);
 		inc.setBuildingName(startValues[2]);
 		inc.setBuildingStatus("Open");
 		inc.setBuildingType("ADM");
-		inc.setCompltnDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+		inc.setCompltnDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 > 9 ? ""
+																																: "0") + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 9 ? ""
+																																																														: "0") + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 		inc.setComPowerIndicator("Y");
 		inc.setContactPhone("");
 		inc.setCreLead("PM");
@@ -257,7 +258,7 @@ public class IncidentHelper extends Incident {
 		inc.setEnvIssueIndicator("N");
 		inc.setEstCapCost(0);
 		inc.setEstExpenseCost(0);
-		inc.setEventName("Select Storm Type or Hurricane Name");
+		inc.setEventName("Type or Name");
 		inc.setFenceGateIssueClsdIndicator("N");
 		inc.setFenceGateIssueIndicator("N");
 		inc.setGenIssueClsdIndicator("");
@@ -265,11 +266,15 @@ public class IncidentHelper extends Incident {
 		inc.setGeoLoc(zip);
 		inc.setGroundsIssueClsdIndicator("N");
 		inc.setGroundsIssueIndicator("N");
-		inc.setIncidentCompltnDate("");
+		inc.setIncidentCompltnDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 > 9 ? ""
+																																		: "0") + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 9 ? ""
+																																																																: "0") + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 		inc.setIncidentNotes("");
 		inc.setIncidentStatus("Open");
 		inc.setIncidentYear(Calendar.getInstance().get(Calendar.YEAR));
-		inc.setInitialRptDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + Calendar.getInstance().get(Calendar.MONTH) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+		inc.setInitialRptDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 > 9	? ""
+																																	: "0") + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 9 ? ""
+																																																															: "0") + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 		inc.setMechIssueClsdIndicator("N");
 		inc.setMechIssueIndicator("N");
 		inc.setMobCOIndicator("N");
@@ -279,7 +284,9 @@ public class IncidentHelper extends Incident {
 		inc.setPlumbIssueClsdIndicator("N");
 		inc.setPlumbIssueIndicator("N");
 		inc.setPMAttuid(startValues[1]);
+		DatabaseManager db = new DatabaseManager(m);
 		inc.setReqATTUID(db.sessionGet("attuid"));
+		db.close();
 		inc.setRoofsIssueClsdIndicator("N");
 		inc.setRoofsIssueIndicator("N");
 		inc.setSafetyIssueClsdIndicator("N");
@@ -292,11 +299,10 @@ public class IncidentHelper extends Incident {
 		inc.setWaterIssueClsdIndicator("N");
 		inc.setWaterIssueIndicator("N");
 		inc.setWorkReqNumber("");
-		db.close();
 		return inc;
 	}
 	
-	public static void setFieldByLabel(Incident inc, int which, String newContents) {
+	public static void setFieldById(Incident inc, int which, String newContents) {
 		switch (which) {
 			case IncidentInfo.ASSESSMENT_NOTES:
 				inc.setAssessNotes(newContents);
@@ -468,23 +474,27 @@ public class IncidentHelper extends Incident {
 		Calendar initialReportDate;
 		
 		switch (which) {
+			case IncidentInfo.EVENT_NAME:
+				if (newContents.equals("")) message = "An event name or storm type must be picked!";
+				break;
 			case IncidentInfo.COMPLETION_DATE:
 				/**
 				 * Rules: completion date cannot be before initial report date
 				 */
 				initialReportDate = Calendar.getInstance();
 				oldReportDate = inc.getInitialRptDate();
-				initialReportDate.set(Integer.parseInt(oldReportDate.substring(0, 4)), Integer.parseInt(oldReportDate.substring(5, 7)) - 1, Integer.parseInt(oldReportDate.substring(8)));
+				if (oldReportDate.length() == 10) initialReportDate.set(Integer.parseInt(oldReportDate.substring(0, 4)), Integer.parseInt(oldReportDate.substring(5, 7)) - 1, Integer.parseInt(oldReportDate.substring(8)));
 				
 				Calendar completionDate = Calendar.getInstance();
-				completionDate.set(Integer.parseInt(newContents.substring(0, 4)), Integer.parseInt(newContents.substring(5, 7)) - 1, Integer.parseInt(newContents.substring(8)));
+				if (newContents.length() == 10) completionDate.set(Integer.parseInt(newContents.substring(0, 4)), Integer.parseInt(newContents.substring(5, 7)) - 1, Integer.parseInt(newContents.substring(8)));
 				
 				if (initialReportDate.after(completionDate)) {
 					message = "The completion date cannot be before the initial report date!";
 				}
 				break;
 			case IncidentInfo.CONTACT_PHONE_NUMBER:
-				if (!newContents.matches("[1-9][0-9]{2}-[0-9]{3}-[0-9]{4}")) message = "The supplied number is not valid. Please type a valid ten digit number in the form ##########.";
+				if (newContents.equals("")) message = "A contact phone number must be supplied!";
+				else if (!newContents.matches("[1-9][0-9]{2}-[0-9]{3}-[0-9]{4}")) message = "The supplied number is not valid. Please type a valid ten digit number in the form ##########.";
 				break;
 			case IncidentInfo.ZIP_CODE:
 				if (!newContents.equals("27685") && !newContents.equals("74685") && !newContents.equals("88534") && !newContents.equals("27689") && !newContents.equals("63784") && !newContents.equals("78549")) message = "New ZIP must be one of: 27685, 74685, 88534, 27689, 63784, or 78549 to be successfully updated!";
@@ -495,8 +505,10 @@ public class IncidentHelper extends Incident {
 				 */
 				incidentYear = inc.getIncidentYear();
 				if (incidentYear != 0) {
-					incidentCompletionYear = Integer.parseInt(newContents.substring(0, 4));
-					if (incidentCompletionYear < incidentYear) message = "The incident completion date cannot be before the incident year!";
+					if (newContents.length() == 10) {
+						incidentCompletionYear = Integer.parseInt(newContents.substring(0, 4));
+						if (incidentCompletionYear < incidentYear) message = "The incident completion date cannot be before the incident year!";
+					} else message = "An incident completion date must be provided";
 				}
 				break;
 			case IncidentInfo.INCIDENT_YEAR:
@@ -506,19 +518,22 @@ public class IncidentHelper extends Incident {
 				 * Incident year must not be after incident completion date
 				 * IncidentYear must not be greater than initial report date
 				 */
-				incidentCompletionYear = Integer.parseInt(inc.getIncidentCompltnDate().substring(0, 4));
+				if (newContents.length() == 4) incidentYear = Integer.parseInt(newContents);
+				else incidentYear = 0;
+				if (inc.getIncidentCompltnDate().length() == 10) incidentCompletionYear = Integer.parseInt(inc.getIncidentCompltnDate().substring(0, 4));
+				else incidentCompletionYear = 0;
 				if (incidentCompletionYear != 0) {
-					incidentYear = Integer.parseInt(newContents);
 					if (incidentCompletionYear < incidentYear) message = "The incident year cannot be after the incident completion date!";
-					if (incidentYear > Calendar.getInstance().get(Calendar.YEAR)) message = "The incident year cannot be in the future!";
-				} else {
-					initialReportDate = Calendar.getInstance();
-					oldReportDate = inc.getInitialRptDate();
-					initialReportDate.set(Integer.parseInt(oldReportDate.substring(0, 4)), Integer.parseInt(oldReportDate.substring(5, 7)) - 1, Integer.parseInt(oldReportDate.substring(8)));
-					if (initialReportDate.after(Calendar.getInstance())) {
-						message = "The incident year cannot be after the initial report date!";
-					}
 				}
+				
+				if (incidentYear > Calendar.getInstance().get(Calendar.YEAR)) message = "The incident year cannot be in the future!";
+				initialReportDate = Calendar.getInstance();
+				oldReportDate = inc.getInitialRptDate();
+				initialReportDate.set(Integer.parseInt(oldReportDate.substring(0, 4)), Integer.parseInt(oldReportDate.substring(5, 7)) - 1, Integer.parseInt(oldReportDate.substring(8)));
+				if (initialReportDate.after(Calendar.getInstance())) {
+					message = "The incident year cannot be after the initial report date!";
+				}
+				
 				break;
 			case IncidentInfo.INITIAL_REPORT_DATE:
 				/**
@@ -528,13 +543,14 @@ public class IncidentHelper extends Incident {
 				 * Initial report date must not be after incident year
 				 */
 				initialReportDate = Calendar.getInstance();
-				initialReportDate.set(Integer.parseInt(newContents.substring(0, 4)), Integer.parseInt(newContents.substring(5, 7)) - 1, Integer.parseInt(newContents.substring(8)));
+				if (newContents.length() == 10) initialReportDate.set(Integer.parseInt(newContents.substring(0, 4)), Integer.parseInt(newContents.substring(5, 7)) - 1, Integer.parseInt(newContents.substring(8)));
 				if (initialReportDate.after(Calendar.getInstance())) {
 					message = "The initial report date cannot be in the future!!";
 				} else {
 					incidentYear = inc.getIncidentYear();
 					if (incidentYear != 0) {
-						int incidentReportYear = Integer.parseInt(newContents.substring(0, 4));
+						int incidentReportYear = 0;
+						if (newContents.length() == 10) incidentReportYear = Integer.parseInt(newContents.substring(0, 4));
 						if (incidentReportYear > incidentYear) message = "The initial report date cannot be before the incident year!";
 					}
 				}
@@ -543,13 +559,13 @@ public class IncidentHelper extends Incident {
 				if (!newContents.matches("[a-zA-Z]{2}[0-9]{3}[a-zA-Z0-9]")) message = "The supplied ATTUID is not valid.";
 				break;
 			case IncidentInfo.RECORD_NUMBER:
-				// TODO attach_picture check
+				if (!newContents.matches("[1-9][0-9]{3}")) message = "The record number must be a 4 digit number with no leading 0s!";
 				break;
 			case IncidentInfo.REQUESTOR_ATTUID:
-				if (!newContents.matches("[a-zA-Z]{2}[0-9]{3}[a-zA-Z0-9]")) message = "The supplied ATTUID is not valid.";
+				if (newContents.equals("")) message = "Must supply a requestor ID!";
 				break;
 			case IncidentInfo.WORK_REQUEST_NUMBER:
-				if (!newContents.matches("[0-9]{16}")) message = "The supplied work request number is not valid. It should be a 16 digit numerical id";
+				if (!newContents.equals("") && !newContents.matches("[0-9]{16}")) message = "The supplied work request number is not valid. It should be a 16 digit numerical id";
 				break;
 			default:
 				break;

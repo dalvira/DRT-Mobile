@@ -39,6 +39,7 @@
 	<string name="incident_rec_num_search_subtitle">Enter Record Number to Search</string>
 	<string name="next">Next</string>
 	<string name="pick_a_valid_zip">Pick one of the valid ZIPs: </string>
+	<string name="event_names_default">Type or Name</string>
 	<!-- new strings -->
 	<string name="menu_settings">Settings</string>
 	<string name="title_activity_main">MainActivity</string>

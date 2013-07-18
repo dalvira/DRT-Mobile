@@ -86,10 +86,6 @@ public class IncidentRecNumResultsFragment extends Fragment {
 		progress = (ProgressBar) view.findViewById(R.id.progress);
 		handler = new Handler();
 		
-		db = new DatabaseManager(m);
-		db.sessionUnset("goto_tab");
-		db.close();
-		
 		LinearLayout list = (LinearLayout) view.findViewById(R.id.list_container);
 		search(list);
 		
@@ -155,7 +151,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 											case IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR:
 											case IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR:
 											case IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR:
-												addIt = infos[i - 25].getValue().equals("Y");
+												addIt = infos[i - 23].getValue().equals("Y");
 												break;
 											default:
 												addIt = true;
@@ -166,7 +162,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 											if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 											
 											each = new LinearLayout(m);
-											each.setPadding(0, 6, 0, 6);
+											each.setPadding(3, 6, 3, 6);
 											each.setOrientation(LinearLayout.HORIZONTAL);
 											each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 											
@@ -174,10 +170,10 @@ public class IncidentRecNumResultsFragment extends Fragment {
 											
 											for (int j = 0; j < COLUMNS; j++) {
 												temp = new TextView(m);
-												temp.setGravity(Gravity.CENTER);
-												temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
-												if (j == 0) temp.setText(infos[i].getDescriptor());
-												else if (j == 1) {
+												if (j == 0) {
+													temp.setText(infos[i].getDescriptor());
+													temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
+												} else if (j == 1) {
 													toShowUneditabled = temp;
 													try {
 														temp.setText((String) infos[i].getValue());
@@ -377,25 +373,76 @@ public class IncidentRecNumResultsFragment extends Fragment {
 						}
 					});
 					break;
-				case IncidentInfo.EVENT_NAME:
+				case IncidentInfo.INCIDENT_YEAR:
 					newSpin.setVisibility(View.VISIBLE);
-					ArrayAdapter<CharSequence> eventNameAdapter = ArrayAdapter.createFromResource(m, R.array.names_array, android.R.layout.simple_spinner_item);
-					eventNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-					newSpin.setAdapter(eventNameAdapter);
-					final String[] eventNames = m.getResources().getStringArray(R.array.names_array);
-					for (int i = 0; i < eventNames.length; i++) {
-						if (oldContents.equals(eventNames[i])) newSpin.setSelection(i);
-					}
+					ArrayAdapter<CharSequence> incidentYearAdapter = ArrayAdapter.createFromResource(m, R.array.years, android.R.layout.simple_spinner_item);
+					incidentYearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					newSpin.setAdapter(incidentYearAdapter);
+					final String[] incidentYears = m.getResources().getStringArray(R.array.years);
 					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-							newSpinnerData = eventNames[pos];
+							newSpinnerData = incidentYears[pos];
 						}
 						
 						@Override
 						public void onNothingSelected(AdapterView<?> arg0) {
 						}
 					});
+					for (int i = 0; i < incidentYears.length; i++) {
+						if (oldContents.equals(incidentYears[i])) newSpin.setSelection(i);
+					}
+					break;
+				case IncidentInfo.EVENT_NAME:
+					newSpin.setVisibility(View.VISIBLE);
+					ArrayAdapter<CharSequence> eventNameAdapter;
+					String[] eventNames;
+					switch (incident.getIncidentYear()) {
+						case 2010:
+							eventNameAdapter = ArrayAdapter.createFromResource(m, R.array.names_array_2010, android.R.layout.simple_spinner_item);
+							eventNames = m.getResources().getStringArray(R.array.names_array_2010);
+							break;
+						case 2011:
+							eventNameAdapter = ArrayAdapter.createFromResource(m, R.array.names_array_2011, android.R.layout.simple_spinner_item);
+							eventNames = m.getResources().getStringArray(R.array.names_array_2011);
+							break;
+						case 2012:
+							eventNameAdapter = ArrayAdapter.createFromResource(m, R.array.names_array_2012, android.R.layout.simple_spinner_item);
+							eventNames = m.getResources().getStringArray(R.array.names_array_2012);
+							break;
+						case 2013:
+							eventNameAdapter = ArrayAdapter.createFromResource(m, R.array.names_array_2013, android.R.layout.simple_spinner_item);
+							eventNames = m.getResources().getStringArray(R.array.names_array_2013);
+							break;
+						default:
+							eventNameAdapter = ArrayAdapter.createFromResource(m, R.array.names_array_2013, android.R.layout.simple_spinner_item);
+							eventNames = m.getResources().getStringArray(R.array.names_array_2013);
+							break;
+					}
+					eventNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					newSpin.setAdapter(eventNameAdapter);
+					eventNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					newSpin.setAdapter(eventNameAdapter);
+					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
+						String[]	eventNames;
+						
+						@Override
+						public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+							newSpinnerData = eventNames[pos];
+						}
+						
+						public OnItemSelectedListener passValues(String[] eventNames) {
+							this.eventNames = eventNames;
+							return this;
+						}
+						
+						@Override
+						public void onNothingSelected(AdapterView<?> arg0) {
+						}
+					}.passValues(eventNames));
+					for (int i = 0; i < eventNames.length; i++) {
+						if (oldContents.equals(eventNames[i])) newSpin.setSelection(i);
+					}
 					break;
 				case IncidentInfo.STATE:
 					newSpin.setVisibility(View.VISIBLE);
@@ -495,9 +542,10 @@ public class IncidentRecNumResultsFragment extends Fragment {
 				case IncidentInfo.ASSESSMENT_NOTES:
 				case IncidentInfo.INCIDENT_NOTES:
 				case IncidentInfo.STATUS_NOTES:
+				case IncidentInfo.BUILDING_ADDRESS:
 					newText.setVisibility(View.VISIBLE);
 					multiline = true;
-					newText.setMinLines(1);
+					newText.setMinLines(2);
 					newText.setText(oldContents);
 					break;
 				case IncidentInfo.CONTACT_PHONE_NUMBER:
@@ -628,7 +676,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 					
 					new Thread(new Runnable() {
 						public void run() {
-							IncidentHelper.setFieldByLabel(incident, which, newContents);
+							IncidentHelper.setFieldById(incident, which, newContents);
 							
 							DatabaseManager db = new DatabaseManager(m);
 							String token = db.sessionGet("token");
@@ -639,10 +687,10 @@ public class IncidentRecNumResultsFragment extends Fragment {
 								ws.updateIncidentbyRecnum(token, incident);
 								success = true;
 							} catch (TokenInvalidException e) {
-								IncidentHelper.setFieldByLabel(incident, which, oldContents);
+								IncidentHelper.setFieldById(incident, which, oldContents);
 								timed = true;
 							} catch (Exception e) {
-								IncidentHelper.setFieldByLabel(incident, which, oldContents);
+								IncidentHelper.setFieldById(incident, which, oldContents);
 								e.printStackTrace();
 							}
 							

@@ -16,14 +16,13 @@
 		<item>88534</item>
 		<item>27689</item>
 		<item>63784</item>
-		<item>78594</item>
+		<item>78549</item>
 	</string-array>
 	<!-- Darius -->
 	<string-array name="building_statuses">
 		<item>Open</item>
 		<item>Closed</item>
-		<item>Delayed</item>
-		<item>Opening</item>
+		<item>Delayed Opening</item>
 		<item>Re-Opened</item>
 	</string-array>
 	<string-array name="building_types">
@@ -42,6 +41,7 @@
 		<item>WCR</item>
 	</string-array>
 	<string-array name="years">
+		<item>2013</item>
 		<item>2012</item>
 		<item>2011</item>
 		<item>2010</item>
@@ -62,16 +62,8 @@
 		<item>PM</item>
 		<item>D&amp;C</item>
 	</string-array>
-	<string-array name="event">
-		<item>Hurricane</item>
-		<item>Earthquake</item>
-		<item>Flood</item>
-		<item>Ice Storm</item>
-		<item>Snow Storm</item>
-		<item>Tornado</item>
-		<item>Wildfire</item>
-	</string-array>
-	<string-array name="names_array">
+	<string-array name="names_array_2010">
+		<item>@string/event_names_default</item>
 		<item>Earthquake</item>
 		<item>Flood</item>
 		<item>Ice Storm</item>
@@ -86,7 +78,6 @@
 		<item>Fiona</item>
 		<item>Gaston</item>
 		<item>Hermine</item>
-		<item>Shary</item>
 		<item>Igor</item>
 		<item>Julia</item>
 		<item>Karl</item>
@@ -97,9 +88,18 @@
 		<item>Paula</item>
 		<item>Richard</item>
 		<item>Shary</item>
-		<item>Thomas</item>
+		<item>Tomas</item>
 		<item>Virginie</item>
 		<item>Walter</item>
+	</string-array>
+	<string-array name="names_array_2011">
+		<item>@string/event_names_default</item>
+		<item>Earthquake</item>
+		<item>Flood</item>
+		<item>Ice Storm</item>
+		<item>Snow Storm</item>
+		<item>Tornado</item>
+		<item>Wildfire</item>
 		<item>Arlene</item>
 		<item>Bret</item>
 		<item>Cindy</item>
@@ -121,6 +121,15 @@
 		<item>Tammy</item>
 		<item>Vince</item>
 		<item>Whitney</item>
+	</string-array>
+	<string-array name="names_array_2012">
+		<item>@string/event_names_default</item>
+		<item>Earthquake</item>
+		<item>Flood</item>
+		<item>Ice Storm</item>
+		<item>Snow Storm</item>
+		<item>Tornado</item>
+		<item>Wildfire</item>
 		<item>Alberto</item>
 		<item>Beryl</item>
 		<item>Chris</item>
@@ -141,5 +150,36 @@
 		<item>Sandy</item>
 		<item>Tony</item>
 		<item>Valerie</item>
+		<item>William</item>
+	</string-array>
+	<string-array name="names_array_2013">
+		<item>@string/event_names_default</item>
+		<item>Earthquake</item>
+		<item>Flood</item>
+		<item>Ice Storm</item>
+		<item>Snow Storm</item>
+		<item>Tornado</item>
+		<item>Wildfire</item>
+		<item>Andrea</item>
+		<item>Barry</item>
+		<item>Chantal</item>
+		<item>Dorian</item>
+		<item>Erin</item>
+		<item>Fernand</item>
+		<item>Gabrielle</item>
+		<item>Humberto</item>
+		<item>Ingrid</item>
+		<item>Jerry</item>
+		<item>Karen</item>
+		<item>Lorenzo</item>
+		<item>Melissa</item>
+		<item>Nestor</item>
+		<item>Olga</item>
+		<item>Pablo</item>
+		<item>Rebekah</item>
+		<item>Sebastien</item>
+		<item>Tanya</item>
+		<item>Van</item>
+		<item>Wendy</item>
 	</string-array>
 </resources>

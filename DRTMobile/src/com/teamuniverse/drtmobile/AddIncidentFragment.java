@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.InputFilter;
@@ -35,15 +36,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.att.intern.webservice.Incident;
+import com.att.intern.webservice.Webservice;
+import com.att.intern.webservice.Webservice.TokenInvalidException;
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.IncidentHelper;
 import com.teamuniverse.drtmobile.support.IncidentInfo;
+import com.teamuniverse.drtmobile.support.SectionAdder;
 import com.teamuniverse.drtmobile.support.SetterUpper;
-// import com.example.dreamteamdisasterrecovery.GLCSearchActivity;
-// import com.example.dreamteamdisasterrecovery.MainActivity;
-// import com.example.dreamteamdisasterrecovery.R;
 
 /**
  * A fragment representing a single Section detail screen. This fragment is
@@ -52,16 +53,22 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  */
 
 public class AddIncidentFragment extends Fragment {
-	private Activity	m;
-	private Incident	inc;
-	private final int	COLUMNS	= 2;
+	private Activity			m;
+	private Incident			inc;
+	private final int			COLUMNS				= 2;
 	
+	private Handler				handler;
+	boolean						timedOut;
+	
+	Spinner						eventNameSpinner	= null;
+	ArrayAdapter<CharSequence>	eventNameAdapter	= null;
 	// private File storageDir;
-	Context				context;
-	Toast				fail1;
-	Toast				fail2;
-	Toast				success;
-	int					recNum;
+	Context						context;
+	Toast						fail1;
+	Toast						fail2;
+	Toast						success;
+	int							recNum;
+	View[]						toDisable;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -87,6 +94,7 @@ public class AddIncidentFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup vGroup, Bundle savedInstanceState) {
 		View mainView = inflater.inflate(R.layout.fragment_add_incident, vGroup, false);
 		SetterUpper.setup(m, mainView);
+		handler = new Handler();
 		
 		LinearLayout container = (LinearLayout) mainView.findViewById(R.id.container);
 		// 5 prepopulated fields
@@ -139,21 +147,122 @@ public class AddIncidentFragment extends Fragment {
 	}
 	
 	public void setupAdd(final View mainView, final LinearLayout container, final int zipValue) {
-		@SuppressWarnings("unused")
-		View[] allInfos = setupAllFields(mainView, container, zipValue);
+		final View[] allInfos = setupAllFields(mainView, container, zipValue);
 		/** Attach Picture button setup */
-		((Button) mainView.findViewById(R.id.attach_picture)).setOnClickListener(new View.OnClickListener() {
+		final Button attachButton = ((Button) mainView.findViewById(R.id.attach_picture));
+		attachButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO setup add picture
+				// // TODO setup add picture
+				// /*
+				// * public void dispatchTakePictureIntent(int actionCode) {
+				// * Intent takePictureIntent = new
+				// * Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				// * startActivityForResult(takePictureIntent, actionCode);
+				// * }
+				// * storageDir = new File (
+				// * Environment.getExternalStorageDirectory()
+				// * + PICTURES_DIR
+				// * + getAlbumName()
+				// * );
+				// */
+				// CameraTwoActivity.inc = inc;
+				// Intent i = new Intent();
+				// i.setClassName("com.example.dreamteamdisasterrecovery",
+				//
+				// "com.example.dreamteamdisasterrecovery.CameraTwoActivity");
+				// startActivity(i);
+				// picture();
 			}
 		});
 		/** Add button setup */
-		((Button) mainView.findViewById(R.id.add)).setOnClickListener(new View.OnClickListener() {
+		final Button addButton = ((Button) mainView.findViewById(R.id.add));
+		addButton.setOnClickListener(new View.OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
-				// TODO setup add incident
+				boolean allCorrect = true;
+				for (int i = 0; i < allInfos.length; i++) {
+					int which = (Integer) allInfos[i].getTag();
+					String currentInfo = ((EditText) allInfos[i]).getText().toString();
+					if (which == IncidentInfo.CONTACT_PHONE_NUMBER && currentInfo.length() == 10) currentInfo = currentInfo.substring(0, 3) + "-" + currentInfo.substring(3, 6) + "-" + currentInfo.substring(6);
+					
+					String message = IncidentHelper.isValidInfoForField(inc, which, currentInfo);
+					if (!message.equals("")) {
+						allCorrect = false;
+						Toast.makeText(m, message, Toast.LENGTH_SHORT).show();
+					}
+				}
+				// All are correct
 				
+				if (allCorrect) {
+					Toast.makeText(m, "All are valid", Toast.LENGTH_LONG).show();
+					for (int i = 0; i < allInfos.length; i++)
+						IncidentHelper.setFieldById(inc, (Integer) allInfos[i].getTag(), ((EditText) allInfos[i]).getText().toString());
+					addButton.setEnabled(false);
+					attachButton.setEnabled(false);
+					for (int i = 0; i < toDisable.length; i++)
+						toDisable[i].setEnabled(false);
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							addButton.setEnabled(false);
+							attachButton.setEnabled(false);
+							for (int i = 0; i < toDisable.length; i++)
+								toDisable[i].setEnabled(false);
+							Webservice ws = new Webservice(m);
+							DatabaseManager db = new DatabaseManager(m);
+							String token = db.sessionGet("token");
+							db.close();
+							timedOut = false;
+							try {
+								ws.addIncident(token, inc);
+							} catch (TokenInvalidException e) {
+								timedOut = true;
+								e.printStackTrace();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							handler.postDelayed(new Runnable() {
+								
+								@Override
+								public void run() {
+									try {
+										// TODO some glitch on adding
+										addButton.setEnabled(true);
+										attachButton.setEnabled(true);
+										for (int i = 0; i < toDisable.length; i++) {
+											int which = (Integer) toDisable[i].getTag();
+											switch (which) {
+												case IncidentInfo.ZIP_CODE:
+												case IncidentInfo.STATE:
+												case IncidentInfo.PM_ATTUID:
+												case IncidentInfo.BUILDING_NAME:
+												case IncidentInfo.BUILDING_ADDRESS:
+												case IncidentInfo.RECORD_NUMBER:
+													break;
+												default:
+													toDisable[i].setEnabled(true);
+													break;
+											}
+										}
+										if (timedOut) {
+											SetterUpper.timedOut(m);
+											addButton.performClick();
+										} else {
+											DatabaseManager db = new DatabaseManager(m);
+											db.sessionSet("record_number", inc.getRecNumber() + "");
+											db.close();
+											SectionListActivity.m.putSection(SectionAdder.INCIDENT_REC_NUM_RESULTS);
+										}
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							}, 0);
+						}
+					}).start();
+				}
 			}
 		});
 	}
@@ -165,6 +274,7 @@ public class AddIncidentFragment extends Fragment {
 		
 		IncidentInfo[] infos = IncidentHelper.getInfos(inc, IncidentHelper.ADD_ORDER);
 		View[] fields = new View[infos.length];
+		toDisable = new View[infos.length];
 		
 		int colorCoordinator = 0;
 		for (int i = 0; i < infos.length; i++) {
@@ -184,11 +294,17 @@ public class AddIncidentFragment extends Fragment {
 					labelForEach.setText(infos[i].getDescriptor());
 					each.addView(labelForEach);
 				} else if (j == 1) {
-					if (setupSingleField(infos[i], which).length > 1) {
-						each.addView(setupSingleField(infos[i], which)[1]);
-					} else each.addView(setupSingleField(infos[i], which)[0]);
-					fields[i] = setupSingleField(infos[i], which)[0];
+					View[] current = setupSingleField(infos[i], which);
+					if (current.length > 1) {
+						each.addView(current[1]);
+						toDisable[i] = current[1];
+					} else {
+						each.addView(current[0]);
+						toDisable[i] = current[0];
+					}
+					fields[i] = current[0];
 					fields[i].setTag(which);
+					toDisable[i].setTag(which);
 				}
 			}
 			
@@ -305,35 +421,6 @@ public class AddIncidentFragment extends Fragment {
 																								: 1);
 				unaryContainer = spinner;
 				break;
-			case IncidentInfo.EVENT_NAME:
-				spinner = new Spinner(m);
-				ArrayAdapter<CharSequence> eventNameAdapter = ArrayAdapter.createFromResource(m, R.array.names_array, android.R.layout.simple_spinner_item);
-				eventNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				spinner.setAdapter(eventNameAdapter);
-				final String[] eventNames = m.getResources().getStringArray(R.array.names_array);
-				dummyEditText = new EditText(m);
-				spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-					EditText	dummyEditText;
-					
-					@Override
-					public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-						dummyEditText.setText(eventNames[pos]);
-					}
-					
-					public OnItemSelectedListener passValues(EditText dummyEditText) {
-						this.dummyEditText = dummyEditText;
-						return this;
-					}
-					
-					@Override
-					public void onNothingSelected(AdapterView<?> arg0) {
-					}
-				}.passValues(dummyEditText));
-				for (int i = 0; i < eventNames.length; i++) {
-					if (oldContents.equals(eventNames[i])) spinner.setSelection(i);
-				}
-				unaryContainer = spinner;
-				break;
 			case IncidentInfo.STATE:
 				spinner = new Spinner(m);
 				ArrayAdapter<CharSequence> stateAdapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_item);
@@ -379,6 +466,27 @@ public class AddIncidentFragment extends Fragment {
 					@Override
 					public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 						dummyEditText.setText(incidentYears[pos]);
+						if (eventNameSpinner != null && eventNameAdapter != null) {
+							eventNameAdapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_dropdown_item);
+							switch (Integer.parseInt(incidentYears[pos])) {
+								case 2010:
+									eventNameAdapter.addAll(m.getResources().getStringArray(R.array.names_array_2010));
+									break;
+								case 2011:
+									eventNameAdapter.addAll(m.getResources().getStringArray(R.array.names_array_2011));
+									break;
+								case 2012:
+									eventNameAdapter.addAll(m.getResources().getStringArray(R.array.names_array_2012));
+									break;
+								case 2013:
+									eventNameAdapter.addAll(m.getResources().getStringArray(R.array.names_array_2013));
+									break;
+								default:
+									eventNameAdapter.addAll(m.getResources().getStringArray(R.array.names_array_2013));
+									break;
+							}
+							eventNameSpinner.setAdapter(eventNameAdapter);
+						}
 					}
 					
 					public OnItemSelectedListener passValues(EditText dummyEditText) {
@@ -392,6 +500,69 @@ public class AddIncidentFragment extends Fragment {
 				}.passValues(dummyEditText));
 				for (int i = 0; i < incidentYears.length; i++) {
 					if (oldContents.equals(incidentYears[i])) spinner.setSelection(i);
+				}
+				unaryContainer = spinner;
+				break;
+			case IncidentInfo.EVENT_NAME:
+				eventNameSpinner = new Spinner(m);
+				String[] eventNames = m.getResources().getStringArray(R.array.names_array_2013);
+				eventNameAdapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_item);
+				eventNameAdapter.addAll(eventNames);
+				eventNameSpinner.setAdapter(eventNameAdapter);
+				dummyEditText = new EditText(m);
+				OnItemSelectedListener eventNameListener = new OnItemSelectedListener() {
+					EditText	dummyEditText;
+					
+					@Override
+					public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long arg3) {
+						if (pos != 0) dummyEditText.setText(parent.getItemAtPosition(pos).toString());
+						else dummyEditText.setText("");
+					}
+					
+					public OnItemSelectedListener passValues(EditText dummyEditText) {
+						this.dummyEditText = dummyEditText;
+						return this;
+					}
+					
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+				}.passValues(dummyEditText);
+				eventNameSpinner.setOnItemSelectedListener(eventNameListener);
+				for (int i = 0; i < eventNames.length; i++) {
+					if (oldContents.equals(eventNames[i])) {
+						eventNameSpinner.setSelection(i);
+						break;
+					}
+				}
+				unaryContainer = eventNameSpinner;
+				break;
+			case IncidentInfo.CRE_LEAD:
+				spinner = new Spinner(m);
+				ArrayAdapter<CharSequence> creLeadAdapter = ArrayAdapter.createFromResource(m, R.array.cre_lead, android.R.layout.simple_spinner_item);
+				creLeadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				spinner.setAdapter(creLeadAdapter);
+				final String[] creLeads = m.getResources().getStringArray(R.array.cre_lead);
+				dummyEditText = new EditText(m);
+				spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+					EditText	dummyEditText;
+					
+					@Override
+					public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+						dummyEditText.setText(creLeads[pos]);
+					}
+					
+					public OnItemSelectedListener passValues(EditText dummyEditText) {
+						this.dummyEditText = dummyEditText;
+						return this;
+					}
+					
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+				}.passValues(dummyEditText));
+				for (int i = 0; i < creLeads.length; i++) {
+					if (oldContents.equals(creLeads[i])) spinner.setSelection(i);
 				}
 				unaryContainer = spinner;
 				break;
@@ -494,7 +665,7 @@ public class AddIncidentFragment extends Fragment {
 					InputFilter[] filters = new InputFilter[1];
 					filters[0] = new InputFilter.LengthFilter(limit);
 					editText.setFilters(filters);
-					editText.setMinEms(limit * 3 / 5);
+					editText.setMinEms(limit * 8 / 15);
 				}
 				unaryContainer = editText;
 				break;
@@ -509,7 +680,7 @@ public class AddIncidentFragment extends Fragment {
 					InputFilter[] filters = new InputFilter[1];
 					filters[0] = new InputFilter.LengthFilter(limit);
 					editText.setFilters(filters);
-					editText.setMinEms(limit * 3 / 5);
+					editText.setMinEms(limit * 8 / 15);
 				}
 				unaryContainer = editText;
 				break;
@@ -522,7 +693,7 @@ public class AddIncidentFragment extends Fragment {
 					InputFilter[] filters = new InputFilter[1];
 					filters[0] = new InputFilter.LengthFilter(limit);
 					editText.setFilters(filters);
-					editText.setMinEms(limit * 3 / 5);
+					editText.setMinEms(limit * 8 / 15);
 				}
 				unaryContainer = editText;
 				break;
@@ -541,187 +712,9 @@ public class AddIncidentFragment extends Fragment {
 				break;
 		}
 		
-		if (dummyEditText == null) {
-			return new View[] { unaryContainer };
-		} else return new View[] { dummyEditText, unaryContainer };
+		if (dummyEditText == null) return new View[] { unaryContainer };
+		return new View[] { dummyEditText, unaryContainer };
 	}
-	
-	// public void onClick(View v) {
-	// final Context con = m.getApplicationContext();
-	// Webservice test = new Webservice(con);
-	//
-	// if (v.getId() == (attach_picture.getId())) {
-	// /*
-	// * public void dispatchTakePictureIntent(int actionCode) {
-	// * Intent takePictureIntent = new
-	// * Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	// * startActivityForResult(takePictureIntent, actionCode);
-	// * }
-	// * storageDir = new File (
-	// * Environment.getExternalStorageDirectory()
-	// * + PICTURES_DIR
-	// * + getAlbumName()
-	// * );
-	// */
-	// // CameraTwoActivity.aIncident = aIncident;
-	// // Intent i = new Intent();
-	// // i.setClassName("com.example.dreamteamdisasterrecovery",
-	// // "com.example.dreamteamdisasterrecovery.CameraTwoActivity");
-	// // startActivity(i);
-	// picture();
-	//
-	// } else if (v.getId() == (save.getId())) {
-	// String eventYear = date.getOnItemSelectedListener().toString();
-	// String requesterId = id.getText().toString();
-	// String contactNumber = contactNum.getText().toString();
-	// String buildingType =
-	// propType.getOnItemSelectedListener().toString();
-	// String workReqNumber = workRequest.getText().toString();
-	// String comPowerIndicator =
-	// commercialPower.getOnItemSelectedListener().toString();
-	// String onGeneratorIndicator =
-	// onGenerator.getOnItemSelectedListener().toString();
-	// String c_Lead = creLead.getOnItemSelectedListener().toString();
-	// String buildingStat =
-	// buildingStatus.getOnItemSelectedListener().toString();
-	// String unOccupiableIndicator =
-	// unoccupiable.getOnItemSelectedListener().toString();
-	// String mobCOIndicator = mobCO.getOnItemSelectedListener().toString();
-	// String damageIndicator =
-	// damage.getOnItemSelectedListener().toString();
-	// String estCapCost = capital.getText().toString();
-	// String estExpenseCost = expense.getText().toString();
-	//
-	// /******************************************************/
-	// String elecIssueIndicator =
-	// elecIssue.getOnItemSelectedListener().toString();
-	// String elecIssueClsdIndicator =
-	// elecClosed.getOnItemSelectedListener().toString();
-	// String envIssueIndicator =
-	// envirIssue.getOnItemSelectedListener().toString();
-	// String envIssueClsdIndicator =
-	// envirClosed.getOnItemSelectedListener().toString();
-	// String fenceGateIssueIndicator =
-	// fgIssue.getOnItemSelectedListener().toString();
-	// String fenceGateIssueClsdIndicator =
-	// fgClosed.getOnItemSelectedListener().toString();
-	// String genIssueIndicator =
-	// genIssue.getOnItemSelectedListener().toString();
-	// String genIssueClsdIndicator =
-	// genClosed.getOnItemSelectedListener().toString();
-	// String waterIssueIndicator =
-	// waterIssue.getOnItemSelectedListener().toString();
-	// String waterIssueClsdIndicator =
-	// waterClosed.getOnItemSelectedListener().toString();
-	// String groundsIssueIndicator =
-	// groundsIssue.getOnItemSelectedListener().toString();
-	// String groundsIssueClsdIndicator =
-	// groundsClosed.getOnItemSelectedListener().toString();
-	// String mechIssueIndicator =
-	// mechIssue.getOnItemSelectedListener().toString();
-	// String mechIssueClsdIndicator =
-	// mechClosed.getOnItemSelectedListener().toString();
-	// String otherIssueIndicator =
-	// otherIssue.getOnItemSelectedListener().toString();
-	// String otherIssueClsdIndicator =
-	// otherClosed.getOnItemSelectedListener().toString();
-	// String plumbIssueIndicator =
-	// plumbIssue.getOnItemSelectedListener().toString();
-	// String plumbIssueClsdIndicator =
-	// plumClosed.getOnItemSelectedListener().toString();
-	// String roofsIssueIndicator =
-	// roofIssue.getOnItemSelectedListener().toString();
-	// String roofsIssueClsdIndicator =
-	// roofClosed.getOnItemSelectedListener().toString();
-	// String safetyIssueIndicator =
-	// safeIssue.getOnItemSelectedListener().toString();
-	// String safetyIssueClsdIndicator =
-	// safeClosed.getOnItemSelectedListener().toString();
-	// String structIssueIndicator =
-	// structIssue.getOnItemSelectedListener().toString();
-	// String structIssueClsdIndicator =
-	// structClosed.getOnItemSelectedListener().toString();
-	//
-	// String assessNotes = assessment.getText().toString();
-	// String statusNotes = status.getText().toString();
-	// String compltnDate = compDate.getText().toString();
-	// String incidentNotes = notes.getText().toString();
-	// String incidentStatus =
-	// rep_OC.getOnItemSelectedListener().toString();
-	//
-	// // save all the fields for this new incident
-	// // aIncident.setGeoLoc(theZip);
-	// aIncident.setInitialRptDate(eventYear);
-	// aIncident.setReqATTUID(requesterId);
-	// aIncident.setContactPhone(contactNumber);
-	// aIncident.setBuildingType(buildingType);
-	// aIncident.setWorkReqNumber(workReqNumber);
-	// aIncident.setComPowerIndicator(comPowerIndicator);
-	// aIncident.setOnGeneratorIndicator(onGeneratorIndicator);
-	// aIncident.setCreLead(c_Lead);
-	// aIncident.setBuildingStatus(buildingStat);
-	// aIncident.setUnOccupiableIndicator(unOccupiableIndicator);
-	// aIncident.setMobCOIndicator(mobCOIndicator);
-	// aIncident.setDamageIndicator(damageIndicator);
-	// aIncident.setEstCapCost(Integer.parseInt(estCapCost));
-	// aIncident.setEstExpenseCost(Integer.parseInt(estExpenseCost));
-	// /**********************************************************/
-	// aIncident.setElecIssueIndicator(elecIssueIndicator);
-	// aIncident.setElecIssueClsdIndicator(elecIssueClsdIndicator);
-	// aIncident.setEnvIssueIndicator(envIssueIndicator);
-	// aIncident.setEnvIssueClsdIndicator(envIssueClsdIndicator);
-	// aIncident.setFenceGateIssueIndicator(fenceGateIssueIndicator);
-	// aIncident.setFenceGateIssueClsdIndicator(fenceGateIssueClsdIndicator);
-	// aIncident.setGenIssueIndicator(genIssueIndicator);
-	// aIncident.setGenIssueClsdIndicator(genIssueClsdIndicator);
-	// aIncident.setWaterIssueIndicator(waterIssueIndicator);
-	// aIncident.setWaterIssueClsdIndicator(waterIssueClsdIndicator);
-	// aIncident.setGroundsIssueIndicator(groundsIssueIndicator);
-	// aIncident.setGroundsIssueClsdIndicator(groundsIssueClsdIndicator);
-	// aIncident.setMechIssueIndicator(mechIssueIndicator);
-	// aIncident.setMechIssueClsdIndicator(mechIssueClsdIndicator);
-	// aIncident.setOtherIssueIndicator(otherIssueIndicator);
-	// aIncident.setOtherIssueClsdIndicator(otherIssueClsdIndicator);
-	// aIncident.setPlumbIssueIndicator(plumbIssueIndicator);
-	// aIncident.setPlumbIssueClsdIndicator(plumbIssueClsdIndicator);
-	// aIncident.setRoofsIssueIndicator(roofsIssueIndicator);
-	// aIncident.setRoofsIssueClsdIndicator(roofsIssueClsdIndicator);
-	// aIncident.setSafetyIssueIndicator(safetyIssueIndicator);
-	// aIncident.setSafetyIssueClsdIndicator(safetyIssueClsdIndicator);
-	// aIncident.setStructIssueIndicator(structIssueIndicator);
-	// aIncident.setStructIssueClsdIndicator(structIssueClsdIndicator);
-	//
-	// aIncident.setAssessNotes(assessNotes);
-	// aIncident.setStatusNotes(statusNotes);
-	// aIncident.setCompltnDate(compltnDate);
-	// aIncident.setIncidentNotes(incidentNotes);
-	// aIncident.setIncidentStatus(incidentStatus);
-	//
-	// // how to save the incident?
-	// try {
-	// test.addIncident(MainActivity.sessionToken, aIncident);
-	// success.show();
-	// GLCSearchActivity.aIncid = aIncident;
-	// Intent i = new Intent();
-	// i.setClassName("com.example.dreamteamdisasterrecovery",
-	// "com.example.dreamteamdisasterrecovery.GLCSearchActivity");
-	// startActivity(i);
-	// } catch (TokenInvalidException e) {
-	// fail1.show();
-	// e.printStackTrace();
-	// } catch (GeolocInvalidException e) {
-	// fail2.show(); // goes here
-	// e.printStackTrace();
-	// }
-	// } else { // cancel button
-	// Intent i = new Intent();
-	// i.setClassName("com.example.dreamteamdisasterrecovery",
-	// "com.example.dreamteamdisasterrecovery.GLCSearchActivity");
-	// // Start GLC search activity screen
-	// startActivity(i);
-	// }
-	//
-	// }
 	
 	public void picture() {
 		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
