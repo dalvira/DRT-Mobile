@@ -27,7 +27,7 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  */
 public class IncidentRecNumSearchFragment extends Fragment {
 	/** The shortcut to the current activity */
-	private static Activity	m;
+	private Activity		m;
 	private DatabaseManager	db;
 	
 	private EditText		getRecordNumber;

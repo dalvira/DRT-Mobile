@@ -41,14 +41,14 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  */
 public class IncidentZIPResultsFragment extends Fragment {
 	/** The shortcut to the current activity */
-	private static Activity		m;
+	private Activity		m;
 	/** The progress bar that is shown to indicate background processes */
-	private static ProgressBar	progress;
+	private ProgressBar		progress;
 	/** The handler that will allow the multi-threading */
-	private Handler				handler;
-	private DatabaseManager		db;
+	private Handler			handler;
+	private DatabaseManager	db;
 	
-	private static final int	COLUMNS	= 3;
+	private final int		COLUMNS	= 3;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the

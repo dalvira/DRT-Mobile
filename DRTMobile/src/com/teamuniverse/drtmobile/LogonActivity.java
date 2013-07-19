@@ -24,29 +24,29 @@ import com.teamuniverse.drtmobile.support.SectionAdder;
 
 public class LogonActivity extends Activity {
 	/** The shortcut to the current activity */
-	private static Activity		m;
+	private Activity	m;
 	/** The progress bar that is shown to indicate background processes */
-	private static ProgressBar	progress;
+	private ProgressBar	progress;
 	/** A boolean that will stop many clicks from starting a bunch of threads */
-	private static boolean		querying;
+	private boolean		querying;
 	/** The handler that will allow the multi-threading */
-	private Handler				handler;
+	private Handler		handler;
 	
 	// create the reference variables for the Layout views and contents
 	/** The EditText that contains the user's ATTUID */
-	private static EditText		attuidEditText;
+	private EditText	attuidEditText;
 	/** The EditText that contains the user's password */
-	private static EditText		passEditText;
+	private EditText	passEditText;
 	/** The go Button */
-	private static Button		goButton;
+	private Button		goButton;
 	/** The remember my ATTUID CheckBox */
-	private static CheckBox		rememberATTUID;
+	private CheckBox	rememberATTUID;
 	/** The String[] that will hold the results of the call to Webservice */
-	private static String[]		loginResults;
+	private String[]	loginResults;
 	/** The user's name, taken from attuidEditText */
-	private static String		name;
+	private String		name;
 	/** The user's password, taken from passEditText */
-	private static String		pass;
+	private String		pass;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

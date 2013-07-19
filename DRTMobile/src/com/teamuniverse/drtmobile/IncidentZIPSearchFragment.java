@@ -34,18 +34,18 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  */
 public class IncidentZIPSearchFragment extends Fragment {
 	/** The shortcut to the current activity */
-	private static Activity		m;
+	private Activity		m;
 	/** The progress bar that is shown to indicate background processes */
-	private static ProgressBar	progress;
+	private ProgressBar		progress;
 	/** A boolean that will stop many clicks from starting a bunch of threads */
-	private static boolean		querying;
+	private boolean			querying;
 	/** The handler that will allow the multi-threading */
-	private Handler				handler;
-	private DatabaseManager		db;
+	private Handler			handler;
+	private DatabaseManager	db;
 	
-	private static EditText		zipBox;
-	private static String		zip;
-	public static int			num	= 1;
+	private EditText		zipBox;
+	private String			zip;
+	public int				num	= 1;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
