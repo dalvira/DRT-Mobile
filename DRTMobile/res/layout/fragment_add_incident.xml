@@ -47,6 +47,14 @@
 		android:gravity="center_horizontal"
 		android:text="@string/add_incident_subtitle"
 		android:textAppearance="?android:attr/textAppearanceSmall" />
+	<ProgressBar
+		android:id="@+id/progress"
+		style="?android:attr/progressBarStyleLarge"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/first_divider"
+		android:layout_centerHorizontal="true"
+		android:visibility="invisible" />
 	<!-- new xml -->
 	<LinearLayout
 		android:id="@+id/the_buttons_container"

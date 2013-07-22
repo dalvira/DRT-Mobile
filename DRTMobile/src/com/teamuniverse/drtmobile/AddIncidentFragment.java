@@ -71,6 +71,7 @@ public class AddIncidentFragment extends Fragment {
 	Toast						success;
 	int							recNum;
 	View[]						toDisable;
+	boolean[]					disabledIndicators;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -186,10 +187,14 @@ public class AddIncidentFragment extends Fragment {
 				// All are correct
 				
 				if (allCorrect) {
-					Toast.makeText(m, "All are valid", Toast.LENGTH_LONG).show();
+					// Toast.makeText(m, "All are valid",
+					// Toast.LENGTH_LONG).show();
+					mainView.findViewById(R.id.progress).setVisibility(View.VISIBLE);
 					addButton.setEnabled(false);
-					for (int i = 0; i < toDisable.length; i++)
+					for (int i = 0; i < toDisable.length; i++) {
+						if (toDisable[i] == null) continue;
 						toDisable[i].setEnabled(false);
+					}
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -211,10 +216,11 @@ public class AddIncidentFragment extends Fragment {
 								@Override
 								public void run() {
 									try {
+										mainView.findViewById(R.id.progress).setVisibility(View.INVISIBLE);
 										addButton.setEnabled(true);
 										for (int i = 0; i < toDisable.length; i++) {
-											int which = (Integer) toDisable[i].getTag();
-											switch (which) {
+											if (toDisable[i] == null) continue;
+											switch (i) {
 												case IncidentInfo.ZIP_CODE:
 												case IncidentInfo.STATE:
 												case IncidentInfo.PM_ATTUID:
@@ -254,7 +260,8 @@ public class AddIncidentFragment extends Fragment {
 		
 		IncidentInfo[] infos = IncidentHelper.getInfos(inc, IncidentHelper.ADD_ORDER);
 		View[] fields = new View[infos.length];
-		toDisable = new View[infos.length];
+		toDisable = new View[IncidentInfo.NUMBER_OF_FIELDS];
+		disabledIndicators = new boolean[IncidentInfo.NUMBER_OF_FIELDS];
 		
 		int colorCoordinator = 0;
 		for (int i = 0; i < infos.length; i++) {
@@ -279,14 +286,13 @@ public class AddIncidentFragment extends Fragment {
 					View[] current = setupSingleField(infos[i], which);
 					if (current.length > 1) {
 						each.addView(current[1]);
-						toDisable[i] = current[1];
+						toDisable[which] = current[1];
 					} else {
 						each.addView(current[0]);
-						toDisable[i] = current[0];
+						toDisable[which] = current[0];
 					}
 					fields[i] = current[0];
 					fields[i].setTag(which);
-					toDisable[i].setTag(which);
 				}
 			}
 			
@@ -597,39 +603,81 @@ public class AddIncidentFragment extends Fragment {
 				}
 				unaryContainer = spinner;
 				break;
-			case IncidentInfo.COMMERCIAL_POWER_INDICATOR:
-			case IncidentInfo.DAMAGE_INDICATOR:
-			case IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
-			case IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR:
-			case IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
-			case IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
-			case IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.GROUNDS_ISSUE_INDICATOR:
-			case IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
-			case IncidentInfo.MOBILITY_CO_INDICATOR:
-			case IncidentInfo.ON_GENERATOR_INDICATOR:
-			case IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.OTHER_ISSUE_INDICATOR:
-			case IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.PLUMB_ISSUE_INDICATOR:
-			case IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.ROOFS_ISSUE_INDICATOR:
-			case IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.SAFETY_ISSUE_INDICATOR:
-			case IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.STRUCTURAL_ISSUE_INDICATOR:
-			case IncidentInfo.UNOCCUPIABLE_INDICATOR:
-			case IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR:
 			case IncidentInfo.WATER_ISSUE_INDICATOR:
 				spinner = new Spinner(m);
 				ArrayAdapter<CharSequence> indicatorAdapter = ArrayAdapter.createFromResource(m, R.array.YON, android.R.layout.simple_spinner_item);
 				indicatorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				spinner.setAdapter(indicatorAdapter);
+				dummyEditText = new EditText(m);
+				spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+					EditText	dummyEditText;
+					int			child;
+					
+					@Override
+					public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+						if (pos == 0) {
+							disabledIndicators[child] = false;
+							if (toDisable[child] != null) toDisable[child].setEnabled(true);
+						} else {
+							disabledIndicators[child] = true;
+							if (toDisable[child] != null) toDisable[child].setEnabled(false);
+						}
+						dummyEditText.setText(pos == 0 ? "Y" : "N");
+					}
+					
+					public OnItemSelectedListener passValues(EditText dummyEditText, int child) {
+						this.dummyEditText = dummyEditText;
+						this.child = child;
+						return this;
+					}
+					
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+				}.passValues(dummyEditText, IncidentHelper.getIndicatorChild(which)));
+				spinner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (m.getCurrentFocus() != null) m.getCurrentFocus().clearFocus();
+						return false;
+					}
+				});
+				spinner.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("y")	? 0
+																								: 1);
+				unaryContainer = spinner;
+				break;
+			case IncidentInfo.COMMERCIAL_POWER_INDICATOR:
+			case IncidentInfo.MOBILITY_CO_INDICATOR:
+			case IncidentInfo.ON_GENERATOR_INDICATOR:
+			case IncidentInfo.UNOCCUPIABLE_INDICATOR:
+			case IncidentInfo.DAMAGE_INDICATOR:
+			case IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR:
+			case IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR:
+				spinner = new Spinner(m);
+				ArrayAdapter<CharSequence> miscOrClosedIndicatorAdapter = ArrayAdapter.createFromResource(m, R.array.YON, android.R.layout.simple_spinner_item);
+				miscOrClosedIndicatorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				spinner.setAdapter(miscOrClosedIndicatorAdapter);
 				dummyEditText = new EditText(m);
 				spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 					EditText	dummyEditText;
@@ -816,7 +864,7 @@ class ScrollViewCompatibleDatePicker extends DatePicker {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		/*
-		 * Prevent parent controls from stealing our events once we've
+		 * Prevent parent controls from stealing our touch events once we've
 		 * gotten a touch down
 		 */
 		if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {

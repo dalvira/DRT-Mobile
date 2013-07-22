@@ -139,64 +139,9 @@ public class IncidentRecNumResultsFragment extends Fragment {
 										addIt[i] = true;
 									for (int i = 0; i < infos.length; i++) {
 										int which = infos[i].getId();
-										switch (which) {
-											case IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR:
-											case IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR:
-												break;
-											default:
-												addIt[which] = true;
-												switch (which) {
-													case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
-														addIt[IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR:
-														addIt[IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
-														addIt[IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
-														addIt[IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.GROUNDS_ISSUE_INDICATOR:
-														addIt[IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
-														addIt[IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.PLUMB_ISSUE_INDICATOR:
-														addIt[IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.ROOFS_ISSUE_INDICATOR:
-														addIt[IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.SAFETY_ISSUE_INDICATOR:
-														addIt[IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.STRUCTURAL_ISSUE_INDICATOR:
-														addIt[IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.WATER_ISSUE_INDICATOR:
-														addIt[IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													case IncidentInfo.OTHER_ISSUE_INDICATOR:
-														addIt[IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
-														break;
-													default:
-														break;
-												}
-												break;
-										}
+										
+										int child = IncidentHelper.getIndicatorChild(which);
+										if (child != -1) addIt[child] = infos[i].getValue().equals("Y");
 										
 										if (addIt[which]) {
 											if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
@@ -215,11 +160,15 @@ public class IncidentRecNumResultsFragment extends Fragment {
 													temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
 												} else if (j == 1) {
 													toShowUneditabled = temp;
-													try {
-														temp.setText((String) infos[i].getValue());
-													} catch (ClassCastException e) {
-														temp.setText((Integer) infos[i].getValue() + "");
-													}
+													if (which == IncidentInfo.STATE) {
+														String currentState = infos[i].getValue() + "";
+														for (int k = 0; k < IncidentInfo.STATE_POSTALS.length; k++) {
+															if (currentState.equals(IncidentInfo.STATE_POSTALS[k])) {
+																temp.setText(IncidentInfo.STATE_NAMES[k]);
+																break;
+															}
+														}
+													} else temp.setText(infos[i].getValue() + "");
 													temp.setMaxEms(10);
 													each.setTag(R.id.field_label, temp);
 												}
@@ -493,7 +442,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 					stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					newSpin.setAdapter(stateAdapter);
 					for (int i = 0; i < IncidentInfo.STATE_NAMES.length; i++) {
-						if (oldContents.equals(IncidentInfo.STATE_POSTALS[i])) {
+						if (oldContents.equals(IncidentInfo.STATE_NAMES[i])) {
 							newSpin.setSelection(i);
 							break;
 						}
@@ -619,7 +568,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 			}
 			
 			final AlertDialog dialog = builder.setView(view).setTitle(R.string.edit_in_place).setPositiveButton(R.string.go, null).setNegativeButton(R.string.cancel, null).create();
-			dialog.setCanceledOnTouchOutside(true);
+			dialog.setCanceledOnTouchOutside(false);
 			dialog.setOnDismissListener(new OnDismissListener() {
 				@Override
 				public void onDismiss(DialogInterface arg0) {

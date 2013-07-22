@@ -193,7 +193,15 @@ public class IncidentZIPResultsFragment extends Fragment {
 												temp.setGravity(Gravity.LEFT);
 												temp.setText(now.getDescriptor());
 											} else if (j == 1) {
-												temp.setText(now.getValue() + "");
+												if (now.getId() == IncidentInfo.STATE) {
+													String currentState = now.getValue() + "";
+													for (int l = 0; l < IncidentInfo.STATE_POSTALS.length; l++) {
+														if (currentState.equals(IncidentInfo.STATE_POSTALS[l])) {
+															temp.setText(IncidentInfo.STATE_NAMES[l]);
+															break;
+														}
+													}
+												} else temp.setText(now.getValue() + "");
 												temp.setMaxEms(10);
 											}
 											eachField.addView(temp);

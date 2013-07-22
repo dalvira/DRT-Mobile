@@ -46,6 +46,37 @@ public class IncidentHelper extends Incident {
 		}
 	}
 	
+	public static int getIndicatorChild(int which) {
+		switch (which) {
+			case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
+				return IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR:
+				return IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
+				return IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
+				return IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.GROUNDS_ISSUE_INDICATOR:
+				return IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
+				return IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.PLUMB_ISSUE_INDICATOR:
+				return IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.ROOFS_ISSUE_INDICATOR:
+				return IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.SAFETY_ISSUE_INDICATOR:
+				return IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.STRUCTURAL_ISSUE_INDICATOR:
+				return IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.WATER_ISSUE_INDICATOR:
+				return IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR;
+			case IncidentInfo.OTHER_ISSUE_INDICATOR:
+				return IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR;
+			default:
+				return -1;
+		}
+	}
+	
 	public static IncidentInfo getSingleInfo(Incident inc, int which) {
 		Object value = null;
 		switch (which) {
