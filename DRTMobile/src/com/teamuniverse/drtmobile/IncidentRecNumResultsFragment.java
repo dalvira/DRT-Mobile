@@ -134,7 +134,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 								} else {
 									IncidentInfo[] infos = IncidentHelper.getInfos(result, IncidentHelper.UPDATE_ORDER);
 									int colorCoordinator = 0;
-									boolean addIt[] = new boolean[infos.length + 2];
+									boolean addIt[] = new boolean[IncidentInfo.NUMBER_OF_FIELDS];
 									for (int i = 0; i < addIt.length; i++)
 										addIt[i] = true;
 									for (int i = 0; i < infos.length; i++) {

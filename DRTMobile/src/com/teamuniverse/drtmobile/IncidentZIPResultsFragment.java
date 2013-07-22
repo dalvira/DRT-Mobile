@@ -48,7 +48,8 @@ public class IncidentZIPResultsFragment extends Fragment {
 	private Handler			handler;
 	private DatabaseManager	db;
 	
-	private final int		COLUMNS	= 3;
+	private final int		COLUMNS	= 2;
+	private final int[]		FIELDS	= { IncidentInfo.RECORD_NUMBER, IncidentInfo.BUILDING_NAME, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.EVENT_NAME };
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -131,25 +132,25 @@ public class IncidentZIPResultsFragment extends Fragment {
 								} else Toast.makeText(m, IncidentHelper.isValidInfoForField(null, IncidentInfo.ZIP_CODE, zip + ""), Toast.LENGTH_SHORT).show();
 							} else {
 								TextView temp;
-								LinearLayout each;
+								LinearLayout eachRecord, eachField;
 								for (int i = 0; i < results.size(); i++) {
 									if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 									
 									// TODO make prettier
 									
-									each = new LinearLayout(m);
-									each.setPadding(0, 6, 0, 6);
-									each.setTag(R.string.record_number, results.get(i).getRecNumber() + "");
-									each.setOrientation(LinearLayout.HORIZONTAL);
-									each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-									each.setClickable(true);
+									eachRecord = new LinearLayout(m);
+									eachRecord.setPadding(3, 6, 3, 6);
+									eachRecord.setTag(R.string.record_number, results.get(i).getRecNumber() + "");
+									eachRecord.setOrientation(LinearLayout.VERTICAL);
+									eachRecord.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+									eachRecord.setClickable(true);
 									
 									if (i % 2 == 1) {
-										each.setBackgroundColor(Color.rgb(220, 220, 220));
-										each.setTag(R.string.default_color, "color");
-									} else each.setTag(R.string.default_color, "none");
+										eachRecord.setBackgroundColor(Color.rgb(220, 220, 220));
+										eachRecord.setTag(R.string.default_color, "color");
+									} else eachRecord.setTag(R.string.default_color, "none");
 									
-									each.setOnTouchListener(new OnTouchListener() {
+									eachRecord.setOnTouchListener(new OnTouchListener() {
 										@Override
 										public boolean onTouch(View v, MotionEvent event) {
 											switch (event.getAction()) {
@@ -179,24 +180,28 @@ public class IncidentZIPResultsFragment extends Fragment {
 										}
 									});
 									
-									for (int j = 0; j < COLUMNS; j++) {
-										temp = new TextView(m);
-										temp.setGravity(Gravity.CENTER);
-										temp.setMaxLines(1);
-										if (j == 0) {
-											temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
-											temp.setGravity(Gravity.LEFT);
-											temp.setText("Record Num: " + results.get(i).getRecNumber() + "");
-										} else if (j == 1) temp.setText("Event Name: " + results.get(i).getEventName());
-										// else if (j == 2) temp.setText();
-										// else if (j == 3) temp.setText();
-										// else if (j == 4) temp.setText();
-										// else if (j == 5) temp.setText();
-										
-										each.addView(temp);
+									for (int k = 0; k < FIELDS.length; k++) {
+										eachField = new LinearLayout(m);
+										eachField.setOrientation(LinearLayout.HORIZONTAL);
+										for (int j = 0; j < COLUMNS; j++) {
+											temp = new TextView(m);
+											temp.setGravity(Gravity.CENTER);
+											temp.setMaxLines(1);
+											IncidentInfo now = IncidentHelper.getSingleInfo(results.get(i), FIELDS[k]);
+											if (j == 0) {
+												temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
+												temp.setGravity(Gravity.LEFT);
+												temp.setText(now.getDescriptor());
+											} else if (j == 1) {
+												temp.setText(now.getValue() + "");
+												temp.setMaxEms(10);
+											}
+											eachField.addView(temp);
+										}
+										eachRecord.addView(eachField);
 									}
 									
-									container.addView(each);
+									container.addView(eachRecord);
 								}
 							}
 						} else {
