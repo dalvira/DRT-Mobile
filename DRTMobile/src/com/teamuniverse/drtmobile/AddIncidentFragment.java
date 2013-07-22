@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
@@ -30,6 +31,7 @@ import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -103,11 +105,13 @@ public class AddIncidentFragment extends Fragment {
 		String zipString = db.sessionUnset("adding_zip");
 		db.close();
 		
+		final View addButtonContainer = mainView.findViewById(R.id.the_buttons_container);
+		
 		if (zipString.equals("")) {
 			/**
 			 * The pick ZIP interface is setup here:
 			 */
-			mainView.findViewById(R.id.the_buttons_container).setVisibility(View.INVISIBLE);
+			addButtonContainer.setVisibility(View.INVISIBLE);
 			container.addView(new LinearLayout(m));
 			((LinearLayout) container.getChildAt(container.getChildCount() - 1)).setOrientation(LinearLayout.HORIZONTAL);
 			((LinearLayout) container.getChildAt(container.getChildCount() - 1)).addView(new TextView(m));
@@ -124,8 +128,11 @@ public class AddIncidentFragment extends Fragment {
 				public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
 					if (pos != 0) {
 						container.removeAllViews();
-						mainView.findViewById(R.id.the_buttons_container).setVisibility(View.VISIBLE);
+						addButtonContainer.setVisibility(View.VISIBLE);
 						setupAdd(mainView, container, Integer.parseInt(m.getResources().getStringArray(R.array.valid_zips)[pos]));
+						RelativeLayout blah = (RelativeLayout) addButtonContainer.getParent();
+						blah.removeView(addButtonContainer);
+						container.addView(addButtonContainer);
 					}
 				}
 				
@@ -142,39 +149,15 @@ public class AddIncidentFragment extends Fragment {
 		} else {
 			zipValue = Integer.parseInt(zipString);
 			setupAdd(mainView, container, zipValue);
+			RelativeLayout blah = (RelativeLayout) addButtonContainer.getParent();
+			blah.removeView(addButtonContainer);
+			container.addView(addButtonContainer);
 		}
 		return mainView;
 	}
 	
 	public void setupAdd(final View mainView, final LinearLayout container, final int zipValue) {
 		final View[] allInfos = setupAllFields(mainView, container, zipValue);
-		/** Attach Picture button setup */
-		final Button attachButton = ((Button) mainView.findViewById(R.id.attach_picture));
-		attachButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// // TODO setup add picture
-				// /*
-				// * public void dispatchTakePictureIntent(int actionCode) {
-				// * Intent takePictureIntent = new
-				// * Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				// * startActivityForResult(takePictureIntent, actionCode);
-				// * }
-				// * storageDir = new File (
-				// * Environment.getExternalStorageDirectory()
-				// * + PICTURES_DIR
-				// * + getAlbumName()
-				// * );
-				// */
-				// CameraTwoActivity.inc = inc;
-				// Intent i = new Intent();
-				// i.setClassName("com.example.dreamteamdisasterrecovery",
-				//
-				// "com.example.dreamteamdisasterrecovery.CameraTwoActivity");
-				// startActivity(i);
-				// picture();
-			}
-		});
 		/** Add button setup */
 		final Button addButton = ((Button) mainView.findViewById(R.id.add));
 		addButton.setOnClickListener(new View.OnClickListener() {
@@ -182,11 +165,18 @@ public class AddIncidentFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				boolean allCorrect = true;
+				
 				for (int i = 0; i < allInfos.length; i++) {
 					int which = (Integer) allInfos[i].getTag();
 					String currentInfo = ((EditText) allInfos[i]).getText().toString();
 					if (which == IncidentInfo.CONTACT_PHONE_NUMBER && currentInfo.length() == 10) currentInfo = currentInfo.substring(0, 3) + "-" + currentInfo.substring(3, 6) + "-" + currentInfo.substring(6);
-					
+					IncidentHelper.setFieldById(inc, which, currentInfo);
+				}
+				
+				for (int i = 0; i < allInfos.length; i++) {
+					int which = (Integer) allInfos[i].getTag();
+					String currentInfo = ((EditText) allInfos[i]).getText().toString();
+					if (which == IncidentInfo.CONTACT_PHONE_NUMBER && currentInfo.length() == 10) currentInfo = currentInfo.substring(0, 3) + "-" + currentInfo.substring(3, 6) + "-" + currentInfo.substring(6);
 					String message = IncidentHelper.isValidInfoForField(inc, which, currentInfo);
 					if (!message.equals("")) {
 						allCorrect = false;
@@ -197,19 +187,12 @@ public class AddIncidentFragment extends Fragment {
 				
 				if (allCorrect) {
 					Toast.makeText(m, "All are valid", Toast.LENGTH_LONG).show();
-					for (int i = 0; i < allInfos.length; i++)
-						IncidentHelper.setFieldById(inc, (Integer) allInfos[i].getTag(), ((EditText) allInfos[i]).getText().toString());
 					addButton.setEnabled(false);
-					attachButton.setEnabled(false);
 					for (int i = 0; i < toDisable.length; i++)
 						toDisable[i].setEnabled(false);
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
-							addButton.setEnabled(false);
-							attachButton.setEnabled(false);
-							for (int i = 0; i < toDisable.length; i++)
-								toDisable[i].setEnabled(false);
 							Webservice ws = new Webservice(m);
 							DatabaseManager db = new DatabaseManager(m);
 							String token = db.sessionGet("token");
@@ -228,9 +211,7 @@ public class AddIncidentFragment extends Fragment {
 								@Override
 								public void run() {
 									try {
-										// TODO some glitch on adding
 										addButton.setEnabled(true);
-										attachButton.setEnabled(true);
 										for (int i = 0; i < toDisable.length; i++) {
 											int which = (Integer) toDisable[i].getTag();
 											switch (which) {
@@ -248,7 +229,6 @@ public class AddIncidentFragment extends Fragment {
 										}
 										if (timedOut) {
 											SetterUpper.timedOut(m);
-											addButton.performClick();
 										} else {
 											DatabaseManager db = new DatabaseManager(m);
 											db.sessionSet("record_number", inc.getRecNumber() + "");
@@ -278,6 +258,8 @@ public class AddIncidentFragment extends Fragment {
 		
 		int colorCoordinator = 0;
 		for (int i = 0; i < infos.length; i++) {
+			if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
+			
 			int which = infos[i].getId();
 			
 			if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
@@ -360,6 +342,13 @@ public class AddIncidentFragment extends Fragment {
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				}.passValues(dummyEditText));
+				spinner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (m.getCurrentFocus() != null) m.getCurrentFocus().clearFocus();
+						return false;
+					}
+				});
 				for (int i = 0; i < buildingStatuses.length; i++) {
 					if (oldContents.equals(buildingStatuses[i])) spinner.setSelection(i);
 				}
@@ -389,6 +378,13 @@ public class AddIncidentFragment extends Fragment {
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				}.passValues(dummyEditText));
+				spinner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (m.getCurrentFocus() != null) m.getCurrentFocus().clearFocus();
+						return false;
+					}
+				});
 				for (int i = 0; i < buildingTypes.length; i++) {
 					if (oldContents.equals(buildingTypes[i])) spinner.setSelection(i);
 				}
@@ -417,6 +413,13 @@ public class AddIncidentFragment extends Fragment {
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				}.passValues(dummyEditText));
+				spinner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (m.getCurrentFocus() != null) m.getCurrentFocus().clearFocus();
+						return false;
+					}
+				});
 				spinner.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("open") ? 0
 																								: 1);
 				unaryContainer = spinner;
@@ -445,6 +448,13 @@ public class AddIncidentFragment extends Fragment {
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				}.passValues(dummyEditText));
+				spinner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (m.getCurrentFocus() != null) m.getCurrentFocus().clearFocus();
+						return false;
+					}
+				});
 				for (int i = 0; i < IncidentInfo.STATE_NAMES.length; i++) {
 					if (oldContents.equals(IncidentInfo.STATE_POSTALS[i])) {
 						spinner.setSelection(i);
@@ -467,7 +477,7 @@ public class AddIncidentFragment extends Fragment {
 					public void onItemSelected(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 						dummyEditText.setText(incidentYears[pos]);
 						if (eventNameSpinner != null && eventNameAdapter != null) {
-							eventNameAdapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_dropdown_item);
+							eventNameAdapter.clear();
 							switch (Integer.parseInt(incidentYears[pos])) {
 								case 2010:
 									eventNameAdapter.addAll(m.getResources().getStringArray(R.array.names_array_2010));
@@ -485,7 +495,8 @@ public class AddIncidentFragment extends Fragment {
 									eventNameAdapter.addAll(m.getResources().getStringArray(R.array.names_array_2013));
 									break;
 							}
-							eventNameSpinner.setAdapter(eventNameAdapter);
+							eventNameAdapter.notifyDataSetChanged();
+							eventNameSpinner.setSelection(0);
 						}
 					}
 					
@@ -498,6 +509,13 @@ public class AddIncidentFragment extends Fragment {
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				}.passValues(dummyEditText));
+				spinner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (m.getCurrentFocus() != null) m.getCurrentFocus().clearFocus();
+						return false;
+					}
+				});
 				for (int i = 0; i < incidentYears.length; i++) {
 					if (oldContents.equals(incidentYears[i])) spinner.setSelection(i);
 				}
@@ -507,7 +525,6 @@ public class AddIncidentFragment extends Fragment {
 				eventNameSpinner = new Spinner(m);
 				String[] eventNames = m.getResources().getStringArray(R.array.names_array_2013);
 				eventNameAdapter = new ArrayAdapter<CharSequence>(m, android.R.layout.simple_spinner_item);
-				eventNameAdapter.addAll(eventNames);
 				eventNameSpinner.setAdapter(eventNameAdapter);
 				dummyEditText = new EditText(m);
 				OnItemSelectedListener eventNameListener = new OnItemSelectedListener() {
@@ -528,6 +545,13 @@ public class AddIncidentFragment extends Fragment {
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				}.passValues(dummyEditText);
+				eventNameSpinner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (m.getCurrentFocus() != null) m.getCurrentFocus().clearFocus();
+						return false;
+					}
+				});
 				eventNameSpinner.setOnItemSelectedListener(eventNameListener);
 				for (int i = 0; i < eventNames.length; i++) {
 					if (oldContents.equals(eventNames[i])) {
@@ -561,6 +585,13 @@ public class AddIncidentFragment extends Fragment {
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				}.passValues(dummyEditText));
+				spinner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (m.getCurrentFocus() != null) m.getCurrentFocus().clearFocus();
+						return false;
+					}
+				});
 				for (int i = 0; i < creLeads.length; i++) {
 					if (oldContents.equals(creLeads[i])) spinner.setSelection(i);
 				}
@@ -617,6 +648,13 @@ public class AddIncidentFragment extends Fragment {
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				}.passValues(dummyEditText));
+				spinner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (m.getCurrentFocus() != null) m.getCurrentFocus().clearFocus();
+						return false;
+					}
+				});
 				spinner.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("y")	? 0
 																								: 1);
 				unaryContainer = spinner;
@@ -650,9 +688,10 @@ public class AddIncidentFragment extends Fragment {
 			case IncidentInfo.INCIDENT_NOTES:
 			case IncidentInfo.STATUS_NOTES:
 			case IncidentInfo.BUILDING_ADDRESS:
+			case IncidentInfo.BUILDING_NAME:
 				editText = new EditText(m);
 				editText.setMinLines(3);
-				editText.setEms(10);
+				editText.setEms(11);
 				editText.setText(oldContents);
 				unaryContainer = editText;
 				break;
@@ -665,7 +704,7 @@ public class AddIncidentFragment extends Fragment {
 					InputFilter[] filters = new InputFilter[1];
 					filters[0] = new InputFilter.LengthFilter(limit);
 					editText.setFilters(filters);
-					editText.setMinEms(limit * 8 / 15);
+					editText.setMinEms(limit * 3 / 5);
 				}
 				unaryContainer = editText;
 				break;
@@ -680,7 +719,7 @@ public class AddIncidentFragment extends Fragment {
 					InputFilter[] filters = new InputFilter[1];
 					filters[0] = new InputFilter.LengthFilter(limit);
 					editText.setFilters(filters);
-					editText.setMinEms(limit * 8 / 15);
+					editText.setMinEms(limit * 3 / 5);
 				}
 				unaryContainer = editText;
 				break;
@@ -693,7 +732,7 @@ public class AddIncidentFragment extends Fragment {
 					InputFilter[] filters = new InputFilter[1];
 					filters[0] = new InputFilter.LengthFilter(limit);
 					editText.setFilters(filters);
-					editText.setMinEms(limit * 8 / 15);
+					editText.setMinEms(limit * 3 / 5);
 				}
 				unaryContainer = editText;
 				break;

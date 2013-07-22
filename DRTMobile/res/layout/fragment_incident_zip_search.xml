@@ -75,28 +75,4 @@
 		android:inputType="number"
 		android:maxLength="5" >
 	</EditText>
-	<ProgressBar
-		android:id="@+id/progress"
-		style="?android:attr/progressBarStyleLarge"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_above="@+id/add_sample"
-		android:layout_centerHorizontal="true"
-		android:visibility="gone" />
-	<Button
-		android:id="@+id/add_sample"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_above="@+id/go_button_container"
-		android:layout_alignParentLeft="true"
-		android:text="Add Sample"
-		tools:ignore="HardcodedText" />
-	<Button
-		android:id="@+id/time_out"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignBottom="@+id/add_sample"
-		android:layout_alignParentRight="true"
-		android:text="Simulate Time Out"
-		tools:ignore="HardcodedText" />
 </RelativeLayout>

@@ -134,10 +134,11 @@ public class IncidentRecNumResultsFragment extends Fragment {
 								} else {
 									IncidentInfo[] infos = IncidentHelper.getInfos(result, IncidentHelper.UPDATE_ORDER);
 									int colorCoordinator = 0;
+									boolean addIt[] = new boolean[infos.length + 2];
+									for (int i = 0; i < addIt.length; i++)
+										addIt[i] = true;
 									for (int i = 0; i < infos.length; i++) {
 										int which = infos[i].getId();
-										boolean addIt;
-										
 										switch (which) {
 											case IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR:
 											case IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR:
@@ -151,14 +152,53 @@ public class IncidentRecNumResultsFragment extends Fragment {
 											case IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR:
 											case IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR:
 											case IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR:
-												addIt = infos[i - 23].getValue().equals("Y");
 												break;
 											default:
-												addIt = true;
+												addIt[which] = true;
+												switch (which) {
+													case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
+														addIt[IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR:
+														addIt[IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
+														addIt[IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
+														addIt[IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.GROUNDS_ISSUE_INDICATOR:
+														addIt[IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
+														addIt[IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.PLUMB_ISSUE_INDICATOR:
+														addIt[IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.ROOFS_ISSUE_INDICATOR:
+														addIt[IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.SAFETY_ISSUE_INDICATOR:
+														addIt[IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.STRUCTURAL_ISSUE_INDICATOR:
+														addIt[IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.WATER_ISSUE_INDICATOR:
+														addIt[IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													case IncidentInfo.OTHER_ISSUE_INDICATOR:
+														addIt[IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR] = infos[i].getValue().equals("Y");
+														break;
+													default:
+														break;
+												}
 												break;
 										}
 										
-										if (addIt) {
+										if (addIt[which]) {
 											if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 											
 											each = new LinearLayout(m);
@@ -250,6 +290,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 															return true;
 														}
 													});
+													break;
 											}
 											container.addView(each);
 										}

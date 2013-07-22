@@ -92,7 +92,7 @@ public class IncidentZIPResultsFragment extends Fragment {
 				
 				db = new DatabaseManager(m);
 				String token = db.sessionGet("token");
-				final int zip = (int) Long.parseLong(db.sessionGet("zip"));
+				final int zip = Integer.parseInt(db.sessionGet("zip"));
 				db.close();
 				
 				try {
@@ -134,6 +134,8 @@ public class IncidentZIPResultsFragment extends Fragment {
 								LinearLayout each;
 								for (int i = 0; i < results.size(); i++) {
 									if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
+									
+									// TODO make prettier
 									
 									each = new LinearLayout(m);
 									each.setPadding(0, 6, 0, 6);

@@ -1,8 +1,6 @@
 package com.teamuniverse.drtmobile;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -13,10 +11,13 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
+import com.teamuniverse.drtmobile.support.IncidentHelper;
+import com.teamuniverse.drtmobile.support.IncidentInfo;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 import com.teamuniverse.drtmobile.support.SetterUpper;
 
@@ -90,29 +91,14 @@ public class IncidentRecNumSearchFragment extends Fragment {
 	private void get() {
 		String text = getRecordNumber.getText().toString();
 		
-		if (!text.equals("")) {
+		String message = IncidentHelper.isValidInfoForField(null, IncidentInfo.RECORD_NUMBER, text);
+		if (message.equals("")) {
 			db = new DatabaseManager(m);
 			db.sessionSet("record_number", text);
 			db.close();
-			
 			SectionListActivity.m.putSection(SectionAdder.INCIDENT_REC_NUM_RESULTS);
 		} else {
-			// 1. Instantiate an AlertDialog.Builder with its
-			// constructor
-			AlertDialog.Builder builder = new AlertDialog.Builder(m);
-			// 2. Chain together various setter methods to set the
-			// dialog
-			// characteristics
-			builder.setMessage(R.string.record_number_invalid).setTitle(R.string.record_number_invalid_title);
-			// 3. Add an okay
-			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
-			// 4. Get the AlertDialog from create() and show it
-			builder.create().show();
+			Toast.makeText(m, message, Toast.LENGTH_SHORT).show();
 		}
 	}
 	

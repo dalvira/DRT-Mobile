@@ -46,18 +46,6 @@
 		<item>2011</item>
 		<item>2010</item>
 	</string-array>
-	<string-array name="yes_no">
-		<item>Y</item>
-		<item>N</item>
-	</string-array>
-	<string-array name="no_yes">
-		<item>N</item>
-		<item>Y</item>
-	</string-array>
-	<string-array name="open_closed">
-		<item>Open</item>
-		<item>Closed</item>
-	</string-array>
 	<string-array name="cre_lead">
 		<item>PM</item>
 		<item>D&amp;C</item>

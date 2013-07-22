@@ -3,8 +3,10 @@
 	android:id="@+id/logon_container"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:background="#ffffff"
 	android:focusableInTouchMode="true"
-	tools:context=".LogonActivity" >
+	tools:context=".LogonActivity"
+	tools:ignore="Overdraw" >
 	<ImageView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

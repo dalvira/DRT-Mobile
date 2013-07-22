@@ -55,13 +55,6 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true" >
 		<Button
-			android:id="@+id/attach_picture"
-			style="?android:attr/buttonBarButtonStyle"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/attach_picture" />
-		<Button
 			android:id="@+id/add"
 			style="?android:attr/buttonBarButtonStyle"
 			android:layout_width="0dp"

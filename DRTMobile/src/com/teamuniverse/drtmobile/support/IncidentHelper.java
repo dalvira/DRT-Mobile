@@ -469,7 +469,7 @@ public class IncidentHelper extends Incident {
 	public static String isValidInfoForField(Incident inc, int which, String newContents) {
 		String message = "";
 		
-		String oldReportDate;
+		String alreadySetInitialReportDate;
 		int incidentYear, incidentCompletionYear;
 		Calendar initialReportDate;
 		
@@ -478,31 +478,30 @@ public class IncidentHelper extends Incident {
 				if (newContents.equals("")) message = "An event name or storm type must be picked!";
 				break;
 			case IncidentInfo.COMPLETION_DATE:
-				/**
-				 * Rules: completion date cannot be before initial report date
-				 */
+				/** Completion date cannot be before initial report date */
 				initialReportDate = Calendar.getInstance();
-				oldReportDate = inc.getInitialRptDate();
-				if (oldReportDate.length() == 10) initialReportDate.set(Integer.parseInt(oldReportDate.substring(0, 4)), Integer.parseInt(oldReportDate.substring(5, 7)) - 1, Integer.parseInt(oldReportDate.substring(8)));
+				alreadySetInitialReportDate = inc.getInitialRptDate();
+				if (alreadySetInitialReportDate.length() == 10) initialReportDate.set(Integer.parseInt(alreadySetInitialReportDate.substring(0, 4)), Integer.parseInt(alreadySetInitialReportDate.substring(5, 7)) - 1, Integer.parseInt(alreadySetInitialReportDate.substring(8)));
 				
 				Calendar completionDate = Calendar.getInstance();
 				if (newContents.length() == 10) completionDate.set(Integer.parseInt(newContents.substring(0, 4)), Integer.parseInt(newContents.substring(5, 7)) - 1, Integer.parseInt(newContents.substring(8)));
 				
-				if (initialReportDate.after(completionDate)) {
-					message = "The completion date cannot be before the initial report date!";
+				if (completionDate.before(initialReportDate)) {
+					message = "The report completion date cannot be before the initial report date!";
 				}
+				/** Cannot be before incident year */
+				incidentYear = inc.getIncidentYear();
+				if (completionDate.get(Calendar.YEAR) < incidentYear) message = "The report completion date cannot be before the incident year!";
 				break;
 			case IncidentInfo.CONTACT_PHONE_NUMBER:
 				if (newContents.equals("")) message = "A contact phone number must be supplied!";
 				else if (!newContents.matches("[1-9][0-9]{2}-[0-9]{3}-[0-9]{4}")) message = "The supplied number is not valid. Please type a valid ten digit number in the form ##########.";
 				break;
 			case IncidentInfo.ZIP_CODE:
-				if (!newContents.equals("27685") && !newContents.equals("74685") && !newContents.equals("88534") && !newContents.equals("27689") && !newContents.equals("63784") && !newContents.equals("78549")) message = "New ZIP must be one of: 27685, 74685, 88534, 27689, 63784, or 78549 to be successfully updated!";
+				if (!newContents.equals("27685") && !newContents.equals("74685") && !newContents.equals("88534") && !newContents.equals("27689") && !newContents.equals("63784") && !newContents.equals("78549")) message = "ZIP must be one of: 27685, 74685, 88534, 27689, 63784, or 78549 to be successfully updated!";
 				break;
 			case IncidentInfo.INCIDENT_COMPLETION_DATE:
-				/**
-				 * Rules: IncidentCompltnDate must not be less than IncidentYear
-				 */
+				/** IncidentCompltnDate must not be less than IncidentYear */
 				incidentYear = inc.getIncidentYear();
 				if (incidentYear != 0) {
 					if (newContents.length() == 10) {
@@ -512,48 +511,44 @@ public class IncidentHelper extends Incident {
 				}
 				break;
 			case IncidentInfo.INCIDENT_YEAR:
-				/**
-				 * Rules:
-				 * 
-				 * Incident year must not be after incident completion date
-				 * IncidentYear must not be greater than initial report date
-				 */
 				if (newContents.length() == 4) incidentYear = Integer.parseInt(newContents);
 				else incidentYear = 0;
+				
+				/** Incident year must not be after incident completion date */
 				if (inc.getIncidentCompltnDate().length() == 10) incidentCompletionYear = Integer.parseInt(inc.getIncidentCompltnDate().substring(0, 4));
 				else incidentCompletionYear = 0;
 				if (incidentCompletionYear != 0) {
 					if (incidentCompletionYear < incidentYear) message = "The incident year cannot be after the incident completion date!";
 				}
 				
+				/** IncidentYear cannot be in the future */
 				if (incidentYear > Calendar.getInstance().get(Calendar.YEAR)) message = "The incident year cannot be in the future!";
+				
+				/** IncidentYear must not be greater than initial report date */
 				initialReportDate = Calendar.getInstance();
-				oldReportDate = inc.getInitialRptDate();
-				initialReportDate.set(Integer.parseInt(oldReportDate.substring(0, 4)), Integer.parseInt(oldReportDate.substring(5, 7)) - 1, Integer.parseInt(oldReportDate.substring(8)));
-				if (initialReportDate.after(Calendar.getInstance())) {
+				alreadySetInitialReportDate = inc.getInitialRptDate();
+				if (alreadySetInitialReportDate.length() == 10) initialReportDate.set(Integer.parseInt(alreadySetInitialReportDate.substring(0, 4)), Integer.parseInt(alreadySetInitialReportDate.substring(5, 7)) - 1, Integer.parseInt(alreadySetInitialReportDate.substring(8)));
+				
+				if (incidentYear > initialReportDate.get(Calendar.YEAR)) {
 					message = "The incident year cannot be after the initial report date!";
 				}
 				
 				break;
 			case IncidentInfo.INITIAL_REPORT_DATE:
-				/**
-				 * Rules:
-				 * 
-				 * Initial report date has to be before or on today
-				 * Initial report date must not be after incident year
-				 */
 				initialReportDate = Calendar.getInstance();
 				if (newContents.length() == 10) initialReportDate.set(Integer.parseInt(newContents.substring(0, 4)), Integer.parseInt(newContents.substring(5, 7)) - 1, Integer.parseInt(newContents.substring(8)));
-				if (initialReportDate.after(Calendar.getInstance())) {
-					message = "The initial report date cannot be in the future!!";
-				} else {
-					incidentYear = inc.getIncidentYear();
-					if (incidentYear != 0) {
-						int incidentReportYear = 0;
-						if (newContents.length() == 10) incidentReportYear = Integer.parseInt(newContents.substring(0, 4));
-						if (incidentReportYear > incidentYear) message = "The initial report date cannot be before the incident year!";
-					}
+				
+				/** Initial report date cannot be in the future */
+				if (initialReportDate.after(Calendar.getInstance())) message = "The initial report date cannot be in the future!!";
+				
+				/** Initial report date must not be after incident year */
+				incidentYear = inc.getIncidentYear();
+				if (incidentYear != 0) {
+					int incidentReportYear = initialReportDate.get(Calendar.YEAR);
+					if (incidentReportYear < incidentYear) message = "The initial report date cannot be before the incident year!";
 				}
+				
+				/** Initial report date must not be after incident year */
 				break;
 			case IncidentInfo.PM_ATTUID:
 				if (!newContents.matches("[a-zA-Z]{2}[0-9]{3}[a-zA-Z0-9]")) message = "The supplied ATTUID is not valid.";
