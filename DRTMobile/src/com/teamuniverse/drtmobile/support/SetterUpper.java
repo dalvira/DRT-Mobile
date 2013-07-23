@@ -20,6 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.att.intern.webservice.Webservice;
+import com.teamuniverse.drtmobile.AddIncidentFragment;
+import com.teamuniverse.drtmobile.IncidentRecNumResultsFragment;
+import com.teamuniverse.drtmobile.IncidentZIPResultsFragment;
 import com.teamuniverse.drtmobile.LogonActivity;
 import com.teamuniverse.drtmobile.R;
 
@@ -79,8 +82,7 @@ public class SetterUpper {
 	 * @param activity
 	 *            The activity from which the method is called.
 	 */
-	public static void timedOut(Activity activity) {
-		final Activity m = activity;
+	public static void timedOut(final Activity m, final int whichSection) {
 		loggedBackIn = false;
 		// 1. Instantiate an AlertDialog.Builder with its constructor
 		// 2. Chain together various methods to set the dialog characteristics
@@ -136,7 +138,7 @@ public class SetterUpper {
 			}
 		});
 		
-		(dialog.getButton(DialogInterface.BUTTON_POSITIVE)).setOnClickListener(new SetterUpper().new TimedOutDialogListener(dialog, m, progress, attuidEditText, passEditText, (Button) dialog.getButton(DialogInterface.BUTTON_NEGATIVE)));
+		(dialog.getButton(DialogInterface.BUTTON_POSITIVE)).setOnClickListener(new SetterUpper().new TimedOutDialogListener(dialog, m, progress, attuidEditText, passEditText, (Button) dialog.getButton(DialogInterface.BUTTON_NEGATIVE), whichSection));
 	}
 	
 	class TimedOutDialogListener implements View.OnClickListener {
@@ -147,8 +149,9 @@ public class SetterUpper {
 		private final EditText		passEditText;
 		private final Handler		handler;
 		private final Button		negButton;
+		private final int			whichSection;
 		
-		public TimedOutDialogListener(Dialog dialog, Activity m, ProgressBar progress, EditText attuidEditText, EditText passEditText, Button negButton) {
+		public TimedOutDialogListener(Dialog dialog, Activity m, ProgressBar progress, EditText attuidEditText, EditText passEditText, Button negButton, int whichSection) {
 			this.dialog = dialog;
 			this.m = m;
 			this.progress = progress;
@@ -156,6 +159,7 @@ public class SetterUpper {
 			this.passEditText = passEditText;
 			this.handler = new Handler();
 			this.negButton = negButton;
+			this.whichSection = whichSection;
 		}
 		
 		@Override
@@ -197,9 +201,21 @@ public class SetterUpper {
 										DatabaseManager db = new DatabaseManager(m);
 										db.sessionSet("token", loginResults[0]);
 										db.close();
-										
 										loggedBackIn = true;
 										dialog.dismiss();
+										switch (whichSection) {
+											case SectionAdder.INCIDENT_REC_NUM_RESULTS:
+												IncidentRecNumResultsFragment.search(IncidentRecNumResultsFragment.list);
+												break;
+											case SectionAdder.INCIDENT_ZIP_RESULTS:
+												IncidentZIPResultsFragment.search(IncidentRecNumResultsFragment.list);
+												break;
+											case SectionAdder.ADD_INCIDENT:
+												AddIncidentFragment.addButton.performClick();
+												break;
+											default:
+												break;
+										}
 									}
 								} catch (Exception e) {
 									e.printStackTrace();

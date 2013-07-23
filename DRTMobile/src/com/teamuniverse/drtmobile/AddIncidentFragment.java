@@ -30,7 +30,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -64,6 +66,9 @@ public class AddIncidentFragment extends Fragment {
 	
 	Spinner						eventNameSpinner	= null;
 	ArrayAdapter<CharSequence>	eventNameAdapter	= null;
+	
+	public static Button		addButton;
+	
 	// private File storageDir;
 	Context						context;
 	Toast						fail1;
@@ -95,72 +100,76 @@ public class AddIncidentFragment extends Fragment {
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup vGroup, Bundle savedInstanceState) {
-		View mainView = inflater.inflate(R.layout.fragment_add_incident, vGroup, false);
-		SetterUpper.setup(m, mainView);
-		handler = new Handler();
-		
-		LinearLayout container = (LinearLayout) mainView.findViewById(R.id.container);
-		// 5 prepopulated fields
-		int zipValue;
-		DatabaseManager db = new DatabaseManager(m);
-		String zipString = db.sessionUnset("adding_zip");
-		db.close();
-		
-		final View addButtonContainer = mainView.findViewById(R.id.the_buttons_container);
-		
-		if (zipString.equals("")) {
-			/**
-			 * The pick ZIP interface is setup here:
-			 */
-			addButtonContainer.setVisibility(View.INVISIBLE);
-			container.addView(new LinearLayout(m));
-			((LinearLayout) container.getChildAt(container.getChildCount() - 1)).setOrientation(LinearLayout.HORIZONTAL);
-			((LinearLayout) container.getChildAt(container.getChildCount() - 1)).addView(new TextView(m));
-			((TextView) ((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildAt(((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildCount() - 1)).setText(m.getString(R.string.pick_a_valid_zip));
-			((LinearLayout) container.getChildAt(container.getChildCount() - 1)).addView(new Spinner(m));
-			ArrayAdapter<CharSequence> zipAdapter = ArrayAdapter.createFromResource(m, R.array.valid_zips, android.R.layout.simple_spinner_item);
-			zipAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			((Spinner) ((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildAt(((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildCount() - 1)).setAdapter(zipAdapter);
-			((Spinner) ((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildAt(((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildCount() - 1)).setOnItemSelectedListener(new OnItemSelectedListener() {
-				LinearLayout	container;
-				View			mainView;
-				
-				@Override
-				public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
-					if (pos != 0) {
-						container.removeAllViews();
-						addButtonContainer.setVisibility(View.VISIBLE);
-						setupAdd(mainView, container, Integer.parseInt(m.getResources().getStringArray(R.array.valid_zips)[pos]));
-						RelativeLayout blah = (RelativeLayout) addButtonContainer.getParent();
-						blah.removeView(addButtonContainer);
-						container.addView(addButtonContainer);
-					}
-				}
-				
-				public OnItemSelectedListener passValues(LinearLayout container, View mainView) {
-					this.container = container;
-					this.mainView = mainView;
-					return this;
-				}
-				
-				@Override
-				public void onNothingSelected(AdapterView<?> arg0) {
-				}
-			}.passValues(container, mainView));
+		if (SectionListActivity.backButtonPressed) {
+			SectionListActivity.backStackViews.pop();
+			View restoring = SectionListActivity.backStackViews.peek();
+			((FrameLayout) restoring.getParent()).removeView(restoring);
+			return restoring;
 		} else {
-			zipValue = Integer.parseInt(zipString);
-			setupAdd(mainView, container, zipValue);
-			RelativeLayout blah = (RelativeLayout) addButtonContainer.getParent();
-			blah.removeView(addButtonContainer);
-			container.addView(addButtonContainer);
+			View view = inflater.inflate(R.layout.fragment_add_incident, vGroup, false);
+			SetterUpper.setup(m, view);
+			handler = new Handler();
+			
+			LinearLayout container = (LinearLayout) view.findViewById(R.id.container);
+			// 5 prepopulated fields
+			int zipValue;
+			DatabaseManager db = new DatabaseManager(m);
+			String zipString = db.sessionUnset("adding_zip");
+			db.close();
+			
+			final View addButtonContainer = view.findViewById(R.id.the_buttons_container);
+			
+			if (zipString.equals("")) {
+				/**
+				 * The pick ZIP interface is setup here:
+				 */
+				addButtonContainer.setVisibility(View.INVISIBLE);
+				container.addView(new LinearLayout(m));
+				((LinearLayout) container.getChildAt(container.getChildCount() - 1)).setOrientation(LinearLayout.HORIZONTAL);
+				((LinearLayout) container.getChildAt(container.getChildCount() - 1)).addView(new TextView(m));
+				((TextView) ((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildAt(((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildCount() - 1)).setText(m.getString(R.string.pick_a_valid_zip));
+				((LinearLayout) container.getChildAt(container.getChildCount() - 1)).addView(new Spinner(m));
+				ArrayAdapter<CharSequence> zipAdapter = ArrayAdapter.createFromResource(m, R.array.valid_zips, android.R.layout.simple_spinner_item);
+				zipAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				((Spinner) ((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildAt(((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildCount() - 1)).setAdapter(zipAdapter);
+				((Spinner) ((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildAt(((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildCount() - 1)).setOnItemSelectedListener(new OnItemSelectedListener() {
+					LinearLayout	container;
+					View			mainView;
+					
+					@Override
+					public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
+						if (pos != 0) {
+							container.removeAllViews();
+							addButtonContainer.setVisibility(View.VISIBLE);
+							setupAdd(mainView, container, Integer.parseInt(m.getResources().getStringArray(R.array.valid_zips)[pos]));
+						}
+					}
+					
+					public OnItemSelectedListener passValues(LinearLayout container, View mainView) {
+						this.container = container;
+						this.mainView = mainView;
+						return this;
+					}
+					
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+				}.passValues(container, view));
+			} else {
+				zipValue = Integer.parseInt(zipString);
+				setupAdd(view, container, zipValue);
+			}
+			
+			SectionListActivity.backStackViews.add(view);
+			return view;
 		}
-		return mainView;
 	}
 	
 	public void setupAdd(final View mainView, final LinearLayout container, final int zipValue) {
 		final View[] allInfos = setupAllFields(mainView, container, zipValue);
+		final ProgressBar progress = (ProgressBar) mainView.findViewById(R.id.progress);
 		/** Add button setup */
-		final Button addButton = ((Button) mainView.findViewById(R.id.add));
+		addButton = ((Button) mainView.findViewById(R.id.add));
 		addButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -189,7 +198,7 @@ public class AddIncidentFragment extends Fragment {
 				if (allCorrect) {
 					// Toast.makeText(m, "All are valid",
 					// Toast.LENGTH_LONG).show();
-					mainView.findViewById(R.id.progress).setVisibility(View.VISIBLE);
+					progress.setVisibility(View.VISIBLE);
 					addButton.setEnabled(false);
 					for (int i = 0; i < toDisable.length; i++) {
 						if (toDisable[i] == null) continue;
@@ -216,10 +225,10 @@ public class AddIncidentFragment extends Fragment {
 								@Override
 								public void run() {
 									try {
-										mainView.findViewById(R.id.progress).setVisibility(View.INVISIBLE);
+										progress.setVisibility(View.INVISIBLE);
 										addButton.setEnabled(true);
 										for (int i = 0; i < toDisable.length; i++) {
-											if (toDisable[i] == null) continue;
+											if (toDisable[i] == null || disabledIndicators[i]) continue;
 											switch (i) {
 												case IncidentInfo.ZIP_CODE:
 												case IncidentInfo.STATE:
@@ -234,7 +243,7 @@ public class AddIncidentFragment extends Fragment {
 											}
 										}
 										if (timedOut) {
-											SetterUpper.timedOut(m);
+											SetterUpper.timedOut(m, SectionAdder.ADD_INCIDENT);
 										} else {
 											DatabaseManager db = new DatabaseManager(m);
 											db.sessionSet("record_number", inc.getRecNumber() + "");
@@ -251,6 +260,11 @@ public class AddIncidentFragment extends Fragment {
 				}
 			}
 		});
+		progress.bringToFront();
+		View addButtonContainer = mainView.findViewById(R.id.the_buttons_container);
+		RelativeLayout blah = (RelativeLayout) addButtonContainer.getParent();
+		blah.removeView(addButtonContainer);
+		container.addView(addButtonContainer);
 	}
 	
 	public View[] setupAllFields(View mainView, LinearLayout container, int zipValue) {
@@ -502,7 +516,7 @@ public class AddIncidentFragment extends Fragment {
 									break;
 							}
 							eventNameAdapter.notifyDataSetChanged();
-							eventNameSpinner.setSelection(0);
+							if (!(eventNameSpinner.getSelectedItemPosition() <= 6)) eventNameSpinner.setSelection(0);
 						}
 					}
 					

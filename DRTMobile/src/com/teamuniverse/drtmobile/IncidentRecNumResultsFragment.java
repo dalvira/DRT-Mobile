@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -46,6 +47,7 @@ import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
 import com.teamuniverse.drtmobile.support.IncidentHelper;
 import com.teamuniverse.drtmobile.support.IncidentInfo;
+import com.teamuniverse.drtmobile.support.SectionAdder;
 import com.teamuniverse.drtmobile.support.SetterUpper;
 
 /**
@@ -56,14 +58,16 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
 public class IncidentRecNumResultsFragment extends Fragment {
 	
 	/** The shortcut to the current activity */
-	private Activity		m;
+	private static Activity			m;
 	/** The progress bar that is shown to indicate background processes */
-	private ProgressBar		progress;
+	private static ProgressBar		progress;
 	/** The handler that will allow the multi-threading */
-	private Handler			handler;
-	private DatabaseManager	db;
+	private static Handler			handler;
+	private static DatabaseManager	db;
 	
-	private final int		COLUMNS	= 2;
+	private final static int		COLUMNS	= 2;
+	
+	public static LinearLayout		list;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -80,27 +84,39 @@ public class IncidentRecNumResultsFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_incident_rec_num_results, container, false);
-		SetterUpper.setup(m, view);
-		
-		progress = (ProgressBar) view.findViewById(R.id.progress);
-		handler = new Handler();
-		
-		LinearLayout list = (LinearLayout) view.findViewById(R.id.list_container);
-		search(list);
-		
-		return view;
+		if (SectionListActivity.backButtonPressed) {
+			SectionListActivity.backStackViews.pop();
+			View restoring = SectionListActivity.backStackViews.peek();
+			((FrameLayout) restoring.getParent()).removeView(restoring);
+			return restoring;
+		} else {
+			View view = inflater.inflate(R.layout.fragment_incident_rec_num_results, container, false);
+			SetterUpper.setup(m, view);
+			
+			progress = (ProgressBar) view.findViewById(R.id.progress);
+			handler = new Handler();
+			
+			list = (LinearLayout) view.findViewById(R.id.list_container);
+			search(list);
+			
+			SectionListActivity.backStackViews.add(view);
+			return view;
+		}
 	}
 	
-	Incident	result					= null;
-	boolean		success					= false;
-	boolean		timedOutDuringSearch	= false;
+	static Incident	result					= null;
+	static boolean	success					= false;
+	static boolean	timedOutDuringSearch	= false;
 	
-	private void search(LinearLayout containerRef) {
-		final LinearLayout container = containerRef;
+	public static void search(final LinearLayout container) {
 		// Get contents of the EditTexts
 		new Thread(new Runnable() {
 			public void run() {
+				try {
+					progress.setVisibility(View.VISIBLE);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				Webservice ws = new Webservice(m);
 				
 				db = new DatabaseManager(m);
@@ -246,8 +262,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 									}
 								}
 							} else if (timedOutDuringSearch) {
-								SetterUpper.timedOut(m);
-								search(container);
+								SetterUpper.timedOut(m, SectionAdder.INCIDENT_REC_NUM_RESULTS);
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -693,7 +708,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 								public void run() {
 									// Hide the progress bar
 									if (timed) {
-										SetterUpper.timedOut(m);
+										SetterUpper.timedOut(m, SectionAdder.NONE);
 										for (int i = 0; i < toDisable.length; i++)
 											toDisable[i].setEnabled(true);
 										editInPlaceQuerying = false;

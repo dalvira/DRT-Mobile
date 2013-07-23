@@ -17,6 +17,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
@@ -41,15 +42,18 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  */
 public class IncidentZIPResultsFragment extends Fragment {
 	/** The shortcut to the current activity */
-	private Activity		m;
+	private static Activity			m;
 	/** The progress bar that is shown to indicate background processes */
-	private ProgressBar		progress;
+	private static ProgressBar		progress;
 	/** The handler that will allow the multi-threading */
-	private Handler			handler;
-	private DatabaseManager	db;
+	private static Handler			handler;
+	private static DatabaseManager	db;
 	
-	private final int		COLUMNS	= 2;
-	private final int[]		FIELDS	= { IncidentInfo.RECORD_NUMBER, IncidentInfo.BUILDING_NAME, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.EVENT_NAME };
+	private final static int		COLUMNS	= 2;
+	private final static int[]		FIELDS	= { IncidentInfo.RECORD_NUMBER, IncidentInfo.BUILDING_NAME, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.EVENT_NAME, IncidentInfo.INITIAL_REPORT_DATE };
+	
+	public static LinearLayout		list;
+	public static View				view;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -66,29 +70,43 @@ public class IncidentZIPResultsFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_incident_zip_results, container, false);
-		SetterUpper.setup(m, view);
-		
-		db = new DatabaseManager(m);
-		((TextView) view.findViewById(R.id.subtitle)).setText("Results for " + db.sessionGet("zip"));
-		db.close();
-		progress = (ProgressBar) view.findViewById(R.id.progress);
-		handler = new Handler();
-		LinearLayout list = (LinearLayout) view.findViewById(R.id.list_container);
-		
-		search(list);
-		
-		return view;
+		if (SectionListActivity.backButtonPressed) {
+			SectionListActivity.backStackViews.pop();
+			View restoring = SectionListActivity.backStackViews.peek();
+			((FrameLayout) restoring.getParent()).removeView(restoring);
+			return restoring;
+		} else {
+			view = inflater.inflate(R.layout.fragment_incident_zip_results, container, false);
+			
+			SetterUpper.setup(m, view);
+			
+			db = new DatabaseManager(m);
+			((TextView) view.findViewById(R.id.subtitle)).setText("Results for " + db.sessionGet("zip"));
+			db.close();
+			progress = (ProgressBar) view.findViewById(R.id.progress);
+			handler = new Handler();
+			list = (LinearLayout) view.findViewById(R.id.list_container);
+			
+			search(list);
+			
+			SectionListActivity.backStackViews.add(view);
+			return view;
+		}
 	}
 	
-	ArrayList<Incident>	results	= new ArrayList<Incident>(0);
-	AlertDialog.Builder	builder	= null;
-	boolean				success	= true;
+	static ArrayList<Incident>	results	= new ArrayList<Incident>(0);
+	AlertDialog.Builder			builder	= null;
+	static boolean				success	= true;
 	
-	private void search(final LinearLayout container) {
+	public static void search(final LinearLayout container) {
 		// Get contents of the EditTexts
 		new Thread(new Runnable() {
 			public void run() {
+				try {
+					progress.setVisibility(View.VISIBLE);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				Webservice ws = new Webservice(m);
 				
 				db = new DatabaseManager(m);
@@ -213,8 +231,7 @@ public class IncidentZIPResultsFragment extends Fragment {
 								}
 							}
 						} else {
-							SetterUpper.timedOut(m);
-							search(container);
+							SetterUpper.timedOut(m, SectionAdder.INCIDENT_ZIP_RESULTS);
 						}
 						// Hide the progress bar
 						progress.setVisibility(View.GONE);

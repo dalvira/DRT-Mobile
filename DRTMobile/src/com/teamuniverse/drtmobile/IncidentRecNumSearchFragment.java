@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,43 +50,48 @@ public class IncidentRecNumSearchFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_incident_rec_num_search, container, false);
-		SetterUpper.setup(m, view);
-		getRecordNumber = (EditText) view.findViewById(R.id.damage_get_record_number);
-		
-		db = new DatabaseManager(m);
-		if (db.sessionGet("back").equals("true")) {
-			getRecordNumber.setText(db.sessionGet("record_number"));
-			db.sessionUnset("back");
-		}
-		db.close();
-		
-		// getRecordNumber.requestFocus();
-		
-		button = (Button) view.findViewById(R.id.go_button);
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				get();
+		if (SectionListActivity.backButtonPressed) {
+			SectionListActivity.backStackViews.pop();
+			View restoring = SectionListActivity.backStackViews.peek();
+			((FrameLayout) restoring.getParent()).removeView(restoring);
+			return restoring;
+		} else {
+			View view = inflater.inflate(R.layout.fragment_incident_rec_num_search, container, false);
+			SetterUpper.setup(m, view);
+			getRecordNumber = (EditText) view.findViewById(R.id.damage_get_record_number);
+			
+			db = new DatabaseManager(m);
+			if (db.sessionGet("back").equals("true")) {
+				getRecordNumber.setText(db.sessionGet("record_number"));
+				db.sessionUnset("back");
 			}
-		});
-		
-		getRecordNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-					button.performClick();
-					return true;
+			db.close();
+			
+			// getRecordNumber.requestFocus();
+			
+			button = (Button) view.findViewById(R.id.go_button);
+			button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					get();
 				}
-				return false;
-			}
-		});
+			});
+			
+			getRecordNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+					if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+						button.performClick();
+						return true;
+					}
+					return false;
+				}
+			});
+			
+			SectionListActivity.backStackViews.add(view);
+			return view;
+		}
 		
-		// db = new DatabaseManager(m);
-		// ((EditText)
-		// view.findViewById(R.id.damage_add_attuid)).setText(db.sessionGet("attuid"));
-		// db.close();
-		return view;
 	}
 	
 	private void get() {

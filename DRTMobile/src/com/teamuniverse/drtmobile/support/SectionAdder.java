@@ -33,7 +33,7 @@ import com.teamuniverse.drtmobile.ReportSelectionFragment;
  * 2. Put all of the listed sections before the subsections.
  */
 public class SectionAdder {
-	private static final int		NONE						= 99;
+	public static final int			NONE						= 99;
 	
 	public static final int			INCIDENT_ZIP_SEARCH			= 0;
 	public static final int			INCIDENT_REC_NUM_SEARCH		= 1;
@@ -113,7 +113,8 @@ public class SectionAdder {
 	}
 	
 	/**
-	 * Method to attach_picture a section to the mapping, in order for it to be shown in
+	 * Method to attach_picture a section to the mapping, in order for it to be
+	 * shown in
 	 * the list.
 	 * 
 	 * @param section

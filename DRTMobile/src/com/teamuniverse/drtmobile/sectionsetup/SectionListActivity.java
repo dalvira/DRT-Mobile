@@ -1,12 +1,16 @@
 package com.teamuniverse.drtmobile.sectionsetup;
 
+import java.util.Stack;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.teamuniverse.drtmobile.LogonActivity;
 import com.teamuniverse.drtmobile.R;
@@ -33,7 +37,7 @@ import com.teamuniverse.drtmobile.support.SectionAdder;
 public class SectionListActivity extends FragmentActivity implements
 		SectionListFragment.Callbacks {
 	
-	public final static String			FRAG_ID	= "com.teamuniverse.drtmobile.FRAG_ID";
+	public final static String			FRAG_ID				= "com.teamuniverse.drtmobile.FRAG_ID";
 	
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -42,6 +46,10 @@ public class SectionListActivity extends FragmentActivity implements
 	public static boolean				mTwoPane;
 	public static SectionListActivity	m;
 	public static FragmentManager		fragmentManager;
+	private static Stack<Integer>		selectedParent;
+	
+	public static Stack<View>			backStackViews;
+	public static boolean				backButtonPressed	= false;
 	
 	private DatabaseManager				db;
 	
@@ -55,6 +63,8 @@ public class SectionListActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setup_activity_section_list);
 		m = this;
+		selectedParent = new Stack<Integer>();
+		backStackViews = new Stack<View>();
 		
 		mTwoPane = findViewById(R.id.section_detail_container) != null;
 		if (mTwoPane) {
@@ -98,9 +108,10 @@ public class SectionListActivity extends FragmentActivity implements
 			db.close();
 			
 			try {
-				((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? SectionAdder.PARENTS_RPT_FIXER[which]
-																																						: SectionAdder.SECTION_PARENTS[which]);
-				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(which)).commit();
+				setSelectedParent(which);
+				selectedParent.add(which);
+				fragmentManager = getSupportFragmentManager();
+				fragmentManager.beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(which)).commit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -113,25 +124,7 @@ public class SectionListActivity extends FragmentActivity implements
 	 */
 	@Override
 	public void onItemSelected(String id) {
-		if (mTwoPane) {
-			db = new DatabaseManager(this);
-			db.sessionSet("selected_section", id);
-			db.close();
-			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
-			try {
-				getSupportFragmentManager().beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection((int) Long.parseLong(id))).commit();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			// In single-pane mode, simply start the detail activity
-			// for the selected item ID.
-			Intent detailIntent = new Intent(this, SectionDetailActivity.class);
-			detailIntent.putExtra(FRAG_ID, id);
-			startActivity(detailIntent);
-		}
+		putSection(Integer.parseInt(id));
 	}
 	
 	/**
@@ -147,15 +140,13 @@ public class SectionListActivity extends FragmentActivity implements
 	 */
 	public void putSection(int id) {
 		if (mTwoPane) {
-			db = new DatabaseManager(this);
-			db.sessionSet("selected_section", id + "");
-			String authorization = db.sessionGet("authorization");
-			db.close();
 			try {
-				fragmentManager = getSupportFragmentManager();
-				((SectionListFragment) fragmentManager.findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? SectionAdder.PARENTS_RPT_FIXER[id]
-																																			: SectionAdder.SECTION_PARENTS[id]);
-				fragmentManager.beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(id)).commit();
+				setSelectedParent(id);
+				selectedParent.add(id);
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+				transaction.replace(R.id.section_detail_container, SectionAdder.getSection(id));
+				transaction.addToBackStack(null);
+				transaction.commit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -170,11 +161,33 @@ public class SectionListActivity extends FragmentActivity implements
 		fragmentManager = fm;
 	}
 	
+	private void setSelectedParent(int id) {
+		db = new DatabaseManager(this);
+		String authorization = db.sessionGet("authorization");
+		db.close();
+		((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? SectionAdder.PARENTS_RPT_FIXER[id]
+																																				: SectionAdder.SECTION_PARENTS[id]);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.in_app_menu, menu);
 		return true;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if (mTwoPane) {
+			fragmentManager = getSupportFragmentManager();
+			if (fragmentManager.getBackStackEntryCount() > 0) {
+				backButtonPressed = true;
+				fragmentManager.popBackStackImmediate();
+				selectedParent.pop();
+				setSelectedParent(selectedParent.peek());
+				backButtonPressed = false;
+			} else super.onBackPressed();
+		} else super.onBackPressed();
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {

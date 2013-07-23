@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,35 +51,43 @@ public class IncidentZIPSearchFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_incident_zip_search, container, false);
-		SetterUpper.setup(m, view);
-		
-		zipBox = (EditText) view.findViewById(R.id.zip_code);
-		db = new DatabaseManager(m);
-		if (db.sessionGet("back").equals("true")) {
-			zipBox.setText(db.sessionGet("zip"));
-			db.sessionUnset("back");
-		}
-		db.close();
-		zipBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-					search();
-					return true;
+		if (SectionListActivity.backButtonPressed) {
+			SectionListActivity.backStackViews.pop();
+			View restoring = SectionListActivity.backStackViews.peek();
+			((FrameLayout) restoring.getParent()).removeView(restoring);
+			return restoring;
+		} else {
+			View view = inflater.inflate(R.layout.fragment_incident_zip_search, container, false);
+			SetterUpper.setup(m, view);
+			
+			zipBox = (EditText) view.findViewById(R.id.zip_code);
+			db = new DatabaseManager(m);
+			if (db.sessionGet("back").equals("true")) {
+				zipBox.setText(db.sessionGet("zip"));
+				db.sessionUnset("back");
+			}
+			db.close();
+			zipBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+					if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+						search();
+						return true;
+					}
+					return false;
 				}
-				return false;
-			}
-		});
-		
-		((Button) view.findViewById(R.id.go_button)).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				search();
-			}
-		});
-		
-		return view;
+			});
+			
+			((Button) view.findViewById(R.id.go_button)).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					search();
+				}
+			});
+			
+			SectionListActivity.backStackViews.add(view);
+			return view;
+		}
 	}
 	
 	protected void search() {
