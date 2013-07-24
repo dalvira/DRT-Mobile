@@ -66,6 +66,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 	private static DatabaseManager	db;
 	
 	private final static int		COLUMNS	= 2;
+	private static int				recordNumber;
 	
 	public static LinearLayout		list;
 	
@@ -93,6 +94,10 @@ public class IncidentRecNumResultsFragment extends Fragment {
 			View view = inflater.inflate(R.layout.fragment_incident_rec_num_results, container, false);
 			SetterUpper.setup(m, view);
 			
+			db = new DatabaseManager(m);
+			recordNumber = Integer.parseInt(db.sessionUnset("record_number"));
+			((TextView) view.findViewById(R.id.subtitle)).setText("Result for " + recordNumber);
+			db.close();
 			progress = (ProgressBar) view.findViewById(R.id.progress);
 			handler = new Handler();
 			
@@ -104,24 +109,25 @@ public class IncidentRecNumResultsFragment extends Fragment {
 		}
 	}
 	
-	static Incident	result					= null;
-	static boolean	success					= false;
-	static boolean	timedOutDuringSearch	= false;
+	static Incident	result;
+	static boolean	success;
+	static boolean	timedOutDuringSearch;
 	
 	public static void search(final LinearLayout container) {
-		// Get contents of the EditTexts
+		result = null;
+		success = false;
+		timedOutDuringSearch = false;
+		try {
+			progress.setVisibility(View.VISIBLE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		new Thread(new Runnable() {
 			public void run() {
-				try {
-					progress.setVisibility(View.VISIBLE);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 				Webservice ws = new Webservice(m);
 				
 				db = new DatabaseManager(m);
 				String token = db.sessionGet("token");
-				int recordNumber = (int) Long.parseLong(db.sessionGet("record_number"));
 				db.close();
 				
 				try {
@@ -140,132 +146,133 @@ public class IncidentRecNumResultsFragment extends Fragment {
 						TextView temp;
 						LinearLayout each;
 						try {
+							// Hide the progress bar
 							progress.setVisibility(View.GONE);
-							if (success) {
-								if (result == null) {
-									temp = new TextView(m);
-									temp.setText(R.string.no_record);
-									temp.setGravity(Gravity.CENTER_HORIZONTAL);
-									container.addView(temp);
-								} else {
-									IncidentInfo[] infos = IncidentHelper.getInfos(result, IncidentHelper.UPDATE_ORDER);
-									int colorCoordinator = 0;
-									boolean addIt[] = new boolean[IncidentInfo.NUMBER_OF_FIELDS];
-									for (int i = 0; i < addIt.length; i++)
-										addIt[i] = true;
-									for (int i = 0; i < infos.length; i++) {
-										int which = infos[i].getId();
-										
-										int child = IncidentHelper.getIndicatorChild(which);
-										if (child != -1) addIt[child] = infos[i].getValue().equals("Y");
-										
-										if (addIt[which]) {
-											if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
-											
-											each = new LinearLayout(m);
-											each.setPadding(3, 6, 3, 6);
-											each.setOrientation(LinearLayout.HORIZONTAL);
-											each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-											
-											TextView toShowUneditabled = null;
-											
-											for (int j = 0; j < COLUMNS; j++) {
-												temp = new TextView(m);
-												if (j == 0) {
-													temp.setText(infos[i].getDescriptor());
-													temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
-												} else if (j == 1) {
-													toShowUneditabled = temp;
-													if (which == IncidentInfo.STATE) {
-														String currentState = infos[i].getValue() + "";
-														for (int k = 0; k < IncidentInfo.STATE_POSTALS.length; k++) {
-															if (currentState.equals(IncidentInfo.STATE_POSTALS[k])) {
-																temp.setText(IncidentInfo.STATE_NAMES[k]);
-																break;
-															}
-														}
-													} else temp.setText(infos[i].getValue() + "");
-													temp.setMaxEms(10);
-													each.setTag(R.id.field_label, temp);
-												}
-												each.addView(temp);
-											}
-											
-											if (colorCoordinator++ % 2 == 1) {
-												each.setBackgroundColor(Color.rgb(220, 220, 220));
-												each.setTag(R.string.default_color, "color");
-											} else each.setTag(R.string.default_color, "none");
-											
-											switch (which) {
-												case IncidentInfo.RECORD_NUMBER:
-												case IncidentInfo.CRE_LEAD:
-												case IncidentInfo.EVENT_NAME:
-												case IncidentInfo.INCIDENT_YEAR:
-												case IncidentInfo.STATE:
-												case IncidentInfo.PM_ATTUID:
-												case IncidentInfo.ZIP_CODE:
-												case IncidentInfo.BUILDING_TYPE:
-												case IncidentInfo.BUILDING_NAME:
-												case IncidentInfo.BUILDING_ADDRESS:
-												case IncidentInfo.REQUESTOR_ATTUID:
-												case IncidentInfo.CONTACT_PHONE_NUMBER:
-												case IncidentInfo.INITIAL_REPORT_DATE:
-												case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
-												case IncidentInfo.GROUNDS_ISSUE_INDICATOR:
-												case IncidentInfo.PLUMB_ISSUE_INDICATOR:
-												case IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR:
-												case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
-												case IncidentInfo.ROOFS_ISSUE_INDICATOR:
-												case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
-												case IncidentInfo.OTHER_ISSUE_INDICATOR:
-												case IncidentInfo.SAFETY_ISSUE_INDICATOR:
-												case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
-												case IncidentInfo.STRUCTURAL_ISSUE_INDICATOR:
-												case IncidentInfo.WATER_ISSUE_INDICATOR:
-												case IncidentInfo.WORK_REQUEST_NUMBER:
-													if (toShowUneditabled != null) {
-														toShowUneditabled.setEnabled(false);
-													}
-													break;
-												default:
-													each.setClickable(true);
-													
-													each.setTag(R.string.edit_in_place, infos[i]);
-													
-													each.setOnTouchListener(new OnTouchListener() {
-														@Override
-														public boolean onTouch(View v, MotionEvent event) {
-															switch (event.getAction()) {
-																case MotionEvent.ACTION_DOWN:
-																	SetterUpper.setSelected(m, v);
-																	break;
-																case MotionEvent.ACTION_MOVE:
-																	SetterUpper.setSelected(m, v);
-																	break;
-																case MotionEvent.ACTION_CANCEL:
-																	if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
-																	else SetterUpper.setUnSelected(m, v, true);
-																	break;
-																case MotionEvent.ACTION_UP:
-																	if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
-																	else SetterUpper.setUnSelected(m, v, true);
-																	editInPlace(m, result, (IncidentInfo) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
-																	break;
-															}
-															return true;
-														}
-													});
-													break;
-											}
-											container.addView(each);
-										}
-									}
-								}
-							} else if (timedOutDuringSearch) {
-								SetterUpper.timedOut(m, SectionAdder.INCIDENT_REC_NUM_RESULTS);
-							}
 						} catch (Exception e) {
 							e.printStackTrace();
+						}
+						if (success) {
+							if (result == null) {
+								temp = new TextView(m);
+								temp.setText(R.string.no_record);
+								temp.setGravity(Gravity.CENTER_HORIZONTAL);
+								container.addView(temp);
+							} else {
+								IncidentInfo[] infos = IncidentHelper.getInfos(result, IncidentHelper.UPDATE_ORDER);
+								int colorCoordinator = 0;
+								boolean addIt[] = new boolean[IncidentInfo.NUMBER_OF_FIELDS];
+								for (int i = 0; i < addIt.length; i++)
+									addIt[i] = true;
+								for (int i = 0; i < infos.length; i++) {
+									int which = infos[i].getId();
+									
+									int child = IncidentHelper.getIndicatorChild(which);
+									if (child != -1) addIt[child] = infos[i].getValue().equals("Y");
+									
+									if (addIt[which]) {
+										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
+										
+										each = new LinearLayout(m);
+										each.setPadding(3, 6, 3, 6);
+										each.setOrientation(LinearLayout.HORIZONTAL);
+										each.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+										
+										TextView toShowUneditabled = null;
+										
+										for (int j = 0; j < COLUMNS; j++) {
+											temp = new TextView(m);
+											if (j == 0) {
+												temp.setText(infos[i].getDescriptor());
+												temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
+											} else if (j == 1) {
+												toShowUneditabled = temp;
+												if (which == IncidentInfo.STATE) {
+													String currentState = infos[i].getValue() + "";
+													for (int k = 0; k < IncidentInfo.STATE_POSTALS.length; k++) {
+														if (currentState.equals(IncidentInfo.STATE_POSTALS[k])) {
+															temp.setText(IncidentInfo.STATE_NAMES[k]);
+															break;
+														}
+													}
+												} else temp.setText(infos[i].getValue() + "");
+												temp.setMaxEms(10);
+												each.setTag(R.id.field_label, temp);
+											}
+											each.addView(temp);
+										}
+										
+										if (colorCoordinator++ % 2 == 1) {
+											each.setBackgroundColor(Color.rgb(220, 220, 220));
+											each.setTag(R.string.default_color, "color");
+										} else each.setTag(R.string.default_color, "none");
+										
+										switch (which) {
+											case IncidentInfo.RECORD_NUMBER:
+											case IncidentInfo.CRE_LEAD:
+											case IncidentInfo.EVENT_NAME:
+											case IncidentInfo.INCIDENT_YEAR:
+											case IncidentInfo.STATE:
+											case IncidentInfo.PM_ATTUID:
+											case IncidentInfo.ZIP_CODE:
+											case IncidentInfo.BUILDING_TYPE:
+											case IncidentInfo.BUILDING_NAME:
+											case IncidentInfo.BUILDING_ADDRESS:
+											case IncidentInfo.REQUESTOR_ATTUID:
+											case IncidentInfo.CONTACT_PHONE_NUMBER:
+											case IncidentInfo.INITIAL_REPORT_DATE:
+											case IncidentInfo.ELECTRICAL_ISSUE_INDICATOR:
+											case IncidentInfo.GROUNDS_ISSUE_INDICATOR:
+											case IncidentInfo.PLUMB_ISSUE_INDICATOR:
+											case IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR:
+											case IncidentInfo.MECHANICAL_ISSUE_INDICATOR:
+											case IncidentInfo.ROOFS_ISSUE_INDICATOR:
+											case IncidentInfo.FENCE_GATE_ISSUE_INDICATOR:
+											case IncidentInfo.OTHER_ISSUE_INDICATOR:
+											case IncidentInfo.SAFETY_ISSUE_INDICATOR:
+											case IncidentInfo.GENERATOR_ISSUE_INDICATOR:
+											case IncidentInfo.STRUCTURAL_ISSUE_INDICATOR:
+											case IncidentInfo.WATER_ISSUE_INDICATOR:
+											case IncidentInfo.WORK_REQUEST_NUMBER:
+												if (toShowUneditabled != null) {
+													toShowUneditabled.setEnabled(false);
+												}
+												break;
+											default:
+												each.setClickable(true);
+												
+												each.setTag(R.string.edit_in_place, infos[i]);
+												
+												each.setOnTouchListener(new OnTouchListener() {
+													@Override
+													public boolean onTouch(View v, MotionEvent event) {
+														switch (event.getAction()) {
+															case MotionEvent.ACTION_DOWN:
+																SetterUpper.setSelected(m, v);
+																break;
+															case MotionEvent.ACTION_MOVE:
+																SetterUpper.setSelected(m, v);
+																break;
+															case MotionEvent.ACTION_CANCEL:
+																if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
+																else SetterUpper.setUnSelected(m, v, true);
+																break;
+															case MotionEvent.ACTION_UP:
+																if (v.getTag(R.string.default_color).equals("color")) SetterUpper.setUnSelected(m, v, false);
+																else SetterUpper.setUnSelected(m, v, true);
+																editInPlace(m, result, (IncidentInfo) v.getTag(R.string.edit_in_place), (TextView) v.getTag(R.id.field_label));
+																break;
+														}
+														return true;
+													}
+												});
+												break;
+										}
+										container.addView(each);
+									}
+								}
+							}
+						} else if (timedOutDuringSearch) {
+							SetterUpper.timedOut(m, SectionAdder.INCIDENT_REC_NUM_RESULTS);
 						}
 					}
 				}, 0);

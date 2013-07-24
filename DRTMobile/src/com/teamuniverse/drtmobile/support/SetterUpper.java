@@ -208,7 +208,7 @@ public class SetterUpper {
 												IncidentRecNumResultsFragment.search(IncidentRecNumResultsFragment.list);
 												break;
 											case SectionAdder.INCIDENT_ZIP_RESULTS:
-												IncidentZIPResultsFragment.search(IncidentRecNumResultsFragment.list);
+												IncidentZIPResultsFragment.search(IncidentZIPResultsFragment.list);
 												break;
 											case SectionAdder.ADD_INCIDENT:
 												AddIncidentFragment.addButton.performClick();

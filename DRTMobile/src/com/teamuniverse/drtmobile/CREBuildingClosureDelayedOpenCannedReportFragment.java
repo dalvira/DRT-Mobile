@@ -17,14 +17,14 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * either contained in a {@link SectionListActivity} in two-pane mode (on
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
-public class AdminConditionCannedReportFragment extends Fragment {
+public class CREBuildingClosureDelayedOpenCannedReportFragment extends Fragment {
 	private Activity	m;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
-	public AdminConditionCannedReportFragment() {
+	public CREBuildingClosureDelayedOpenCannedReportFragment() {
 	}
 	
 	/**
@@ -48,7 +48,7 @@ public class AdminConditionCannedReportFragment extends Fragment {
 			((FrameLayout) restoring.getParent()).removeView(restoring);
 			return restoring;
 		} else {
-			View view = inflater.inflate(R.layout.fragment_admin_condition_canned_report, container, false);
+			View view = inflater.inflate(R.layout.fragment_cre_building_closure_delayed_open_canned_report, container, false);
 			SetterUpper.setup(m, view);
 			
 			// TODO put stuff here!!

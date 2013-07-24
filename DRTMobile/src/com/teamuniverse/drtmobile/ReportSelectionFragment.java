@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.teamuniverse.drtmobile.sectionsetup.SectionDetailActivity;
 import com.teamuniverse.drtmobile.sectionsetup.SectionListActivity;
@@ -97,22 +98,26 @@ public class ReportSelectionFragment extends Fragment {
 			
 			((Button) view.findViewById(R.id.admin_condition_canned_report)).setOnClickListener(new View.OnClickListener() {
 				@Override
-				public void onClick(View arg0) {
-					db = new DatabaseManager(m);
-					db.sessionSet("event_year", eventYearSpinner.getSelectedItem().toString());
-					db.sessionSet("event_name", eventNameSpinner.getSelectedItem().toString());
-					db.close();
-					SectionListActivity.m.putSection(SectionAdder.ADD_INCIDENT);
+				public void onClick(View button) {
+					if (eventNameSpinner.getSelectedItemPosition() != 0) {
+						db = new DatabaseManager(m);
+						db.sessionSet("event_year", eventYearSpinner.getSelectedItem().toString());
+						db.sessionSet("event_name", eventNameSpinner.getSelectedItem().toString());
+						db.close();
+						SectionListActivity.m.putSection(SectionAdder.ADMIN_CONDITION_CANNED_REPORT);
+					} else Toast.makeText(m, m.getString(R.string.no_event_name_picked), Toast.LENGTH_SHORT).show();
 				}
 			});
 			((Button) view.findViewById(R.id.cre_building_closure_delayed_open_canned_report)).setOnClickListener(new View.OnClickListener() {
 				@Override
-				public void onClick(View arg0) {
-					db = new DatabaseManager(m);
-					db.sessionSet("event_year", eventYearSpinner.getSelectedItem().toString());
-					db.sessionSet("event_year", eventNameSpinner.getSelectedItem().toString());
-					db.close();
-					
+				public void onClick(View button) {
+					if (eventNameSpinner.getSelectedItemPosition() != 0) {
+						db = new DatabaseManager(m);
+						db.sessionSet("event_year", eventYearSpinner.getSelectedItem().toString());
+						db.sessionSet("event_year", eventNameSpinner.getSelectedItem().toString());
+						db.close();
+						SectionListActivity.m.putSection(SectionAdder.CRE_BUILDING_CLOSURE_DELAYED_OPEN_CANNED_REPORT);
+					} else Toast.makeText(m, m.getString(R.string.no_event_name_picked), Toast.LENGTH_SHORT).show();
 				}
 			});
 			

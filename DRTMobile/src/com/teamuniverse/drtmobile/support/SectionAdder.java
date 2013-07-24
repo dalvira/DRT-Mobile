@@ -8,6 +8,8 @@ import java.util.Map;
 import android.support.v4.app.Fragment;
 
 import com.teamuniverse.drtmobile.AddIncidentFragment;
+import com.teamuniverse.drtmobile.AdminConditionCannedReportFragment;
+import com.teamuniverse.drtmobile.CREBuildingClosureDelayedOpenCannedReportFragment;
 import com.teamuniverse.drtmobile.IncidentRecNumResultsFragment;
 import com.teamuniverse.drtmobile.IncidentRecNumSearchFragment;
 import com.teamuniverse.drtmobile.IncidentZIPResultsFragment;
@@ -33,22 +35,24 @@ import com.teamuniverse.drtmobile.ReportSelectionFragment;
  * 2. Put all of the listed sections before the subsections.
  */
 public class SectionAdder {
-	public static final int			NONE						= 99;
+	public static final int			NONE											= 99;
 	
-	public static final int			INCIDENT_ZIP_SEARCH			= 0;
-	public static final int			INCIDENT_REC_NUM_SEARCH		= 1;
-	public static final int			ADD_INCIDENT				= 2;
-	public static final int			REPORT_SELECTION			= 3;
-	public static final int			INCIDENT_ZIP_RESULTS		= 4;
-	public static final int			INCIDENT_REC_NUM_RESULTS	= 5;
+	public static final int			INCIDENT_ZIP_SEARCH								= 0;
+	public static final int			INCIDENT_REC_NUM_SEARCH							= 1;
+	public static final int			ADD_INCIDENT									= 2;
+	public static final int			REPORT_SELECTION								= 3;
+	public static final int			INCIDENT_ZIP_RESULTS							= 4;
+	public static final int			INCIDENT_REC_NUM_RESULTS						= 5;
+	public static final int			ADMIN_CONDITION_CANNED_REPORT					= 6;
+	public static final int			CRE_BUILDING_CLOSURE_DELAYED_OPEN_CANNED_REPORT	= 7;
 	
 	/** All of the sections that can be shown in the section list */
-	public static final String[][]	SECTIONS_IN_LIST			= { { "Open Incidents by ZIP", INCIDENT_ZIP_SEARCH + "" }, { "Incident by Record Number", INCIDENT_REC_NUM_SEARCH + "" }, { "Add New Incident", ADD_INCIDENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
-	public static final int[]		SECTION_PARENTS				= { INCIDENT_ZIP_SEARCH, INCIDENT_REC_NUM_SEARCH, ADD_INCIDENT, REPORT_SELECTION, INCIDENT_ZIP_SEARCH, INCIDENT_REC_NUM_SEARCH };
-	public static final int[]		PARENTS_RPT_FIXER			= { NONE, NONE, NONE, REPORT_SELECTION - 3, NONE, NONE };
+	public static final String[][]	SECTIONS_IN_LIST								= { { "Open Incidents by ZIP", INCIDENT_ZIP_SEARCH + "" }, { "Incident by Record Number", INCIDENT_REC_NUM_SEARCH + "" }, { "Add New Incident", ADD_INCIDENT + "" }, { "Report Selection", REPORT_SELECTION + "" } };
+	public static final int[]		SECTION_PARENTS									= { INCIDENT_ZIP_SEARCH, INCIDENT_REC_NUM_SEARCH, ADD_INCIDENT, REPORT_SELECTION, INCIDENT_ZIP_SEARCH, INCIDENT_REC_NUM_SEARCH, REPORT_SELECTION, REPORT_SELECTION };
+	public static final int[]		PARENTS_RPT_FIXER								= { NONE, NONE, NONE, REPORT_SELECTION - 3, NONE, NONE, REPORT_SELECTION - 3, REPORT_SELECTION - 3 };
 	
-	public static final String[]	AUTHORIZATION_NAMES			= { "ADM", "RPT" };
-	public static final int[][]		AUTHORIZATION_PAGES			= { { INCIDENT_ZIP_SEARCH, INCIDENT_REC_NUM_SEARCH, ADD_INCIDENT, REPORT_SELECTION }, { REPORT_SELECTION } };
+	public static final String[]	AUTHORIZATION_NAMES								= { "ADM", "RPT" };
+	public static final int[][]		AUTHORIZATION_PAGES								= { { INCIDENT_ZIP_SEARCH, INCIDENT_REC_NUM_SEARCH, ADD_INCIDENT, REPORT_SELECTION }, { REPORT_SELECTION } };
 	
 	/**
 	 * This method facilitates dynamic fragment changing based on user input by
@@ -74,6 +78,10 @@ public class SectionAdder {
 				return new IncidentZIPResultsFragment();
 			case INCIDENT_REC_NUM_RESULTS:
 				return new IncidentRecNumResultsFragment();
+			case ADMIN_CONDITION_CANNED_REPORT:
+				return new AdminConditionCannedReportFragment();
+			case CRE_BUILDING_CLOSURE_DELAYED_OPEN_CANNED_REPORT:
+				return new CREBuildingClosureDelayedOpenCannedReportFragment();
 			default:
 				return new IncidentZIPSearchFragment();
 		}

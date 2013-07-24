@@ -38,13 +38,5 @@
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.teamuniverse.drtmobile.SectionListActivity" />
 		</activity>
-		<activity
-			android:name="com.teamuniverse.drtmobile.AdminConditionCannedReportFragment"
-			android:label="@string/title_activity_admin_condition_canned_report_fragment"
-			android:parentActivityName="teamuniverse.DRTMobile.src.ReportSelectionFragment.java" >
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="teamuniverse.DRTMobile.src.ReportSelectionFragment.java" />
-		</activity>
 	</application>
 </manifest>

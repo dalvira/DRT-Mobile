@@ -3,7 +3,6 @@ package com.teamuniverse.drtmobile;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +50,7 @@ public class IncidentZIPResultsFragment extends Fragment {
 	
 	private final static int		COLUMNS	= 2;
 	private final static int[]		FIELDS	= { IncidentInfo.RECORD_NUMBER, IncidentInfo.BUILDING_NAME, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.EVENT_NAME, IncidentInfo.INITIAL_REPORT_DATE };
+	private static int				zip;
 	
 	public static LinearLayout		list;
 	public static View				view;
@@ -81,7 +81,8 @@ public class IncidentZIPResultsFragment extends Fragment {
 			SetterUpper.setup(m, view);
 			
 			db = new DatabaseManager(m);
-			((TextView) view.findViewById(R.id.subtitle)).setText("Results for " + db.sessionGet("zip"));
+			zip = Integer.parseInt(db.sessionUnset("zip"));
+			((TextView) view.findViewById(R.id.subtitle)).setText("Results for " + zip);
 			db.close();
 			progress = (ProgressBar) view.findViewById(R.id.progress);
 			handler = new Handler();
@@ -94,30 +95,32 @@ public class IncidentZIPResultsFragment extends Fragment {
 		}
 	}
 	
-	static ArrayList<Incident>	results	= new ArrayList<Incident>(0);
-	AlertDialog.Builder			builder	= null;
-	static boolean				success	= true;
+	static ArrayList<Incident>	results;
+	static boolean				success;
+	static boolean				timedOutDuringSearch;
 	
 	public static void search(final LinearLayout container) {
-		// Get contents of the EditTexts
+		results = new ArrayList<Incident>(0);
+		success = false;
+		timedOutDuringSearch = false;
+		try {
+			progress.setVisibility(View.VISIBLE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		new Thread(new Runnable() {
 			public void run() {
-				try {
-					progress.setVisibility(View.VISIBLE);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 				Webservice ws = new Webservice(m);
 				
 				db = new DatabaseManager(m);
 				String token = db.sessionGet("token");
-				final int zip = Integer.parseInt(db.sessionGet("zip"));
 				db.close();
 				
 				try {
 					results = ws.geolocSearch(token, zip);
+					success = true;
 				} catch (TokenInvalidException e) {
-					success = false;
+					timedOutDuringSearch = true;
 					e.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -125,6 +128,12 @@ public class IncidentZIPResultsFragment extends Fragment {
 				handler.postDelayed(new Runnable() {
 					public void run() {
 						
+						try {
+							// Hide the progress bar
+							progress.setVisibility(View.GONE);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 						if (success) {
 							if (results.size() == 0) {
 								TextView temp = new TextView(m);
@@ -153,8 +162,6 @@ public class IncidentZIPResultsFragment extends Fragment {
 								LinearLayout eachRecord, eachField;
 								for (int i = 0; i < results.size(); i++) {
 									if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
-									
-									// TODO make prettier
 									
 									eachRecord = new LinearLayout(m);
 									eachRecord.setPadding(3, 6, 3, 6);
@@ -188,7 +195,6 @@ public class IncidentZIPResultsFragment extends Fragment {
 													
 													db = new DatabaseManager(m);
 													db.sessionSet("record_number", (String) v.getTag(R.string.record_number));
-													db.sessionSet("from", "incident");
 													db.close();
 													SectionListActivity.m.putSection(SectionAdder.INCIDENT_REC_NUM_RESULTS);
 													
@@ -230,11 +236,9 @@ public class IncidentZIPResultsFragment extends Fragment {
 									container.addView(eachRecord);
 								}
 							}
-						} else {
+						} else if (timedOutDuringSearch) {
 							SetterUpper.timedOut(m, SectionAdder.INCIDENT_ZIP_RESULTS);
 						}
-						// Hide the progress bar
-						progress.setVisibility(View.GONE);
 					}
 				}, 0);
 			}

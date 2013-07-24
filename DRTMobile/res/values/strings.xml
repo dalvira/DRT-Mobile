@@ -42,7 +42,5 @@
 	<string name="event_name">Pick the event name: </string>
 	<string name="admin_condition_canned_report">Admin Condition Canned Report</string>
 	<string name="cre_building_closure_delayed_open_canned_report">CRE Building Closure/Delayed Open Canned Report</string>
-	<string name="title_activity_admin_condition_canned_report_fragment">temp</string>
-	<string name="action_settings">Settings</string>
-	<string name="hello_world">Hello world!</string>
+	<string name="no_event_name_picked">Please pick an event type or name!</string>
 </resources>
