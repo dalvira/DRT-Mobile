@@ -57,6 +57,8 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  */
 
 public class AddIncidentFragment extends Fragment {
+	private static final int[]	ORDER			= { IncidentInfo.ZIP_CODE, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.BUILDING_NAME, IncidentInfo.BUILDING_ADDRESS, IncidentInfo.INCIDENT_YEAR, IncidentInfo.REQUESTOR_ATTUID, IncidentInfo.CONTACT_PHONE_NUMBER, IncidentInfo.INITIAL_REPORT_DATE, IncidentInfo.EVENT_NAME, IncidentInfo.BUILDING_TYPE, IncidentInfo.WORK_REQUEST_NUMBER, IncidentInfo.COMMERCIAL_POWER_INDICATOR, IncidentInfo.ON_GENERATOR_INDICATOR, IncidentInfo.DAMAGE_INDICATOR, IncidentInfo.MOBILITY_CO_INDICATOR, IncidentInfo.UNOCCUPIABLE_INDICATOR, IncidentInfo.BUILDING_STATUS, IncidentInfo.CRE_LEAD, IncidentInfo.ESTIMATED_CAP_COST, IncidentInfo.ESTIMATED_EXPENSE_COST, IncidentInfo.ELECTRICAL_ISSUE_INDICATOR, IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR, IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.FENCE_GATE_ISSUE_INDICATOR, IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR, IncidentInfo.GENERATOR_ISSUE_INDICATOR, IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR, IncidentInfo.WATER_ISSUE_INDICATOR, IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR, IncidentInfo.GROUNDS_ISSUE_INDICATOR, IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR, IncidentInfo.MECHANICAL_ISSUE_INDICATOR, IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.OTHER_ISSUE_INDICATOR, IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR, IncidentInfo.PLUMB_ISSUE_INDICATOR, IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR, IncidentInfo.ROOFS_ISSUE_INDICATOR, IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR, IncidentInfo.SAFETY_ISSUE_INDICATOR, IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR, IncidentInfo.STRUCTURAL_ISSUE_INDICATOR, IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.ASSESSMENT_NOTES, IncidentInfo.STATUS_NOTES, IncidentInfo.INCIDENT_STATUS, IncidentInfo.COMPLETION_DATE, IncidentInfo.INCIDENT_NOTES };
+	
 	private Activity			m;
 	private Incident			inc;
 	private final int			COLUMNS				= 2;
@@ -128,6 +130,7 @@ public class AddIncidentFragment extends Fragment {
 				((LinearLayout) container.getChildAt(container.getChildCount() - 1)).setOrientation(LinearLayout.HORIZONTAL);
 				((LinearLayout) container.getChildAt(container.getChildCount() - 1)).addView(new TextView(m));
 				((TextView) ((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildAt(((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildCount() - 1)).setText(m.getString(R.string.pick_a_valid_zip));
+				((TextView) ((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildAt(((LinearLayout) container.getChildAt(container.getChildCount() - 1)).getChildCount() - 1)).setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
 				((LinearLayout) container.getChildAt(container.getChildCount() - 1)).addView(new Spinner(m));
 				ArrayAdapter<CharSequence> zipAdapter = ArrayAdapter.createFromResource(m, R.array.valid_zips, android.R.layout.simple_spinner_item);
 				zipAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -272,7 +275,7 @@ public class AddIncidentFragment extends Fragment {
 		LinearLayout each;
 		inc = IncidentHelper.init(m, zipValue);
 		
-		IncidentInfo[] infos = IncidentHelper.getInfos(inc, IncidentHelper.ADD_ORDER);
+		IncidentInfo[] infos = IncidentHelper.getInfos(inc, ORDER);
 		View[] fields = new View[infos.length];
 		toDisable = new View[IncidentInfo.NUMBER_OF_FIELDS];
 		disabledIndicators = new boolean[IncidentInfo.NUMBER_OF_FIELDS];
@@ -440,8 +443,7 @@ public class AddIncidentFragment extends Fragment {
 						return false;
 					}
 				});
-				spinner.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("open") ? 0
-																								: 1);
+				spinner.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("open") ? 0 : 1);
 				unaryContainer = spinner;
 				break;
 			case IncidentInfo.STATE:
@@ -667,8 +669,7 @@ public class AddIncidentFragment extends Fragment {
 						return false;
 					}
 				});
-				spinner.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("y")	? 0
-																								: 1);
+				spinner.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("y") ? 0 : 1);
 				unaryContainer = spinner;
 				break;
 			case IncidentInfo.COMMERCIAL_POWER_INDICATOR:
@@ -717,8 +718,7 @@ public class AddIncidentFragment extends Fragment {
 						return false;
 					}
 				});
-				spinner.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("y")	? 0
-																								: 1);
+				spinner.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("y") ? 0 : 1);
 				unaryContainer = spinner;
 				break;
 			case IncidentInfo.COMPLETION_DATE:
@@ -734,8 +734,7 @@ public class AddIncidentFragment extends Fragment {
 						
 						@Override
 						public void onDateChanged(DatePicker datePicker, int y, int m, int d) {
-							dummyEditText.setText(y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0"
-																										: "") + d);
+							dummyEditText.setText(y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0" : "") + d);
 						}
 						
 						public OnDateChangedListener passValues(EditText dummyEditText) {

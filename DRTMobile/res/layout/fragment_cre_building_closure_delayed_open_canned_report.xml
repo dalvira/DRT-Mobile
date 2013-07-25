@@ -47,10 +47,21 @@
 		android:gravity="center_horizontal"
 		android:text="@string/result_subtitle"
 		android:textAppearance="?android:attr/textAppearanceSmall" />
-	<TextView
+	<ProgressBar
+		android:id="@+id/progress"
+		style="?android:attr/progressBarStyleLarge"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/first_divider"
-		android:layout_centerHorizontal="true"
-		android:text="Placeholder for CRE Building Closure/Delayed Open Canned Report" />
+		android:layout_centerHorizontal="true" />
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@+id/first_divider" >
+		<LinearLayout
+			android:id="@+id/list_container"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" />
+	</ScrollView>
 </RelativeLayout>

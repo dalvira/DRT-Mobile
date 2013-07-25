@@ -56,6 +56,7 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class IncidentRecNumResultsFragment extends Fragment {
+	private static final int[]		UPDATE_ORDER	= { IncidentInfo.RECORD_NUMBER, IncidentInfo.CRE_LEAD, IncidentInfo.EVENT_NAME, IncidentInfo.INCIDENT_YEAR, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.ZIP_CODE, IncidentInfo.BUILDING_TYPE, IncidentInfo.BUILDING_NAME, IncidentInfo.BUILDING_ADDRESS, IncidentInfo.REQUESTOR_ATTUID, IncidentInfo.CONTACT_PHONE_NUMBER, IncidentInfo.INITIAL_REPORT_DATE, IncidentInfo.ELECTRICAL_ISSUE_INDICATOR, IncidentInfo.ENVIRONMENTAL_ISSUE_INDICATOR, IncidentInfo.FENCE_GATE_ISSUE_INDICATOR, IncidentInfo.GENERATOR_ISSUE_INDICATOR, IncidentInfo.GROUNDS_ISSUE_INDICATOR, IncidentInfo.MECHANICAL_ISSUE_INDICATOR, IncidentInfo.PLUMB_ISSUE_INDICATOR, IncidentInfo.ROOFS_ISSUE_INDICATOR, IncidentInfo.SAFETY_ISSUE_INDICATOR, IncidentInfo.STRUCTURAL_ISSUE_INDICATOR, IncidentInfo.WATER_ISSUE_INDICATOR, IncidentInfo.OTHER_ISSUE_INDICATOR, IncidentInfo.WORK_REQUEST_NUMBER, IncidentInfo.ASSESSMENT_NOTES, IncidentInfo.STATUS_NOTES, IncidentInfo.COMPLETION_DATE, IncidentInfo.INCIDENT_STATUS, IncidentInfo.COMMERCIAL_POWER_INDICATOR, IncidentInfo.ON_GENERATOR_INDICATOR, IncidentInfo.DAMAGE_INDICATOR, IncidentInfo.MOBILITY_CO_INDICATOR, IncidentInfo.UNOCCUPIABLE_INDICATOR, IncidentInfo.BUILDING_STATUS, IncidentInfo.ESTIMATED_CAP_COST, IncidentInfo.ESTIMATED_EXPENSE_COST, IncidentInfo.ELECTRICAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.ENVIRONMENTAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.FENCE_GATE_ISSUE_CLOSED_INDICATOR, IncidentInfo.GENERATOR_ISSUE_CLOSED_INDICATOR, IncidentInfo.GROUNDS_ISSUE_CLOSED_INDICATOR, IncidentInfo.MECHANICAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.PLUMB_ISSUE_CLOSED_INDICATOR, IncidentInfo.ROOFS_ISSUE_CLOSED_INDICATOR, IncidentInfo.SAFETY_ISSUE_CLOSED_INDICATOR, IncidentInfo.STRUCTURAL_ISSUE_CLOSED_INDICATOR, IncidentInfo.WATER_ISSUE_CLOSED_INDICATOR, IncidentInfo.OTHER_ISSUE_CLOSED_INDICATOR };
 	
 	/** The shortcut to the current activity */
 	private static Activity			m;
@@ -65,7 +66,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 	private static Handler			handler;
 	private static DatabaseManager	db;
 	
-	private final static int		COLUMNS	= 2;
+	private final static int		COLUMNS			= 2;
 	private static int				recordNumber;
 	
 	public static LinearLayout		list;
@@ -158,7 +159,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 								temp.setGravity(Gravity.CENTER_HORIZONTAL);
 								container.addView(temp);
 							} else {
-								IncidentInfo[] infos = IncidentHelper.getInfos(result, IncidentHelper.UPDATE_ORDER);
+								IncidentInfo[] infos = IncidentHelper.getInfos(result, UPDATE_ORDER);
 								int colorCoordinator = 0;
 								boolean addIt[] = new boolean[IncidentInfo.NUMBER_OF_FIELDS];
 								for (int i = 0; i < addIt.length; i++)
@@ -373,8 +374,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 					ArrayAdapter<CharSequence> incidentStatusAdapter = ArrayAdapter.createFromResource(m, R.array.OOC, android.R.layout.simple_spinner_item);
 					incidentStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					newSpin.setAdapter(incidentStatusAdapter);
-					newSpin.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("open") ? 0
-																									: 1);
+					newSpin.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("open") ? 0 : 1);
 					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
@@ -513,8 +513,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 					ArrayAdapter<CharSequence> indicatorAdapter = ArrayAdapter.createFromResource(m, R.array.YON, android.R.layout.simple_spinner_item);
 					indicatorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					newSpin.setAdapter(indicatorAdapter);
-					newSpin.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("y")	? 0
-																									: 1);
+					newSpin.setSelection(oldContents.toLowerCase(Locale.getDefault()).equals("y") ? 0 : 1);
 					newSpin.setOnItemSelectedListener(new OnItemSelectedListener() {
 						@Override
 						public void onItemSelected(AdapterView<?> arg0, View view, int pos, long id) {
@@ -536,8 +535,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 						newDate.init((int) Long.parseLong(oldContents.substring(0, 4)), (int) Long.parseLong(oldContents.substring(5, 7)) - 1, (int) Long.parseLong(oldContents.substring(8)), new OnDateChangedListener() {
 							@Override
 							public void onDateChanged(DatePicker arg0, int y, int m, int d) {
-								newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0"
-																									: "") + d;
+								newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0" : "") + d;
 							}
 						});
 					} else {
@@ -545,8 +543,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 						newDate.init(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), new OnDateChangedListener() {
 							@Override
 							public void onDateChanged(DatePicker arg0, int y, int m, int d) {
-								newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0"
-																									: "") + d;
+								newDateData = y + "-" + (m < 9 ? "0" : "") + (m + 1) + "-" + (d < 10 ? "0" : "") + d;
 							}
 						});
 						

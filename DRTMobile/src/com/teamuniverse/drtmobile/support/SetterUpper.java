@@ -1,5 +1,7 @@
 package com.teamuniverse.drtmobile.support;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,18 +11,25 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.att.intern.webservice.Incident;
 import com.att.intern.webservice.Webservice;
 import com.teamuniverse.drtmobile.AddIncidentFragment;
+import com.teamuniverse.drtmobile.AdminConditionCannedReportFragment;
+import com.teamuniverse.drtmobile.CREBuildingClosureDelayedOpenCannedReportFragment;
 import com.teamuniverse.drtmobile.IncidentRecNumResultsFragment;
 import com.teamuniverse.drtmobile.IncidentZIPResultsFragment;
 import com.teamuniverse.drtmobile.LogonActivity;
@@ -32,7 +41,6 @@ import com.teamuniverse.drtmobile.R;
  * much repeated code
  * 
  * @author ef183v
- * 
  */
 public class SetterUpper {
 	
@@ -64,6 +72,60 @@ public class SetterUpper {
 			if (Build.FINGERPRINT.startsWith("generic")) v.setBackgroundColor(m.getResources().getColor(R.color.fake_tansparent));
 			else v.setBackgroundColor(Color.TRANSPARENT);
 		} else v.setBackgroundColor(m.getResources().getColor(R.color.unselected_gray));
+	}
+	
+	public static void fillIn(Activity m, LinearLayout container, ArrayList<Incident> results, int[] order) {
+		if (results.size() == 0) {
+			TextView temp = new TextView(m);
+			temp.setPadding(0, 4, 0, 4);
+			temp.setText(R.string.no_results);
+			temp.setGravity(Gravity.CENTER_HORIZONTAL);
+			container.addView(temp);
+		} else {
+			TextView temp;
+			LinearLayout eachRecord, eachField;
+			for (int i = 0; i < results.size(); i++) {
+				if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
+				eachRecord = new LinearLayout(m);
+				if (results.size() > 1) eachRecord.setBackground(m.getResources().getDrawable(R.drawable.bordered_layout));
+				eachRecord.setPadding(3, 6, 3, 6);
+				eachRecord.setTag(R.string.record_number, results.get(i).getRecNumber() + "");
+				eachRecord.setOrientation(LinearLayout.VERTICAL);
+				eachRecord.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+				
+				IncidentInfo[] fields = IncidentHelper.getInfos(results.get(i), order);
+				for (int k = 0; k < fields.length; k++) {
+					eachField = new LinearLayout(m);
+					if (k % 2 == 1) eachField.setBackgroundColor(Color.rgb(220, 220, 220));
+					eachField.setOrientation(LinearLayout.HORIZONTAL);
+					eachField.setPadding(3, 3, 3, 3);
+					
+					temp = new TextView(m);
+					temp.setGravity(Gravity.CENTER);
+					temp.setMaxLines(1);
+					temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
+					temp.setGravity(Gravity.LEFT);
+					temp.setText(fields[k].getDescriptor());
+					eachField.addView(temp);
+					
+					temp = new TextView(m);
+					if (fields[k].getId() == IncidentInfo.STATE) {
+						String currentState = fields[k].getValue() + "";
+						for (int l = 0; l < IncidentInfo.STATE_POSTALS.length; l++) {
+							if (currentState.equals(IncidentInfo.STATE_POSTALS[l])) {
+								temp.setText(IncidentInfo.STATE_NAMES[l]);
+								break;
+							}
+						}
+					} else temp.setText(fields[k].getValue() + "");
+					temp.setMaxEms(10);
+					eachField.addView(temp);
+					
+					eachRecord.addView(eachField);
+				}
+				container.addView(eachRecord);
+			}
+		}
 	}
 	
 	/** A boolean that will stop many clicks from starting a bunch of threads */
@@ -212,6 +274,12 @@ public class SetterUpper {
 												break;
 											case SectionAdder.ADD_INCIDENT:
 												AddIncidentFragment.addButton.performClick();
+												break;
+											case SectionAdder.ADMIN_CONDITION_CANNED_REPORT:
+												AdminConditionCannedReportFragment.search(AdminConditionCannedReportFragment.list);
+												break;
+											case SectionAdder.CRE_BUILDING_CLOSURE_DELAYED_OPEN_CANNED_REPORT:
+												CREBuildingClosureDelayedOpenCannedReportFragment.search(CREBuildingClosureDelayedOpenCannedReportFragment.list);
 												break;
 											default:
 												break;

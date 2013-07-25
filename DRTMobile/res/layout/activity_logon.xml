@@ -2,89 +2,93 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/logon_container"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
+	android:layout_height="wrap_content"
 	android:background="#ffffff"
 	android:focusableInTouchMode="true"
 	tools:context=".LogonActivity"
 	tools:ignore="Overdraw" >
 	<ImageView
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="match_parent"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentTop="true"
 		android:contentDescription="background"
 		android:scaleType="centerCrop"
 		android:src="@drawable/att" />
-	<RelativeLayout
+	<ScrollView
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:padding="16dp" >
-		<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignBottom="@+id/login_box"
-			android:layout_alignLeft="@+id/login_box"
-			android:layout_alignRight="@+id/login_box"
-			android:layout_alignTop="@+id/login_box"
-			android:contentDescription="login_box_background"
-			android:scaleType="fitXY"
-			android:src="@drawable/bordered_box" />
+		android:layout_height="wrap_content" >
 		<RelativeLayout
-			android:id="@+id/login_box"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:layout_centerHorizontal="true"
-			android:layout_marginTop="40dp"
-			android:paddingBottom="16dp"
-			android:paddingLeft="16dp"
-			android:paddingRight="16dp"
-			android:paddingTop="8dp" >
-			<EditText
-				android:id="@+id/attuid"
+			android:padding="16dp" >
+			<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignBottom="@+id/login_box"
+				android:layout_alignLeft="@+id/login_box"
+				android:layout_alignRight="@+id/login_box"
+				android:layout_alignTop="@+id/login_box"
+				android:contentDescription="login_box_background"
+				android:scaleType="fitXY"
+				android:src="@drawable/bordered_box" />
+			<RelativeLayout
+				android:id="@+id/login_box"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_alignParentTop="true"
 				android:layout_centerHorizontal="true"
-				android:ems="10"
-				android:hint="@string/attuid"
-				android:imeActionLabel="@string/next"
-				android:imeOptions="actionNext"
-				android:inputType="textEmailAddress" >
-			</EditText>
-			<EditText
-				android:id="@+id/password"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignLeft="@+id/attuid"
-				android:layout_below="@+id/attuid"
-				android:ems="10"
-				android:hint="@string/global_password"
-				android:imeActionLabel="@string/go"
-				android:imeOptions="actionGo"
-				android:inputType="textPassword" />
-			<CheckBox
-				android:id="@+id/remember_me"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_below="@+id/password"
-				android:layout_centerHorizontal="true"
-				android:text="@string/remember"
-				android:textSize="12sp" />
-			<Button
-				android:id="@+id/go_button"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_below="@+id/remember_me"
-				android:layout_centerHorizontal="true"
-				android:text="@string/go" />
-			<ProgressBar
-				android:id="@+id/progress"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignTop="@+id/go_button"
-				android:layout_toLeftOf="@+id/go_button"
-				android:visibility="invisible" />
+				android:layout_marginTop="40dp"
+				android:paddingBottom="16dp"
+				android:paddingLeft="16dp"
+				android:paddingRight="16dp"
+				android:paddingTop="8dp" >
+				<EditText
+					android:id="@+id/attuid"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentTop="true"
+					android:layout_centerHorizontal="true"
+					android:ems="10"
+					android:hint="@string/attuid"
+					android:imeActionLabel="@string/next"
+					android:imeOptions="actionNext"
+					android:inputType="textEmailAddress" >
+				</EditText>
+				<EditText
+					android:id="@+id/password"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignLeft="@+id/attuid"
+					android:layout_below="@+id/attuid"
+					android:ems="10"
+					android:hint="@string/global_password"
+					android:imeActionLabel="@string/go"
+					android:imeOptions="actionGo"
+					android:inputType="textPassword" />
+				<CheckBox
+					android:id="@+id/remember_me"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/password"
+					android:layout_centerHorizontal="true"
+					android:text="@string/remember"
+					android:textSize="12sp" />
+				<Button
+					android:id="@+id/go_button"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/remember_me"
+					android:layout_centerHorizontal="true"
+					android:text="@string/go" />
+				<ProgressBar
+					android:id="@+id/progress"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignTop="@+id/go_button"
+					android:layout_toLeftOf="@+id/go_button"
+					android:visibility="invisible" />
+			</RelativeLayout>
 		</RelativeLayout>
-	</RelativeLayout>
+	</ScrollView>
 </RelativeLayout>

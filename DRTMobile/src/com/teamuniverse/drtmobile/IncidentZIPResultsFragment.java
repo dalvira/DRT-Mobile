@@ -40,6 +40,7 @@ import com.teamuniverse.drtmobile.support.SetterUpper;
  * tablets) or a {@link SectionDetailActivity} on handsets.
  */
 public class IncidentZIPResultsFragment extends Fragment {
+	private final static int[]		SEARCH_ORDER	= { IncidentInfo.RECORD_NUMBER, IncidentInfo.BUILDING_NAME, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.EVENT_NAME, IncidentInfo.INITIAL_REPORT_DATE };
 	/** The shortcut to the current activity */
 	private static Activity			m;
 	/** The progress bar that is shown to indicate background processes */
@@ -48,8 +49,6 @@ public class IncidentZIPResultsFragment extends Fragment {
 	private static Handler			handler;
 	private static DatabaseManager	db;
 	
-	private final static int		COLUMNS	= 2;
-	private final static int[]		FIELDS	= { IncidentInfo.RECORD_NUMBER, IncidentInfo.BUILDING_NAME, IncidentInfo.STATE, IncidentInfo.PM_ATTUID, IncidentInfo.EVENT_NAME, IncidentInfo.INITIAL_REPORT_DATE };
 	private static int				zip;
 	
 	public static LinearLayout		list;
@@ -77,7 +76,6 @@ public class IncidentZIPResultsFragment extends Fragment {
 			return restoring;
 		} else {
 			view = inflater.inflate(R.layout.fragment_incident_zip_results, container, false);
-			
 			SetterUpper.setup(m, view);
 			
 			db = new DatabaseManager(m);
@@ -204,35 +202,34 @@ public class IncidentZIPResultsFragment extends Fragment {
 										}
 									});
 									
-									for (int k = 0; k < FIELDS.length; k++) {
+									IncidentInfo[] fields = IncidentHelper.getInfos(results.get(i), SEARCH_ORDER);
+									for (int k = 0; k < SEARCH_ORDER.length; k++) {
 										eachField = new LinearLayout(m);
 										eachField.setOrientation(LinearLayout.HORIZONTAL);
-										for (int j = 0; j < COLUMNS; j++) {
-											temp = new TextView(m);
-											temp.setGravity(Gravity.CENTER);
-											temp.setMaxLines(1);
-											IncidentInfo now = IncidentHelper.getSingleInfo(results.get(i), FIELDS[k]);
-											if (j == 0) {
-												temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
-												temp.setGravity(Gravity.LEFT);
-												temp.setText(now.getDescriptor());
-											} else if (j == 1) {
-												if (now.getId() == IncidentInfo.STATE) {
-													String currentState = now.getValue() + "";
-													for (int l = 0; l < IncidentInfo.STATE_POSTALS.length; l++) {
-														if (currentState.equals(IncidentInfo.STATE_POSTALS[l])) {
-															temp.setText(IncidentInfo.STATE_NAMES[l]);
-															break;
-														}
-													}
-												} else temp.setText(now.getValue() + "");
-												temp.setMaxEms(10);
+										
+										temp = new TextView(m);
+										temp.setGravity(Gravity.CENTER);
+										temp.setMaxLines(1);
+										temp.setLayoutParams(new TableLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
+										temp.setGravity(Gravity.LEFT);
+										temp.setText(fields[k].getDescriptor());
+										eachField.addView(temp);
+										
+										temp = new TextView(m);
+										if (fields[k].getId() == IncidentInfo.STATE) {
+											String currentState = fields[k].getValue() + "";
+											for (int l = 0; l < IncidentInfo.STATE_POSTALS.length; l++) {
+												if (currentState.equals(IncidentInfo.STATE_POSTALS[l])) {
+													temp.setText(IncidentInfo.STATE_NAMES[l]);
+													break;
+												}
 											}
-											eachField.addView(temp);
-										}
+										} else temp.setText(fields[k].getValue() + "");
+										temp.setMaxEms(10);
+										eachField.addView(temp);
+										
 										eachRecord.addView(eachField);
 									}
-									
 									container.addView(eachRecord);
 								}
 							}

@@ -114,7 +114,7 @@ public class ReportSelectionFragment extends Fragment {
 					if (eventNameSpinner.getSelectedItemPosition() != 0) {
 						db = new DatabaseManager(m);
 						db.sessionSet("event_year", eventYearSpinner.getSelectedItem().toString());
-						db.sessionSet("event_year", eventNameSpinner.getSelectedItem().toString());
+						db.sessionSet("event_name", eventNameSpinner.getSelectedItem().toString());
 						db.close();
 						SectionListActivity.m.putSection(SectionAdder.CRE_BUILDING_CLOSURE_DELAYED_OPEN_CANNED_REPORT);
 					} else Toast.makeText(m, m.getString(R.string.no_event_name_picked), Toast.LENGTH_SHORT).show();
