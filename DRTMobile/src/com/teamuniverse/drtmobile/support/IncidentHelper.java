@@ -15,7 +15,6 @@ import com.att.intern.webservice.Webservice;
  * extract information into an IncidentHelper object.
  * 
  * @author ef183v
- * 
  */
 public class IncidentHelper extends Incident {
 	
@@ -274,9 +273,7 @@ public class IncidentHelper extends Incident {
 		inc.setBuildingName(startValues[2]);
 		inc.setBuildingStatus("Open");
 		inc.setBuildingType("ADM");
-		inc.setCompltnDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 > 9 ? ""
-																																: "0") + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 9 ? ""
-																																																														: "0") + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+		inc.setCompltnDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 > 9 ? "" : "0") + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 9 ? "" : "0") + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 		inc.setComPowerIndicator("Y");
 		inc.setContactPhone("");
 		inc.setCreLead("PM");
@@ -295,15 +292,11 @@ public class IncidentHelper extends Incident {
 		inc.setGeoLoc(zip);
 		inc.setGroundsIssueClsdIndicator("N");
 		inc.setGroundsIssueIndicator("N");
-		inc.setIncidentCompltnDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 > 9 ? ""
-																																		: "0") + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 9 ? ""
-																																																																: "0") + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+		inc.setIncidentCompltnDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 > 9 ? "" : "0") + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 9 ? "" : "0") + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 		inc.setIncidentNotes("");
 		inc.setIncidentStatus("Open");
 		inc.setIncidentYear(Calendar.getInstance().get(Calendar.YEAR));
-		inc.setInitialRptDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 > 9	? ""
-																																	: "0") + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 9 ? ""
-																																																															: "0") + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+		inc.setInitialRptDate(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1 > 9 ? "" : "0") + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 9 ? "" : "0") + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 		inc.setMechIssueClsdIndicator("N");
 		inc.setMechIssueIndicator("N");
 		inc.setMobCOIndicator("N");
@@ -589,7 +582,7 @@ public class IncidentHelper extends Incident {
 				if (newContents.equals("")) message = "Must supply a requestor ID!";
 				break;
 			case IncidentInfo.WORK_REQUEST_NUMBER:
-				if (!newContents.equals("") && !newContents.matches("[0-9]{16}")) message = "The supplied work request number is not valid. It should be a 16 digit numerical id";
+				if (!newContents.matches("[0-9]{16}")) message = "The a valid work request number must be supplied. It should be a 16 digit numerical id";
 				break;
 			default:
 				break;

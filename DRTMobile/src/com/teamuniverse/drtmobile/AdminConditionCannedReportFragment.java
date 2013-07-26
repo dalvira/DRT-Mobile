@@ -112,7 +112,6 @@ public class AdminConditionCannedReportFragment extends Fragment {
 				db = new DatabaseManager(m);
 				String token = db.sessionGet("token");
 				db.close();
-				
 				try {
 					results = ws.getAdminConditionCannedReport(token, eventName, year);
 					success = true;
@@ -123,7 +122,6 @@ public class AdminConditionCannedReportFragment extends Fragment {
 				}
 				handler.postDelayed(new Runnable() {
 					public void run() {
-						
 						try {
 							// Hide the progress bar
 							progress.setVisibility(View.GONE);

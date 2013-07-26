@@ -203,7 +203,7 @@ public class IncidentZIPResultsFragment extends Fragment {
 									});
 									
 									IncidentInfo[] fields = IncidentHelper.getInfos(results.get(i), SEARCH_ORDER);
-									for (int k = 0; k < SEARCH_ORDER.length; k++) {
+									for (int k = 0; k < fields.length; k++) {
 										eachField = new LinearLayout(m);
 										eachField.setOrientation(LinearLayout.HORIZONTAL);
 										
