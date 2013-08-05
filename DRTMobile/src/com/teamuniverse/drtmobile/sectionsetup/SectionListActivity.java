@@ -16,7 +16,6 @@ import android.view.View;
 import com.teamuniverse.drtmobile.LogonActivity;
 import com.teamuniverse.drtmobile.R;
 import com.teamuniverse.drtmobile.support.DatabaseManager;
-import com.teamuniverse.drtmobile.support.ErrorReporter;
 import com.teamuniverse.drtmobile.support.SectionAdder;
 
 /**
@@ -96,12 +95,13 @@ public class SectionListActivity extends FragmentActivity implements
 	protected void onStart() {
 		super.onStart();
 		
-		ErrorReporter errReporter = new ErrorReporter();
-		errReporter.Init(this);
-		
-		db = new DatabaseManager(this);
-		if (db.checkSetting("send_diagnostics")) errReporter.CheckErrorAndSendMail(this);
-		db.close();
+		// ErrorReporter errReporter = new ErrorReporter();
+		// errReporter.Init(this);
+		//
+		// db = new DatabaseManager(this);
+		// if (db.checkSetting("send_diagnostics"))
+		// errReporter.CheckErrorAndSendMail(this);
+		// db.close();
 	}
 	
 	/**
@@ -118,7 +118,15 @@ public class SectionListActivity extends FragmentActivity implements
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else {
+			clearStacks();
 		}
+	}
+	
+	public void clearStacks() {
+		selectedParent.clear();
+		backStackViews.clear();
+		backStackFragment.clear();
 	}
 	
 	/**

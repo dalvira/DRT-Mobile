@@ -134,6 +134,7 @@ public class IncidentRecNumResultsFragment extends Fragment {
 				
 				db = new DatabaseManager(m);
 				String token = db.sessionGet("token");
+				if (db.sessionUnset("from_add").equals("true")) SectionListActivity.m.clearStacks();
 				db.close();
 				
 				try {

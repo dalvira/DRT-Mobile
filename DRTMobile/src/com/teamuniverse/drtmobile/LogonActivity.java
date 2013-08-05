@@ -68,10 +68,10 @@ public class LogonActivity extends Activity {
 		
 		DatabaseManager db = new DatabaseManager(this);
 		db.sessionUnset();
+		db.setSetting("going_back", false);
 		if (db.checkSetting("remember_attuid")) {
 			rememberATTUID.setChecked(true);
 			attuidEditText.setText(db.getFirstInfoOfType("attuid"));
-			passEditText.setText("password");
 			// passEditText.requestFocus();
 		}
 		db.close();

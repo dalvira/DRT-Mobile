@@ -51,7 +51,7 @@
 				android:id="@+id/admin_condition_canned_report"
 				style="?android:attr/buttonBarButtonStyle"
 				android:layout_width="0dip"
-				android:layout_height="wrap_content"
+				android:layout_height="match_parent"
 				android:layout_gravity="center_vertical"
 				android:layout_weight="1"
 				android:background="@color/fake_transparent"

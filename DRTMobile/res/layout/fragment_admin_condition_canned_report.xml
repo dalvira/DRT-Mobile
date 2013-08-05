@@ -47,7 +47,7 @@
 			android:layout_alignParentTop="true"
 			android:layout_centerHorizontal="true"
 			android:gravity="center_horizontal"
-			android:text="@string/report_selection_title"
+			android:text="@string/admin_condition_canned_report"
 			android:textAppearance="?android:attr/textAppearanceMedium" />
 		<TextView
 			android:id="@+id/subtitle"

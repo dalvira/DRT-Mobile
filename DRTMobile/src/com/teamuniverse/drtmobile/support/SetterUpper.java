@@ -155,7 +155,6 @@ public class SetterUpper {
 		
 		DatabaseManager db = new DatabaseManager(m);
 		attuidEditText.setText(db.sessionGet("attuid"));
-		passEditText.setText("password");
 		// passEditText.requestFocus();
 		db.close();
 		

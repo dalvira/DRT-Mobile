@@ -255,6 +255,7 @@ public class AddIncidentFragment extends Fragment {
 										} else {
 											DatabaseManager db = new DatabaseManager(m);
 											db.sessionSet("record_number", inc.getRecNumber() + "");
+											db.sessionSet("from_add", "true");
 											db.close();
 											SectionListActivity.m.putSection(SectionAdder.INCIDENT_REC_NUM_RESULTS);
 										}
