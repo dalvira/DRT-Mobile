@@ -50,12 +50,13 @@ public class IncidentRecNumSearchFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (SectionListActivity.backButtonPressed) {
-			SectionListActivity.backStackViews.pop();
-			View restoring = SectionListActivity.backStackViews.peek();
-			((FrameLayout) restoring.getParent()).removeView(restoring);
-			return restoring;
-		} else {
+		try {
+			db = new DatabaseManager(m);
+			boolean goingBack = db.checkSetting("going_back");
+			db.setSetting("going_back", false);
+			db.close();
+			if (goingBack) throw new NullPointerException();
+			
 			View view = inflater.inflate(R.layout.fragment_incident_rec_num_search, container, false);
 			SetterUpper.setup(m, view);
 			getRecordNumber = (EditText) view.findViewById(R.id.damage_get_record_number);
@@ -90,8 +91,12 @@ public class IncidentRecNumSearchFragment extends Fragment {
 			
 			SectionListActivity.backStackViews.add(view);
 			return view;
+		} catch (Exception e) {
+			SectionListActivity.backStackViews.pop();
+			View restoring = SectionListActivity.backStackViews.peek();
+			((FrameLayout) restoring.getParent()).removeView(restoring);
+			return restoring;
 		}
-		
 	}
 	
 	private void get() {

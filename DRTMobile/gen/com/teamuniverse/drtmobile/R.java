@@ -28,7 +28,7 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int fake_tansparent=0x7f050000;
+        public static final int fake_transparent=0x7f050000;
         public static final int selected=0x7f050001;
         public static final int unselected_gray=0x7f050002;
     }
@@ -50,7 +50,10 @@ public final class R {
         public static final int att=0x7f020000;
         public static final int bordered_box=0x7f020001;
         public static final int bordered_layout=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
+        public static final int bubble_att=0x7f020003;
+        public static final int cloud_att=0x7f020004;
+        public static final int colors_att=0x7f020005;
+        public static final int ic_launcher=0x7f020006;
     }
     public static final class id {
         public static final int add=0x7f0a0010;

@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -102,12 +101,13 @@ public class AddIncidentFragment extends Fragment {
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup vGroup, Bundle savedInstanceState) {
-		if (SectionListActivity.backButtonPressed) {
-			SectionListActivity.backStackViews.pop();
-			View restoring = SectionListActivity.backStackViews.peek();
-			((FrameLayout) restoring.getParent()).removeView(restoring);
-			return restoring;
-		} else {
+		try {
+			DatabaseManager db = new DatabaseManager(m);
+			boolean goingBack = db.checkSetting("going_back");
+			db.setSetting("going_back", false);
+			db.close();
+			if (goingBack) throw new NullPointerException();
+			
 			View view = inflater.inflate(R.layout.fragment_add_incident, vGroup, false);
 			SetterUpper.setup(m, view);
 			handler = new Handler();
@@ -115,7 +115,7 @@ public class AddIncidentFragment extends Fragment {
 			LinearLayout container = (LinearLayout) view.findViewById(R.id.container);
 			// 5 prepopulated fields
 			int zipValue;
-			DatabaseManager db = new DatabaseManager(m);
+			db = new DatabaseManager(m);
 			String zipString = db.sessionUnset("adding_zip");
 			db.close();
 			
@@ -165,6 +165,11 @@ public class AddIncidentFragment extends Fragment {
 			
 			SectionListActivity.backStackViews.add(view);
 			return view;
+		} catch (Exception e) {
+			SectionListActivity.backStackViews.pop();
+			View restoring = SectionListActivity.backStackViews.peek();
+			((FrameLayout) restoring.getParent()).removeView(restoring);
+			return restoring;
 		}
 	}
 	
@@ -282,11 +287,8 @@ public class AddIncidentFragment extends Fragment {
 		
 		int colorCoordinator = 0;
 		for (int i = 0; i < infos.length; i++) {
-			if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 			
 			int which = infos[i].getId();
-			
-			if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
 			
 			each = new LinearLayout(m);
 			each.setPadding(3, 3, 3, 3);
@@ -313,9 +315,8 @@ public class AddIncidentFragment extends Fragment {
 				}
 			}
 			
-			if (colorCoordinator++ % 2 == 1) {
-				each.setBackgroundColor(Color.rgb(220, 220, 220));
-			}
+			if (colorCoordinator++ % 2 == 1) each.setBackgroundColor(m.getResources().getColor(R.color.unselected_gray));
+			else each.setBackgroundColor(m.getResources().getColor(R.color.fake_transparent));
 			
 			container.addView(each);
 		}

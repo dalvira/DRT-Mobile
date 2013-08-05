@@ -6,61 +6,72 @@
 	android:paddingLeft="@dimen/activity_horizontal_margin"
 	android:paddingRight="@dimen/activity_horizontal_margin"
 	android:paddingTop="@dimen/activity_vertical_margin"
-	tools:context=".IncidentZIPResultsFragment" >
-	<View
-		android:id="@+id/first_divider"
-		android:layout_width="fill_parent"
-		android:layout_height="1dp"
-		android:layout_below="@+id/subtitle"
-		android:layout_marginBottom="16dp"
-		android:background="?android:attr/listDivider" />
-	<TextView
-		android:id="@+id/authorization"
+	tools:context=".IncidentZIPResultsFragment" ><ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignBottom="@+id/first_divider"
+		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
-		android:textAppearance="?android:attr/textAppearanceSmall" />
-	<TextView
-		android:id="@+id/attuid"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignBottom="@+id/first_divider"
-		android:layout_alignParentLeft="true"
-		android:textAppearance="?android:attr/textAppearanceSmall" />
-	<TextView
-		android:id="@+id/title"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_centerHorizontal="true"
-		android:gravity="center_horizontal"
-		android:text="@string/incident_title"
-		android:textAppearance="?android:attr/textAppearanceMedium" />
-	<TextView
-		android:id="@+id/subtitle"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/title"
-		android:layout_centerHorizontal="true"
-		android:gravity="center_horizontal"
-		android:text="@string/result_subtitle"
-		android:textAppearance="?android:attr/textAppearanceSmall" />
-	<ProgressBar
-		android:id="@+id/progress"
-		style="?android:attr/progressBarStyleLarge"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/first_divider"
-		android:layout_centerHorizontal="true" />
-	<ScrollView
+		android:contentDescription="background"
+		android:scaleType="centerCrop"
+		android:src="@drawable/bubble_att" />
+	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="fill_parent"
-		android:layout_below="@+id/first_divider" >
-		<LinearLayout
-			android:id="@+id/list_container"
-			android:layout_width="match_parent"
+		android:layout_height="match_parent" >
+		<View
+			android:id="@+id/first_divider"
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_below="@+id/subtitle"
+			android:layout_marginBottom="16dp"
+			android:background="?android:attr/listDivider" />
+		<TextView
+			android:id="@+id/authorization"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:orientation="vertical" />
-	</ScrollView>
-</RelativeLayout>
+			android:layout_alignBottom="@+id/first_divider"
+			android:layout_alignParentRight="true"
+			android:textAppearance="?android:attr/textAppearanceSmall" />
+		<TextView
+			android:id="@+id/attuid"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignBottom="@+id/first_divider"
+			android:layout_alignParentLeft="true"
+			android:textAppearance="?android:attr/textAppearanceSmall" />
+		<TextView
+			android:id="@+id/title"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_centerHorizontal="true"
+			android:gravity="center_horizontal"
+			android:text="@string/incident_title"
+			android:textAppearance="?android:attr/textAppearanceMedium" />
+		<TextView
+			android:id="@+id/subtitle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/title"
+			android:layout_centerHorizontal="true"
+			android:gravity="center_horizontal"
+			android:text="@string/result_subtitle"
+			android:textAppearance="?android:attr/textAppearanceSmall" />
+		<ProgressBar
+			android:id="@+id/progress"
+			style="?android:attr/progressBarStyleLarge"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/first_divider"
+			android:layout_centerHorizontal="true" />
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="fill_parent"
+			android:layout_below="@+id/first_divider" >
+			<LinearLayout
+				android:id="@+id/list_container"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical" />
+		</ScrollView>
+	</RelativeLayout>
+	</RelativeLayout>

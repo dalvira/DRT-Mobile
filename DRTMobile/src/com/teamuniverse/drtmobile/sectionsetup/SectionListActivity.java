@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -37,7 +38,7 @@ import com.teamuniverse.drtmobile.support.SectionAdder;
 public class SectionListActivity extends FragmentActivity implements
 		SectionListFragment.Callbacks {
 	
-	public final static String			FRAG_ID				= "com.teamuniverse.drtmobile.FRAG_ID";
+	public final static String			FRAG_ID	= "com.teamuniverse.drtmobile.FRAG_ID";
 	
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -46,10 +47,10 @@ public class SectionListActivity extends FragmentActivity implements
 	public static boolean				mTwoPane;
 	public static SectionListActivity	m;
 	public static FragmentManager		fragmentManager;
-	private static Stack<Integer>		selectedParent;
 	
+	public static Stack<Integer>		selectedParent;
 	public static Stack<View>			backStackViews;
-	public static boolean				backButtonPressed	= false;
+	public static Stack<Fragment>		backStackFragment;
 	
 	private DatabaseManager				db;
 	
@@ -65,13 +66,29 @@ public class SectionListActivity extends FragmentActivity implements
 		m = this;
 		selectedParent = new Stack<Integer>();
 		backStackViews = new Stack<View>();
+		backStackFragment = new Stack<Fragment>();
 		
 		mTwoPane = findViewById(R.id.section_detail_container) != null;
 		if (mTwoPane) {
-			
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
 			((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivateOnItemClick(true);
+			
+			db = new DatabaseManager(this);
+			String selected = db.sessionGet("selected_section");
+			String authorization = db.sessionGet("authorization");
+			int which;
+			if (selected.equals("")) {
+				if (authorization.equals("ADM")) which = SectionAdder.INCIDENT_ZIP_SEARCH;
+				else which = SectionAdder.REPORT_SELECTION;
+				db.sessionSet("selected_section", which + "");
+			} else which = (int) Long.parseLong(selected);
+			db.close();
+			
+			selectedParent.add(which);
+			fragmentManager = getSupportFragmentManager();
+			Fragment frag = SectionAdder.getSection(which);
+			backStackFragment.add(frag);
 		}
 	}
 	
@@ -95,23 +112,9 @@ public class SectionListActivity extends FragmentActivity implements
 	protected void onResume() {
 		super.onResume();
 		if (mTwoPane) {
-			
-			db = new DatabaseManager(this);
-			String selected = db.sessionGet("selected_section");
-			String authorization = db.sessionGet("authorization");
-			int which;
-			if (selected.equals("")) {
-				if (authorization.equals("ADM")) which = SectionAdder.INCIDENT_ZIP_SEARCH;
-				else which = SectionAdder.REPORT_SELECTION;
-				db.sessionSet("selected_section", which + "");
-			} else which = (int) Long.parseLong(selected);
-			db.close();
-			
 			try {
-				setSelectedParent(which);
-				selectedParent.add(which);
-				fragmentManager = getSupportFragmentManager();
-				fragmentManager.beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection(which)).commit();
+				setSelectedParent(selectedParent.peek());
+				fragmentManager.beginTransaction().replace(R.id.section_detail_container, backStackFragment.peek()).commit();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -124,7 +127,14 @@ public class SectionListActivity extends FragmentActivity implements
 	 */
 	@Override
 	public void onItemSelected(String id) {
-		putSection(Integer.parseInt(id));
+		if (mTwoPane) {
+			fragmentManager = getSupportFragmentManager();
+			putSection(Integer.parseInt(id));
+		} else {
+			Intent detailIntent = new Intent(this, SectionDetailActivity.class);
+			detailIntent.putExtra(FRAG_ID, id + "");
+			startActivity(detailIntent);
+		}
 	}
 	
 	/**
@@ -139,21 +149,32 @@ public class SectionListActivity extends FragmentActivity implements
 	 *            reference to the appropriate final int of SectionAdder.
 	 */
 	public void putSection(int id) {
-		if (mTwoPane) {
-			try {
-				setSelectedParent(id);
-				selectedParent.add(id);
-				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-				transaction.replace(R.id.section_detail_container, SectionAdder.getSection(id));
-				transaction.addToBackStack(null);
-				transaction.commit();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			Intent detailIntent = new Intent(this, SectionDetailActivity.class);
-			detailIntent.putExtra(FRAG_ID, id + "");
-			startActivity(detailIntent);
+		try {
+			if (mTwoPane) setSelectedParent(id);
+			selectedParent.add(id);
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			Fragment frag = SectionAdder.getSection(id);
+			backStackFragment.add(frag);
+			transaction.replace(R.id.section_detail_container, frag);
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void popSection() {
+		db = new DatabaseManager(m);
+		db.setSetting("going_back", true);
+		db.close();
+		try {
+			selectedParent.pop();
+			backStackFragment.pop();
+			if (mTwoPane) setSelectedParent(selectedParent.peek());
+			FragmentTransaction transaction = fragmentManager.beginTransaction();
+			transaction.replace(R.id.section_detail_container, backStackFragment.peek());
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -161,12 +182,11 @@ public class SectionListActivity extends FragmentActivity implements
 		fragmentManager = fm;
 	}
 	
-	private void setSelectedParent(int id) {
+	public void setSelectedParent(int id) {
 		db = new DatabaseManager(this);
 		String authorization = db.sessionGet("authorization");
 		db.close();
-		((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? SectionAdder.PARENTS_RPT_FIXER[id]
-																																				: SectionAdder.SECTION_PARENTS[id]);
+		((SectionListFragment) getSupportFragmentManager().findFragmentById(R.id.section_list)).setActivatedPosition(authorization.equals("RPT") ? SectionAdder.PARENTS_RPT_FIXER[id] : SectionAdder.SECTION_PARENTS[id]);
 	}
 	
 	@Override
@@ -178,15 +198,9 @@ public class SectionListActivity extends FragmentActivity implements
 	
 	@Override
 	public void onBackPressed() {
-		if (mTwoPane) {
-			fragmentManager = getSupportFragmentManager();
-			if (fragmentManager.getBackStackEntryCount() > 0) {
-				backButtonPressed = true;
-				fragmentManager.popBackStackImmediate();
-				selectedParent.pop();
-				setSelectedParent(selectedParent.peek());
-				backButtonPressed = false;
-			} else super.onBackPressed();
+		fragmentManager = getSupportFragmentManager();
+		if (backStackFragment.size() > 1) {
+			popSection();
 		} else super.onBackPressed();
 	}
 	

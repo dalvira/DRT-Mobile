@@ -3,7 +3,6 @@ package com.teamuniverse.drtmobile;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -69,12 +68,13 @@ public class IncidentZIPResultsFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (SectionListActivity.backButtonPressed) {
-			SectionListActivity.backStackViews.pop();
-			View restoring = SectionListActivity.backStackViews.peek();
-			((FrameLayout) restoring.getParent()).removeView(restoring);
-			return restoring;
-		} else {
+		try {
+			db = new DatabaseManager(m);
+			boolean goingBack = db.checkSetting("going_back");
+			db.setSetting("going_back", false);
+			db.close();
+			if (goingBack) throw new NullPointerException();
+			
 			view = inflater.inflate(R.layout.fragment_incident_zip_results, container, false);
 			SetterUpper.setup(m, view);
 			
@@ -90,6 +90,11 @@ public class IncidentZIPResultsFragment extends Fragment {
 			
 			SectionListActivity.backStackViews.add(view);
 			return view;
+		} catch (Exception e) {
+			SectionListActivity.backStackViews.pop();
+			View restoring = SectionListActivity.backStackViews.peek();
+			((FrameLayout) restoring.getParent()).removeView(restoring);
+			return restoring;
 		}
 	}
 	
@@ -159,8 +164,6 @@ public class IncidentZIPResultsFragment extends Fragment {
 								TextView temp;
 								LinearLayout eachRecord, eachField;
 								for (int i = 0; i < results.size(); i++) {
-									if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
-									
 									eachRecord = new LinearLayout(m);
 									eachRecord.setPadding(3, 6, 3, 6);
 									eachRecord.setTag(R.string.record_number, results.get(i).getRecNumber() + "");
@@ -169,9 +172,12 @@ public class IncidentZIPResultsFragment extends Fragment {
 									eachRecord.setClickable(true);
 									
 									if (i % 2 == 1) {
-										eachRecord.setBackgroundColor(Color.rgb(220, 220, 220));
+										eachRecord.setBackgroundColor(m.getResources().getColor(R.color.unselected_gray));
 										eachRecord.setTag(R.string.default_color, "color");
-									} else eachRecord.setTag(R.string.default_color, "none");
+									} else {
+										eachRecord.setBackgroundColor(m.getResources().getColor(R.color.fake_transparent));
+										eachRecord.setTag(R.string.default_color, "none");
+									}
 									
 									eachRecord.setOnTouchListener(new OnTouchListener() {
 										@Override

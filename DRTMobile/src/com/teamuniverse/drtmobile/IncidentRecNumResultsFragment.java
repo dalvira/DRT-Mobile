@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -86,12 +85,13 @@ public class IncidentRecNumResultsFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		if (SectionListActivity.backButtonPressed) {
-			SectionListActivity.backStackViews.pop();
-			View restoring = SectionListActivity.backStackViews.peek();
-			((FrameLayout) restoring.getParent()).removeView(restoring);
-			return restoring;
-		} else {
+		try {
+			db = new DatabaseManager(m);
+			boolean goingBack = db.checkSetting("going_back");
+			db.setSetting("going_back", false);
+			db.close();
+			if (goingBack) throw new NullPointerException();
+			
 			View view = inflater.inflate(R.layout.fragment_incident_rec_num_results, container, false);
 			SetterUpper.setup(m, view);
 			
@@ -107,6 +107,11 @@ public class IncidentRecNumResultsFragment extends Fragment {
 			
 			SectionListActivity.backStackViews.add(view);
 			return view;
+		} catch (Exception e) {
+			SectionListActivity.backStackViews.pop();
+			View restoring = SectionListActivity.backStackViews.peek();
+			((FrameLayout) restoring.getParent()).removeView(restoring);
+			return restoring;
 		}
 	}
 	
@@ -171,8 +176,6 @@ public class IncidentRecNumResultsFragment extends Fragment {
 									if (child != -1) addIt[child] = infos[i].getValue().equals("Y");
 									
 									if (addIt[which]) {
-										if (i != 0) m.getLayoutInflater().inflate(R.layout.divider_line, container);
-										
 										each = new LinearLayout(m);
 										each.setPadding(3, 6, 3, 6);
 										each.setOrientation(LinearLayout.HORIZONTAL);
@@ -203,9 +206,12 @@ public class IncidentRecNumResultsFragment extends Fragment {
 										}
 										
 										if (colorCoordinator++ % 2 == 1) {
-											each.setBackgroundColor(Color.rgb(220, 220, 220));
+											each.setBackgroundColor(m.getResources().getColor(R.color.unselected_gray));
 											each.setTag(R.string.default_color, "color");
-										} else each.setTag(R.string.default_color, "none");
+										} else {
+											each.setBackgroundColor(m.getResources().getColor(R.color.fake_transparent));
+											each.setTag(R.string.default_color, "none");
+										}
 										
 										switch (which) {
 											case IncidentInfo.RECORD_NUMBER:

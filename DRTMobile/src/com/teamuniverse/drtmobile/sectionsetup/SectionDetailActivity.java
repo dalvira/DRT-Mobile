@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import com.teamuniverse.drtmobile.LogonActivity;
 import com.teamuniverse.drtmobile.R;
-import com.teamuniverse.drtmobile.support.SectionAdder;
 
 /**
  * An activity representing a single Section detail screen. This activity is
@@ -42,9 +41,9 @@ public class SectionDetailActivity extends FragmentActivity {
 			// Create the detail fragment and attach_picture it to the activity
 			// using a fragment transaction.
 			try {
-				String id = getIntent().getStringExtra(SectionListActivity.FRAG_ID);
+				int id = (int) Long.parseLong(getIntent().getStringExtra(SectionListActivity.FRAG_ID));
 				SectionListActivity.setFragmentManager(getSupportFragmentManager());
-				SectionListActivity.fragmentManager.beginTransaction().replace(R.id.section_detail_container, SectionAdder.getSection((int) Long.parseLong(id))).commit();
+				SectionListActivity.m.putSection(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -56,6 +55,14 @@ public class SectionDetailActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.in_app_menu, menu);
 		return true;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if (SectionListActivity.backStackFragment.size() > 1) {
+			SectionListActivity.setFragmentManager(getSupportFragmentManager());
+			SectionListActivity.m.popSection();
+		} else super.onBackPressed();
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {

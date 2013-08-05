@@ -8,8 +8,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -69,8 +67,7 @@ public class SetterUpper {
 	
 	public static void setUnSelected(Activity m, View v, boolean isTransparent) {
 		if (isTransparent) {
-			if (Build.FINGERPRINT.startsWith("generic")) v.setBackgroundColor(m.getResources().getColor(R.color.fake_tansparent));
-			else v.setBackgroundColor(Color.TRANSPARENT);
+			v.setBackgroundColor(m.getResources().getColor(R.color.fake_transparent));
 		} else v.setBackgroundColor(m.getResources().getColor(R.color.unselected_gray));
 	}
 	
@@ -96,7 +93,8 @@ public class SetterUpper {
 				IncidentInfo[] fields = IncidentHelper.getInfos(results.get(i), order);
 				for (int k = 0; k < fields.length; k++) {
 					eachField = new LinearLayout(m);
-					if (k % 2 == 1) eachField.setBackgroundColor(Color.rgb(220, 220, 220));
+					if (k % 2 == 1) eachField.setBackgroundColor(m.getResources().getColor(R.color.unselected_gray));
+					else eachField.setBackgroundColor(m.getResources().getColor(R.color.fake_transparent));
 					eachField.setOrientation(LinearLayout.HORIZONTAL);
 					eachField.setPadding(3, 3, 3, 3);
 					
